@@ -1,0 +1,45 @@
+{
+  "name": "@compotes/root",
+  "private": "true",
+  "packageManager": "pnpm@7.9.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "version": "1.0.0",
+  "description": "Components library focused on accessibility/customization",
+  "bugs": "https://github.com/Applelo/compotes/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Applelo/compotes"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "test": "pnpm run test:vitest && pnpm run test:types",
+    "test:vitest": "vitest",
+    "test:types": "pnpm run -r test:types"
+  },
+  "keywords": [
+    "components",
+    "accessible",
+    "accessibility",
+    "customize",
+    "component",
+    "vue",
+    "nuxt",
+    "vanilla",
+    "typescript",
+    "typings"
+  ],
+  "author": "Applelo",
+  "license": "MT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "eslint": "^8.34.0",
+    "eslint-define-config": "^1.15.0",
+    "typescript": "^4.9.5",
+    "vitest": "^0.28.4"
+  }
+}
