@@ -24,7 +24,7 @@ pnpm add -D @compotes/core
 
 <br></details>
 
-<details>
+<!--<details>
 <summary>VueJS 3</summary><br>
 
 ```bash
@@ -52,7 +52,7 @@ yarn add -D @compotes/nuxt
 pnpm add -D @compotes/nuxt
 ```
 
-<br></details>
+<br></details>-->
 
 ## Compotes
 
