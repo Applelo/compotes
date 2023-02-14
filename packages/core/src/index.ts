@@ -1,6 +1,9 @@
 import Drilldown from './components/drilldown'
 
-export {
-  Drilldown
-}
+import.meta.glob(['./assets/css/*.css'], {
+  eager: true,
+})
 
+export {
+  Drilldown,
+}

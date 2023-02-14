@@ -65,7 +65,7 @@ And more to come!
 
 ## Why ?
 
-A lot of components library are already shipped with styles but as a Front End developer, I always wants to override a lot. Futhermore, there are not always accessible or they are shipped wth jQuery.
+A lot of components library are already shipped with styles but as a Front End developer, I always wants to override a lot. Futhermore, there are not always accessible or they are shipped with jQuery.
 
 This library provide only the compotes and it's you to make a tart.
 

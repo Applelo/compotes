@@ -1,26 +1,19 @@
 {
   "name": "@compotes/root",
+  "version": "1.0.0",
   "private": "true",
   "packageManager": "pnpm@7.9.0",
   "workspaces": [
     "packages/*"
   ],
-  "version": "1.0.0",
   "description": "Components library focused on accessibility/customization",
-  "bugs": "https://github.com/Applelo/compotes/issues",
+  "author": "Applelo",
+  "license": "MT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Applelo/compotes"
   },
-  "engines": {
-    "node": ">=14"
-  },
-  "scripts": {
-    "test": "pnpm run test:vitest && pnpm run test:types",
-    "test:vitest": "vitest",
-    "test:types": "pnpm run -r test:types",
-    "prepublishOnly": "pnpm build"
-  },
+  "bugs": "https://github.com/Applelo/compotes/issues",
   "keywords": [
     "components",
     "accessible",
@@ -33,13 +26,20 @@
     "typescript",
     "typings"
   ],
-  "author": "Applelo",
-  "license": "MT",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "pnpm run test:vitest && pnpm run test:types",
+    "test:vitest": "vitest",
+    "test:types": "pnpm run -r test:types",
+    "prepublishOnly": "pnpm build"
+  },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.51.0",
-    "@typescript-eslint/parser": "^5.51.0",
+    "@antfu/eslint-config": "^0.35.2",
     "eslint": "^8.34.0",
-    "eslint-define-config": "^1.15.0",
     "typescript": "^4.9.5",
     "vite": "^4.1.1",
     "vitest": "^0.28.4",

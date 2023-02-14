@@ -1,0 +1,21 @@
+.c-drilldown {
+  overflow: hidden;
+}
+
+.c-drilldown .c-drilldown__menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c-drilldown li > .c-drilldown__menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(100%);
+  width: 100%;
+}
+
+.c-drilldown button[aria-expanded='false'] + .c-drilldown__menu {
+  visibility: hidden;
+}

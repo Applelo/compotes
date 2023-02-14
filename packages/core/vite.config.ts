@@ -8,8 +8,9 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'compotes',
-      fileName: 'compotes'
+      fileName: 'compotes',
     },
   },
-  plugins: [dts()]
+  publicDir: './src/assets',
+  plugins: [dts()],
 })
