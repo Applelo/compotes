@@ -4,10 +4,21 @@
 
 ## Features
 
-- 🦾 Accessible
+- 👨‍🎨 Minimal CSS to do your customization
+- 🦾 Accessibility in mind
 - 📠 Fully typed
 
-## Pots
+## 🍏 Compotes
+
+- Drilldown
+<!-- Tabs
+- Pagination
+- Accordion
+- Dropdown-->
+
+And more to come!
+
+## 🍯 Pots
 
 <details>
 <summary>Vanilla JS/TS</summary><br>
@@ -54,18 +65,13 @@ pnpm add -D @compotes/nuxt
 
 <br></details>-->
 
-## Compotes
-
-- Drilldown
-<!-- Tabs
-- Pagination
-- Accordion-->
-
-And more to come!
+> VueJS and NuxtJS packages will arrive soon after the core first release
 
 ## Why ?
 
 A lot of components library are already shipped with styles but as a Front End developer, I always wants to override a lot. Futhermore, there are not always accessible or they are shipped with jQuery.
+
+There are some good library like [React Aria](https://react-spectrum.adobe.com/react-aria/react-aria-components.html) but it's made to work on one framework and I work on different tech like Wordpress, Symfony or VueJS.
 
 > This library provide only the compotes and it's you to make a tart.
 
