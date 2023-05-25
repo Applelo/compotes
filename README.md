@@ -2,7 +2,7 @@
 
 > A components library focused on accessibility/customization
 
-## Features
+## ✨ Features
 
 - 👨‍🎨 Minimal CSS to do your customization
 - 🦾 Accessibility in mind
@@ -67,7 +67,7 @@ pnpm add -D @compotes/nuxt
 
 > VueJS and NuxtJS packages will arrive soon after the core first release
 
-## Why ?
+## 🙋‍♂️ Why ?
 
 A lot of components library are already shipped with styles but as a Front End developer, I always wants to override a lot. Futhermore, there are not always accessible or they are shipped with jQuery.
 
