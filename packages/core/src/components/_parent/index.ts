@@ -10,9 +10,16 @@ export interface ParentOptions {
   initAccessibilityAttrs?: boolean
 }
 
+export interface ParentEvent {
+  event: string
+  function: any
+  el: Element
+}
+
 export default abstract class Parent {
   protected el: HTMLElement
   public opts: ParentOptions
+  protected events: ParentEvent[] = []
 
   constructor(el: HTMLElement | string, options: ParentOptions) {
     const checkEl = typeof el === 'string' ? document.querySelector<HTMLElement>(el) : el
@@ -22,8 +29,10 @@ export default abstract class Parent {
     this.el = checkEl
 
     this.opts = options
-    if (typeof options.init === 'undefined' || options.init === true)
-      this.init()
+  }
+
+  protected get isInitializable() {
+    return typeof this.opts.init === 'undefined' || this.opts.init === true
   }
 
   protected emitEvent(name: string) {
@@ -46,10 +55,20 @@ export default abstract class Parent {
   protected abstract initAccessibilityAttrs(): void
 
   /**
+   * Destroy the events on the component
+   */
+  public destroyEvents() {
+    this.events.forEach((e) => {
+      e.el.removeEventListener(e.event, e.function)
+    })
+  }
+
+  /**
    * Destroy the component
    */
   protected destroy(): void {
     this.emitEvent('destroy')
+    this.destroyEvents()
   }
 
   /**

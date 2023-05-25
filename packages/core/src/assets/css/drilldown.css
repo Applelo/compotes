@@ -2,13 +2,13 @@
   overflow: hidden;
 }
 
-.c-drilldown .c-drilldown__menu {
+.c-drilldown .c-drilldown-menu {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.c-drilldown li > .c-drilldown__menu {
+.c-drilldown li > .c-drilldown-menu {
   position: absolute;
   top: 0;
   left: 0;
@@ -16,6 +16,6 @@
   width: 100%;
 }
 
-.c-drilldown button[aria-expanded='false'] + .c-drilldown__menu {
+.c-drilldown button[aria-expanded='false'] + .c-drilldown-menu {
   visibility: hidden;
 }
