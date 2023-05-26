@@ -11,10 +11,12 @@
 ## 🍏 Compotes
 
 - Drilldown
-<!-- Tabs
+<!--
+-Collapse
+- Tabs
 - Pagination
-- Accordion
-- Dropdown-->
+- Dropdown
+-->
 
 And more to come!
 

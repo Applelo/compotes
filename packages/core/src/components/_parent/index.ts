@@ -8,6 +8,11 @@ export interface ParentOptions {
    * Don't disable it if you don't know what your doing
    */
   initAccessibilityAttrs?: boolean
+  /**
+   * Init events on the component
+   * Don't disable it if you don't know what your doing
+   */
+  initEvents?: boolean
 }
 
 export interface ParentEvent {
@@ -17,7 +22,7 @@ export interface ParentEvent {
 }
 
 export default abstract class Parent {
-  protected el: HTMLElement
+  protected rootEl: HTMLElement
   public opts: ParentOptions
   protected events: ParentEvent[] = []
 
@@ -26,7 +31,7 @@ export default abstract class Parent {
     if (!checkEl)
       throw new Error('The element/selector provided cannot be found')
 
-    this.el = checkEl
+    this.rootEl = checkEl
 
     this.opts = options
   }
@@ -37,7 +42,7 @@ export default abstract class Parent {
 
   protected emitEvent(name: string) {
     const event = new CustomEvent(name, { detail: this })
-    this.el.dispatchEvent(event)
+    this.rootEl.dispatchEvent(event)
   }
 
   /**
@@ -47,12 +52,19 @@ export default abstract class Parent {
     this.emitEvent('init')
     if (typeof this.opts.initAccessibilityAttrs === 'undefined' || this.opts.initAccessibilityAttrs)
       this.initAccessibilityAttrs()
+    if (typeof this.opts.initEvents === 'undefined' || this.opts.initEvents)
+      this.initEvents()
   }
 
   /**
    * Init the accessibility on the component
    */
   protected abstract initAccessibilityAttrs(): void
+
+  /**
+   * Init the accessibility on the component
+   */
+  protected abstract initEvents(): void
 
   /**
    * Destroy the events on the component
@@ -74,8 +86,8 @@ export default abstract class Parent {
   /**
    * The HTML Element associated to the component
    */
-  public get element(): HTMLElement {
-    return this.el
+  public get rootElement(): HTMLElement {
+    return this.rootEl
   }
 
   /**
