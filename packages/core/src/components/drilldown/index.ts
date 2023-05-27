@@ -1,4 +1,5 @@
 import Parent, { type ParentOptions } from '../_parent'
+import { focusFirst, generateUniqueId } from './../../utils/accessibility'
 
 export interface DrilldownOptions extends ParentOptions {
   dynamicHeight?: boolean
@@ -66,6 +67,12 @@ export default class Drilldown extends Parent {
     nexts.forEach((next) => {
       next.setAttribute('role', 'menuitem')
       next.setAttribute('aria-expanded', 'false')
+      if (!next.getAttribute('aria-controls')) {
+        const menu = next.parentElement?.querySelector('.c-drilldown-menu')
+        const id = menu?.id || generateUniqueId()
+        next.setAttribute('aria-controls', id)
+        menu?.setAttribute('id', id)
+      }
     })
   }
 
@@ -73,7 +80,7 @@ export default class Drilldown extends Parent {
     const backs = this.rootEl.querySelectorAll('.c-drilldown-back')
     const nexts = this.rootEl.querySelectorAll('.c-drilldown-next')
     backs.forEach((back) => {
-      back.addEventListener('click', e => this.back(e))
+      back.addEventListener('click', () => this.back())
     })
     nexts.forEach((next) => {
       next.addEventListener('click', e => this.next(e))
@@ -162,20 +169,22 @@ export default class Drilldown extends Parent {
     nextButton.setAttribute('aria-expanded', 'true')
     this.level++
     this.update()
+    if (this.currentEl)
+      focusFirst(this.currentEl)
   }
 
   /**
    * Back to one level
    *
-   * @param {(HTMLButtonElement | Event)} button
    */
-  private back(button: HTMLButtonElement | Event) {
-    const backButton = this.getButton(button, 'back')
-    if (!backButton || !this.wrapper)
+  private back() {
+    if (!this.wrapper)
       return
 
     const nextsButtonExpanded = this.wrapper.querySelectorAll('.c-drilldown-next[aria-expanded="true"]')
-    const nextButton = nextsButtonExpanded.length ? nextsButtonExpanded[nextsButtonExpanded.length - 1] : null
+    const nextButton = nextsButtonExpanded.length
+      ? nextsButtonExpanded[nextsButtonExpanded.length - 1]
+      : null
 
     if (!nextButton)
       return

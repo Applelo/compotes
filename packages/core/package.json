@@ -39,6 +39,9 @@
     "dev": "vite build --watch",
     "build": "vite build"
   },
+  "dependencies": {
+    "tabbable": "^6.1.2"
+  },
   "devDependencies": {
     "typescript": "^5.0.4",
     "vite": "^4.3.8",
