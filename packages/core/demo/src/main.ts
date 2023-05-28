@@ -3,4 +3,6 @@ import './../../src/assets/css/drilldown.css'
 
 const drilldown = new Drilldown('.c-drilldown', {
   dynamicHeight: true,
+  init: false,
 })
+drilldown.init()

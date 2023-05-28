@@ -163,6 +163,8 @@ export default class Drilldown extends Parent {
 
     if (this.opts.dynamicHeight === true)
       this.updateHeight()
+
+    this.emitEvent('update')
   }
 
   private updateItems(menu: HTMLUListElement, level = 0) {
@@ -251,10 +253,11 @@ export default class Drilldown extends Parent {
 
     nextButton.setAttribute('aria-expanded', 'true')
     this.level++
-    this.currentEl = nextButton.nextElementSibling as HTMLUListElement | null
+    this.currentEl = nextButton.parentElement?.querySelector('.c-drilldown-menu') as HTMLUListElement | null
     this.update()
     if (this.currentEl)
       focusFirst(this.currentEl)
+    this.emitEvent('next')
   }
 
   /**
@@ -278,6 +281,7 @@ export default class Drilldown extends Parent {
     this.currentEl = nextButton.closest('.c-drilldown-menu')
     this.update()
     nextButton.focus()
+    this.emitEvent('back')
   }
 
   public destroy() {

@@ -12,7 +12,7 @@
 
 - Drilldown
 <!--
--Collapse
+- Collapse
 - Tabs
 - Pagination
 - Dropdown
@@ -67,7 +67,58 @@ pnpm add -D @compotes/nuxt
 
 <br></details>-->
 
-> VueJS and NuxtJS packages will arrive soon after the core first release
+> A proper documentation and Vue 3/Nuxt 3 packages will arrive soon stay tuned!
+
+# Usage
+
+```html
+<nav class="c-drilldown" aria-label="Drilldown Example">
+  <ul class="c-drilldown-menu">
+    <li>
+      <button class="c-drilldown-next">
+        Go to section 1
+      </button>
+      <ul class="c-drilldown-menu" id="test">
+        <li>
+          <button class="c-drilldown-back">
+            Go Back
+          </button>
+        </li>
+        <li>
+          <button class="c-drilldown-next">
+            Go to section 1 1
+          </button>
+          <ul class="c-drilldown-menu">
+            <li>
+              <button class="c-drilldown-back">
+                Go Back
+              </button>
+            </li>
+            <li>
+              Item Section 1 1
+            </li>
+            <li>
+              Item Section 1 1
+            </li>
+          </ul>
+        </li>
+        <li>
+          Item Section 1
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+```
+
+```ts
+import 'compotes/css/drilldown.css' // loaded by vitejs
+import { Drilldown } from 'compotes/drilldown'
+
+const drilldown = new Drilldown('.c-drilldown', {
+  dynamicHeight: true,
+})
+```
 
 ## 🙋‍♂️ Why ?
 
@@ -77,6 +128,6 @@ There are some good library like [React Aria](https://react-spectrum.adobe.com/r
 
 > This library provide only the compotes and it's you to make a tart.
 
-## 👨‍💼 Licence
+## 👨‍💼 License
 
 MIT
