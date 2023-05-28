@@ -1,5 +1,5 @@
 import Parent, { type ParentOptions } from '../_parent'
-import { focusFirst, generateUniqueId } from './../../utils/accessibility'
+import { focusChar, focusFirst, focusLast, focusSibling, generateId } from './../../utils/accessibility'
 
 export interface DrilldownOptions extends ParentOptions {
   dynamicHeight?: boolean
@@ -69,9 +69,65 @@ export default class Drilldown extends Parent {
       next.setAttribute('aria-expanded', 'false')
       if (!next.getAttribute('aria-controls')) {
         const menu = next.parentElement?.querySelector('.c-drilldown-menu')
-        const id = menu?.id || generateUniqueId()
+        const id = menu?.id || generateId()
         next.setAttribute('aria-controls', id)
         menu?.setAttribute('id', id)
+      }
+    })
+  }
+
+  // Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/
+  public initAccessibilityEvents() {
+    this.rootElement.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowUp':
+        case 'Up':
+          // Focus to previous element
+          if (this.currentEl)
+            focusSibling(this.currentEl, 'previous')
+          break
+        case 'ArrowDown':
+        case 'Down':
+          // Focus to next element
+          if (this.currentEl)
+            focusSibling(this.currentEl, 'next')
+          break
+        case 'ArrowLeft':
+        case 'Left':
+        case 'Esc':
+        case 'Escape':
+          // Go to the previous element
+          this.back()
+          break
+        case 'ArrowRight':
+        case 'Right': {
+          // Go to next element
+          const activeElement = document.activeElement as HTMLButtonElement | null
+          if (
+            activeElement
+            && activeElement.classList.contains('c-drilldown-next')
+          )
+            this.next(activeElement)
+
+          break
+        }
+        case 'Home':
+        case 'PageUp':
+          // Moves focus to the first item in the submenu.
+          if (this.currentEl)
+            focusFirst(this.currentEl)
+          break
+        case 'End':
+        case 'PageDown':
+          // Moves focus to the last item in the submenu.
+          if (this.currentEl)
+            focusLast(this.currentEl)
+          break
+        default:
+          // Character search
+          if (this.currentEl)
+            focusChar(this.currentEl, e.key)
+          break
       }
     })
   }
@@ -96,6 +152,7 @@ export default class Drilldown extends Parent {
     if (reloadItems) {
       this.updateItems(this.wrapper)
       this.updateHeight()
+      this.initAccessibilityEvents()
       if (this.opts.initAccessibilityAttrs === true)
         this.initAccessibilityAttrs()
 
