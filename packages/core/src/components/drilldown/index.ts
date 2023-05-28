@@ -1,3 +1,4 @@
+import { tabbable } from 'tabbable'
 import Parent, { type ParentOptions } from '../_parent'
 import { focusChar, focusFirst, focusLast, focusSibling, generateId } from './../../utils/accessibility'
 
@@ -44,6 +45,7 @@ export default class Drilldown extends Parent {
     this.mutationObserver.observe(this.rootEl, {
       childList: true,
     })
+
     super.init()
     this.initAccessibilityEvents()
     this.update(true)
@@ -79,7 +81,7 @@ export default class Drilldown extends Parent {
 
   // Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/
   public initAccessibilityEvents() {
-    this.rootElement.addEventListener('keydown', (e) => {
+    this.rootEl.addEventListener('keydown', (e) => {
       switch (e.key) {
         case 'ArrowUp':
         case 'Up':
@@ -109,7 +111,6 @@ export default class Drilldown extends Parent {
             && activeElement.classList.contains('c-drilldown-next')
           )
             this.next(activeElement)
-
           break
         }
         case 'Home':
@@ -149,6 +150,7 @@ export default class Drilldown extends Parent {
       return
 
     this.wrapper.style.transform = `translateX(-${this.level * 100}%)`
+    this.disableFocusElements()
 
     if (reloadItems) {
       this.updateItems(this.wrapper)
@@ -213,6 +215,27 @@ export default class Drilldown extends Parent {
     }
 
     return btn
+  }
+
+  private disableFocusElements() {
+    const elsBeenDisable = this.rootEl.querySelectorAll('[data-c-hidden]')
+    elsBeenDisable.forEach((el) => {
+      el.removeAttribute('data-c-hidden')
+      el.removeAttribute('tabindex')
+    })
+
+    if (!this.currentEl)
+      return
+
+    const tabbables = tabbable(this.rootEl)
+    tabbables.forEach((item) => {
+      const menu = item.closest('.c-drilldown-menu')
+      if (menu === this.currentEl)
+        return
+
+      item.setAttribute('data-c-hidden', 'true')
+      item.setAttribute('tabindex', '-1')
+    })
   }
 
   /**

@@ -22,7 +22,7 @@ export interface ParentEvent {
 }
 
 export default abstract class Parent {
-  protected rootEl: HTMLElement
+  public rootEl: HTMLElement
   public opts: ParentOptions
   protected events: ParentEvent[] = []
 
@@ -81,13 +81,6 @@ export default abstract class Parent {
   protected destroy(): void {
     this.emitEvent('destroy')
     this.destroyEvents()
-  }
-
-  /**
-   * The HTML Element associated to the component
-   */
-  public get rootElement(): HTMLElement {
-    return this.rootEl
   }
 
   /**
