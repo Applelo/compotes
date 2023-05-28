@@ -45,6 +45,7 @@ export default class Drilldown extends Parent {
       childList: true,
     })
     super.init()
+    this.initAccessibilityEvents()
     this.update(true)
   }
 
@@ -152,7 +153,6 @@ export default class Drilldown extends Parent {
     if (reloadItems) {
       this.updateItems(this.wrapper)
       this.updateHeight()
-      this.initAccessibilityEvents()
       if (this.opts.initAccessibilityAttrs === true)
         this.initAccessibilityAttrs()
 
@@ -197,6 +197,9 @@ export default class Drilldown extends Parent {
     this.rootEl.style.height = `${height}px`
   }
 
+  /**
+   * Get Next or Back button with click event
+   */
   private getButton(button: HTMLButtonElement | Event, type: 'back' | 'next') {
     let btn: HTMLButtonElement | null = null
     if ('target' in button) {
@@ -225,6 +228,7 @@ export default class Drilldown extends Parent {
 
     nextButton.setAttribute('aria-expanded', 'true')
     this.level++
+    this.currentEl = nextButton.nextElementSibling as HTMLUListElement | null
     this.update()
     if (this.currentEl)
       focusFirst(this.currentEl)
@@ -238,7 +242,7 @@ export default class Drilldown extends Parent {
     if (!this.wrapper)
       return
 
-    const nextsButtonExpanded = this.wrapper.querySelectorAll('.c-drilldown-next[aria-expanded="true"]')
+    const nextsButtonExpanded = this.wrapper.querySelectorAll<HTMLElement>('.c-drilldown-next[aria-expanded="true"]')
     const nextButton = nextsButtonExpanded.length
       ? nextsButtonExpanded[nextsButtonExpanded.length - 1]
       : null
@@ -248,7 +252,9 @@ export default class Drilldown extends Parent {
 
     nextButton.setAttribute('aria-expanded', 'false')
     this.level--
+    this.currentEl = nextButton.closest('.c-drilldown-menu')
     this.update()
+    nextButton.focus()
   }
 
   public destroy() {
