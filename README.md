@@ -1,6 +1,6 @@
 # Compotes
 
-> A components library focused on accessibility/customization
+> A components library focused on customization/accessibility
 
 ## ✨ Features
 
@@ -26,19 +26,19 @@ And more to come!
 <summary>Vanilla JS/TS</summary><br>
 
 ```bash
-npm i -D @compotes/core
+npm i -D compotes
 
 # yarn
-yarn add -D @compotes/core
+yarn add -D compotes
 
 # pnpm
-pnpm add -D @compotes/core
+pnpm add -D compotes
 ```
 
 <br></details>
 
 <!--<details>
-<summary>VueJS 3</summary><br>
+<summary>Vue 3</summary><br>
 
 ```bash
 npm i -D @compotes/vue
