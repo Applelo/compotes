@@ -30,6 +30,7 @@
     "node": ">=16"
   },
   "scripts": {
+    "build": "pnpm run -r build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "pnpm run test:types",
