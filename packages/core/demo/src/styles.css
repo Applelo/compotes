@@ -1,0 +1,19 @@
+body {
+  background-color: #ddd;
+  margin: 4vw;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  margin: 0 0 2.2rem;
+}
+
+h2 {
+  margin: 0 0 1rem;
+}
+
+section + section {
+  margin-top: 2rem;
+}

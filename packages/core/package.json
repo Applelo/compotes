@@ -1,7 +1,7 @@
 {
   "name": "compotes",
   "type": "module",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "packageManager": "pnpm@8.5.1",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
@@ -37,7 +37,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "scripts": {
     "dev": "vite build --watch",

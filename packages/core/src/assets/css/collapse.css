@@ -1,0 +1,8 @@
+.c-collapse:not(.c-collapse--show):not(.c-collapse--collapsing) {
+  display: none;
+}
+
+.c-collapse--collapsing {
+  height: 0;
+  overflow: hidden;
+}

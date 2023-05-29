@@ -1,6 +1,6 @@
 import { tabbable } from 'tabbable'
-import Parent, { type ParentOptions } from '../_parent'
-import { focusChar, focusFirst, focusLast, focusSibling, generateId } from './../../utils/accessibility'
+import { focusChar, focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
+import Parent, { type ParentOptions } from './_parent'
 
 export interface DrilldownOptions extends ParentOptions {
   dynamicHeight?: boolean
@@ -28,9 +28,14 @@ export default class Drilldown extends Parent {
   }
 
   public init() {
-    this.currentEl = this.rootEl.querySelector('.c-drilldown-menu')
-    if (!this.currentEl)
-      throw new Error('The drilldown component needs to have an ul element : <nav class="cdrilldown"><ul class="cdrilldown__menu"></ul></nav>')
+    this.name = 'drilldown'
+    this.currentEl = this.el.querySelector('.c-drilldown-menu')
+    if (!this.currentEl) {
+      throw this.error(
+        'The component needs to have an ul element : <nav class="c-drilldown"><ul class="c-drilldown-menu"></ul></nav>',
+        { cause: this.el },
+      )
+    }
 
     this.wrapper = this.currentEl
 
@@ -41,8 +46,8 @@ export default class Drilldown extends Parent {
       this.updateHeight()
     })
 
-    this.resizeObserver.observe(this.rootEl)
-    this.mutationObserver.observe(this.rootEl, {
+    this.resizeObserver.observe(this.el)
+    this.mutationObserver.observe(this.el, {
       childList: true,
     })
 
@@ -57,13 +62,13 @@ export default class Drilldown extends Parent {
       menu.setAttribute('role', 'menu')
     })
 
-    const items = this.rootEl.querySelectorAll('.c-drilldown-menu > li')
+    const items = this.el.querySelectorAll('.c-drilldown-menu > li')
     items.forEach((item) => {
       item.setAttribute('role', 'none')
     })
 
-    const backs = this.rootEl.querySelectorAll('.c-drilldown-back')
-    const nexts = this.rootEl.querySelectorAll('.c-drilldown-next')
+    const backs = this.el.querySelectorAll('.c-drilldown-back')
+    const nexts = this.el.querySelectorAll('.c-drilldown-next')
     backs.forEach((back) => {
       back.setAttribute('role', 'menuitem')
     })
@@ -81,67 +86,84 @@ export default class Drilldown extends Parent {
 
   // Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/
   public initAccessibilityEvents() {
-    this.rootEl.addEventListener('keydown', (e) => {
-      switch (e.key) {
-        case 'ArrowUp':
-        case 'Up':
-          // Focus to previous element
-          if (this.currentEl)
-            focusSibling(this.currentEl, 'previous')
-          break
-        case 'ArrowDown':
-        case 'Down':
-          // Focus to next element
-          if (this.currentEl)
-            focusSibling(this.currentEl, 'next')
-          break
-        case 'ArrowLeft':
-        case 'Left':
-        case 'Esc':
-        case 'Escape':
-          // Go to the previous element
-          this.back()
-          break
-        case 'ArrowRight':
-        case 'Right': {
-          // Go to next element
-          const activeElement = document.activeElement as HTMLButtonElement | null
-          if (
-            activeElement
-            && activeElement.classList.contains('c-drilldown-next')
-          )
-            this.next(activeElement)
-          break
+    this.destroyEvents(['key'])
+    this.registerEvent({
+      id: 'key',
+      event: 'keydown',
+      el: this.el,
+      function: (e: KeyboardEvent) => {
+        switch (e.key) {
+          case 'ArrowUp':
+          case 'Up':
+            // Focus to previous element
+            if (this.currentEl)
+              focusSibling(this.currentEl, 'previous')
+            break
+          case 'ArrowDown':
+          case 'Down':
+            // Focus to next element
+            if (this.currentEl)
+              focusSibling(this.currentEl, 'next')
+            break
+          case 'ArrowLeft':
+          case 'Left':
+          case 'Esc':
+          case 'Escape':
+            // Go to the previous element
+            this.back()
+            break
+          case 'ArrowRight':
+          case 'Right': {
+            // Go to next element
+            const activeElement = document.activeElement as HTMLButtonElement | null
+            if (
+              activeElement
+              && activeElement.classList.contains('c-drilldown-next')
+            )
+              this.next(activeElement)
+            break
+          }
+          case 'Home':
+          case 'PageUp':
+            // Moves focus to the first item in the submenu.
+            if (this.currentEl)
+              focusFirst(this.currentEl)
+            break
+          case 'End':
+          case 'PageDown':
+            // Moves focus to the last item in the submenu.
+            if (this.currentEl)
+              focusLast(this.currentEl)
+            break
+          default:
+            // Character search
+            if (this.currentEl)
+              focusChar(this.currentEl, e.key)
+            break
         }
-        case 'Home':
-        case 'PageUp':
-          // Moves focus to the first item in the submenu.
-          if (this.currentEl)
-            focusFirst(this.currentEl)
-          break
-        case 'End':
-        case 'PageDown':
-          // Moves focus to the last item in the submenu.
-          if (this.currentEl)
-            focusLast(this.currentEl)
-          break
-        default:
-          // Character search
-          if (this.currentEl)
-            focusChar(this.currentEl, e.key)
-          break
-      }
+      },
     })
   }
 
   public initEvents() {
-    const backs = this.rootEl.querySelectorAll('.c-drilldown-back')
-    const nexts = this.rootEl.querySelectorAll('.c-drilldown-next')
+    const backs = this.el.querySelectorAll('.c-drilldown-back')
+    const nexts = this.el.querySelectorAll('.c-drilldown-next')
+    this.destroyEvents(['back', 'next'])
     backs.forEach((back) => {
-      back.addEventListener('click', () => this.back())
+      this.registerEvent({
+        id: 'back',
+        el: back,
+        event: 'click',
+        function: this.back.bind(this),
+      })
     })
     nexts.forEach((next) => {
-      next.addEventListener('click', e => this.next(e))
+      this.registerEvent({
+        id: 'next',
+        el: next,
+        event: 'click',
+        function: this.next.bind(this),
+      })
     })
   }
 
@@ -198,7 +220,7 @@ export default class Drilldown extends Parent {
       }
     }
 
-    this.rootEl.style.height = `${height}px`
+    this.el.style.height = `${height}px`
   }
 
   /**
@@ -220,7 +242,7 @@ export default class Drilldown extends Parent {
   }
 
   private disableFocusElements() {
-    const elsBeenDisable = this.rootEl.querySelectorAll('[data-c-hidden]')
+    const elsBeenDisable = this.el.querySelectorAll('[data-c-hidden]')
     elsBeenDisable.forEach((el) => {
       el.removeAttribute('data-c-hidden')
       el.removeAttribute('tabindex')
@@ -229,7 +251,7 @@ export default class Drilldown extends Parent {
     if (!this.currentEl)
       return
 
-    const tabbables = tabbable(this.rootEl)
+    const tabbables = tabbable(this.el)
     tabbables.forEach((item) => {
       const menu = item.closest('.c-drilldown-menu')
       if (menu === this.currentEl)
@@ -262,7 +284,6 @@ export default class Drilldown extends Parent {
 
   /**
    * Back to one level
-   *
    */
   private back() {
     if (!this.wrapper)

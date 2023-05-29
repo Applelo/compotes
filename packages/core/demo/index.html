@@ -6,86 +6,101 @@
     <title>Compotes demo</title>
   </head>
   <body>
-    <nav class="c-drilldown">
-      <ul class="c-drilldown-menu">
-        <li>
-          <button class="c-drilldown-next">
-            Go to section 1
-          </button>
-          <ul class="c-drilldown-menu" id="test">
-            <li>
-              <button class="c-drilldown-back">
-                Go Back
-              </button>
-            </li>
-            <li>
-              <button class="c-drilldown-next">
-                Go to section 1 1
-              </button>
-              <ul class="c-drilldown-menu">
-                <li>
-                  <button class="c-drilldown-back">
-                    Go Back
-                  </button>
-                </li>
-                <li>
-                  Item Section 1 1
-                </li>
-                <li>
-                  Item Section 1 1
-                </li>
-              </ul>
-            </li>
-            <li>
-              Item Section 1
-            </li>
-          </ul>
-        </li>
-        <li>
-          Hello
-        </li>
-        <li>
-          <button class="c-drilldown-next">
-            Go to section 2
-          </button>
-          <ul class="c-drilldown-menu">
-            <li>
-              <button class="c-drilldown-back">
-                Go Back
-              </button>
-            </li>
-            <li>
-              Item Section 2
-            </li>
-            <li>
-              Item Section 2
-            </li>
-          </ul>
-        </li>
-        <li>
-          <button class="c-drilldown-next">
-            Go to section 3
-          </button>
-          <ul class="c-drilldown-menu">
-            <li>
-              <button class="c-drilldown-back">
-                Go Back
-              </button>
-            </li>
-            <li>
-              Item Section 3
-            </li>
-            <li>
-              Item Section 3
-            </li>
-          </ul>
-        </li>
-        <li>
-          Item
-        </li>
-      </ul>
-    </nav>
-    <button>Button outside</button>
+    <h1>Compotes 🍯</h1>
+    <section>
+      <h2>Drilldown</h2>
+      <nav class="c-drilldown">
+        <ul class="c-drilldown-menu">
+          <li>
+            <button class="c-drilldown-next">
+              Go to section 1
+            </button>
+            <ul class="c-drilldown-menu" id="test">
+              <li>
+                <button class="c-drilldown-back">
+                  Go Back
+                </button>
+              </li>
+              <li>
+                <button class="c-drilldown-next">
+                  Go to section 1 1
+                </button>
+                <ul class="c-drilldown-menu">
+                  <li>
+                    <button class="c-drilldown-back">
+                      Go Back
+                    </button>
+                  </li>
+                  <li>
+                    Item Section 1 1
+                  </li>
+                  <li>
+                    Item Section 1 1
+                  </li>
+                </ul>
+              </li>
+              <li>
+                Item Section 1
+              </li>
+            </ul>
+          </li>
+          <li>
+            Hello
+          </li>
+          <li>
+            <button class="c-drilldown-next">
+              Go to section 2
+            </button>
+            <ul class="c-drilldown-menu">
+              <li>
+                <button class="c-drilldown-back">
+                  Go Back
+                </button>
+              </li>
+              <li>
+                Item Section 2
+              </li>
+              <li>
+                Item Section 2
+              </li>
+            </ul>
+          </li>
+          <li>
+            <button class="c-drilldown-next">
+              Go to section 3
+            </button>
+            <ul class="c-drilldown-menu">
+              <li>
+                <button class="c-drilldown-back">
+                  Go Back
+                </button>
+              </li>
+              <li>
+                Item Section 3
+              </li>
+              <li>
+                Item Section 3
+              </li>
+            </ul>
+          </li>
+          <li>
+            Item
+          </li>
+        </ul>
+      </nav>
+      <button>Button outside</button>
+    </section>
+    <section>
+      <h2>Collapse</h2>
+      <button class="c-collapse-trigger" aria-controls="collapse">
+        Trigger collapse
+      </button>
+      <div class="c-collapse" id="collapse" style="transition: height .2s;">
+        <p style="width: 200px;">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia facere possimus impedit facilis culpa illo earum deserunt consequuntur minus. Ad et qui labore reprehenderit magnam exercitationem placeat magni nesciunt suscipit.
+        </p>
+      </div>
+    </section>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
