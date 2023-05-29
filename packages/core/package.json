@@ -28,8 +28,10 @@
     },
     "./css": "./dist/style.css",
     "./css/style.css": "./dist/style.css",
-    "./css/drilldown": "./dist/css/base.css",
-    "./css/drilldown.css": "./dist/css/drilldown.css"
+    "./css/drilldown": "./dist/css/drilldown.css",
+    "./css/drilldown.css": "./dist/css/drilldown.css",
+    "./css/collapse": "./dist/css/collapse.css",
+    "./css/collapse.css": "./dist/css/collapse.css"
   },
   "main": "./dist/compotes.umd.cjs",
   "module": "./dist/compotes.js",
