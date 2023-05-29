@@ -1,6 +1,6 @@
 import { tabbable } from 'tabbable'
-import Parent, { type ParentOptions } from '../_parent'
-import { focusChar, focusFirst, focusLast, focusSibling, generateId } from './../../utils/accessibility'
+import { focusChar, focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
+import Parent, { type ParentOptions } from './_parent'
 
 export interface DrilldownOptions extends ParentOptions {
   dynamicHeight?: boolean

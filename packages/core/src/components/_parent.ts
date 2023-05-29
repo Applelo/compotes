@@ -1,4 +1,4 @@
-import ErrorCompotes from '../../utils/error'
+import ErrorCompotes from '../utils/error'
 
 export interface ParentOptions {
   /**

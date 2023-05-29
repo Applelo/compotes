@@ -1,4 +1,4 @@
-import Parent, { type ParentOptions } from '../_parent'
+import Parent, { type ParentOptions } from './_parent'
 
 export default class Collapse extends Parent {
   private triggers: HTMLElement[] = []
