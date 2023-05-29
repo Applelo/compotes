@@ -28,9 +28,14 @@ export default class Drilldown extends Parent {
   }
 
   public init() {
+    this.name = 'drilldown'
     this.currentEl = this.rootEl.querySelector('.c-drilldown-menu')
-    if (!this.currentEl)
-      throw new Error('The drilldown component needs to have an ul element : <nav class="cdrilldown"><ul class="cdrilldown__menu"></ul></nav>')
+    if (!this.currentEl) {
+      throw this.error(
+        'The component needs to have an ul element : <nav class="c-drilldown"><ul class="c-drilldown-menu"></ul></nav>',
+        { cause: this.rootEl },
+      )
+    }
 
     this.wrapper = this.currentEl
 
@@ -81,67 +86,84 @@ export default class Drilldown extends Parent {
 
   // Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/
   public initAccessibilityEvents() {
-    this.rootEl.addEventListener('keydown', (e) => {
-      switch (e.key) {
-        case 'ArrowUp':
-        case 'Up':
-          // Focus to previous element
-          if (this.currentEl)
-            focusSibling(this.currentEl, 'previous')
-          break
-        case 'ArrowDown':
-        case 'Down':
-          // Focus to next element
-          if (this.currentEl)
-            focusSibling(this.currentEl, 'next')
-          break
-        case 'ArrowLeft':
-        case 'Left':
-        case 'Esc':
-        case 'Escape':
-          // Go to the previous element
-          this.back()
-          break
-        case 'ArrowRight':
-        case 'Right': {
-          // Go to next element
-          const activeElement = document.activeElement as HTMLButtonElement | null
-          if (
-            activeElement
-            && activeElement.classList.contains('c-drilldown-next')
-          )
-            this.next(activeElement)
-          break
+    this.destroyEvents(['key'])
+    this.registerEvent({
+      id: 'key',
+      event: 'keydown',
+      el: this.rootEl,
+      function: (e) => {
+        switch (e.key) {
+          case 'ArrowUp':
+          case 'Up':
+            // Focus to previous element
+            if (this.currentEl)
+              focusSibling(this.currentEl, 'previous')
+            break
+          case 'ArrowDown':
+          case 'Down':
+            // Focus to next element
+            if (this.currentEl)
+              focusSibling(this.currentEl, 'next')
+            break
+          case 'ArrowLeft':
+          case 'Left':
+          case 'Esc':
+          case 'Escape':
+            // Go to the previous element
+            this.back()
+            break
+          case 'ArrowRight':
+          case 'Right': {
+            // Go to next element
+            const activeElement = document.activeElement as HTMLButtonElement | null
+            if (
+              activeElement
+              && activeElement.classList.contains('c-drilldown-next')
+            )
+              this.next(activeElement)
+            break
+          }
+          case 'Home':
+          case 'PageUp':
+            // Moves focus to the first item in the submenu.
+            if (this.currentEl)
+              focusFirst(this.currentEl)
+            break
+          case 'End':
+          case 'PageDown':
+            // Moves focus to the last item in the submenu.
+            if (this.currentEl)
+              focusLast(this.currentEl)
+            break
+          default:
+            // Character search
+            if (this.currentEl)
+              focusChar(this.currentEl, e.key)
+            break
         }
-        case 'Home':
-        case 'PageUp':
-          // Moves focus to the first item in the submenu.
-          if (this.currentEl)
-            focusFirst(this.currentEl)
-          break
-        case 'End':
-        case 'PageDown':
-          // Moves focus to the last item in the submenu.
-          if (this.currentEl)
-            focusLast(this.currentEl)
-          break
-        default:
-          // Character search
-          if (this.currentEl)
-            focusChar(this.currentEl, e.key)
-          break
-      }
+      },
     })
   }
 
   public initEvents() {
     const backs = this.rootEl.querySelectorAll('.c-drilldown-back')
     const nexts = this.rootEl.querySelectorAll('.c-drilldown-next')
+    this.destroyEvents(['back', 'next'])
     backs.forEach((back) => {
-      back.addEventListener('click', () => this.back())
+      this.registerEvent({
+        id: 'back',
+        el: back,
+        event: 'click',
+        function: this.back.bind(this),
+      })
     })
     nexts.forEach((next) => {
-      next.addEventListener('click', e => this.next(e))
+      this.registerEvent({
+        id: 'next',
+        el: next,
+        event: 'click',
+        function: this.next.bind(this),
+      })
     })
   }
 

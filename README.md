@@ -11,8 +11,8 @@
 ## 🍏 Compotes
 
 - Drilldown
+- Collapse/Accordion
 <!--
-- Collapse
 - Tabs
 - Pagination
 - Dropdown

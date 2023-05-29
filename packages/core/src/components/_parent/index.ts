@@ -1,3 +1,5 @@
+import ErrorCompotes from '../../utils/error'
+
 export interface ParentOptions {
   /**
    * Init the component on creation
@@ -16,12 +18,14 @@ export interface ParentOptions {
 }
 
 export interface ParentEvent {
+  id: string
   event: string
   function: any
   el: Element
 }
 
 export default abstract class Parent {
+  protected name: string | undefined = undefined
   public rootEl: HTMLElement
   public opts: ParentOptions
   protected events: ParentEvent[] = []
@@ -29,7 +33,7 @@ export default abstract class Parent {
   constructor(el: HTMLElement | string, options: ParentOptions) {
     const checkEl = typeof el === 'string' ? document.querySelector<HTMLElement>(el) : el
     if (!checkEl)
-      throw new Error('The element/selector provided cannot be found')
+      throw this.error('The element/selector provided cannot be found.')
 
     this.rootEl = checkEl
 
@@ -40,8 +44,11 @@ export default abstract class Parent {
     return typeof this.opts.init === 'undefined' || this.opts.init === true
   }
 
+  /**
+   * Emit an event
+   */
   protected emitEvent(name: string) {
-    const event = new CustomEvent(name, { detail: this })
+    const event = new CustomEvent(`c.${name}`, { detail: this })
     this.rootEl.dispatchEvent(event)
   }
 
@@ -62,17 +69,27 @@ export default abstract class Parent {
   protected abstract initAccessibilityAttrs(): void
 
   /**
-   * Init the accessibility on the component
+   * Init events on the component
    */
   protected abstract initEvents(): void
 
   /**
+   * Register an event
+   */
+  protected registerEvent(e: ParentEvent): void {
+    e.el.addEventListener(e.event, e.function)
+    this.events.push(e)
+  }
+
+  /**
    * Destroy the events on the component
    */
-  public destroyEvents() {
-    this.events.forEach((e) => {
+  public destroyEvents(filters: string[] = []) {
+    const events = filters.length ? this.events.filter(e => filters.includes(e.id)) : this.events
+    events.forEach((e) => {
       e.el.removeEventListener(e.event, e.function)
     })
+    this.events = this.events.filter(e => !events.includes(e))
   }
 
   /**
@@ -88,5 +105,13 @@ export default abstract class Parent {
    */
   public get options(): ParentOptions {
     return this.opts
+  }
+
+  /**
+   * Generate an error message
+   * Can be use with `throw` or directly inside `console.error(`)`
+   */
+  protected error(msg: string, params?: ErrorOptions) {
+    return new ErrorCompotes(msg, params, this.name)
   }
 }
