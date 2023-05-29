@@ -71,6 +71,17 @@ pnpm add -D @compotes/nuxt
 
 # Usage
 
+## Drilldown
+
+```ts
+import 'compotes/css/drilldown.css' // loaded by vitejs
+import { Drilldown } from 'compotes'
+
+const drilldown = new Drilldown('.c-drilldown', {
+  dynamicHeight: true,
+})
+```
+
 ```html
 <nav class="c-drilldown" aria-label="Drilldown Example">
   <ul class="c-drilldown-menu">
@@ -111,13 +122,24 @@ pnpm add -D @compotes/nuxt
 </nav>
 ```
 
-```ts
-import 'compotes/css/drilldown.css' // loaded by vitejs
-import { Drilldown } from 'compotes/drilldown'
+## Collapse
 
-const drilldown = new Drilldown('.c-drilldown', {
-  dynamicHeight: true,
-})
+```ts
+import 'compotes/css/collapse.css' // loaded by vitejs
+import { Collapse } from 'compotes'
+
+const drilldown = new Collapse('.c-collapse')
+```
+
+```html
+<button class="c-collapse-trigger" aria-expanded="false" aria-controls="collapse-id">
+  Trigger collapse
+</button>
+<div class="c-collapse" id="collapse-id">
+  <p style="width: 200px;">
+    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia facere possimus impedit facilis culpa illo earum deserunt consequuntur minus. Ad et qui labore reprehenderit magnam exercitationem placeat magni nesciunt suscipit.
+  </p>
+</div>
 ```
 
 ## 🙋‍♂️ Why ?

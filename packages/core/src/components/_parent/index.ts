@@ -26,7 +26,7 @@ export interface ParentEvent {
 
 export default abstract class Parent {
   protected name: string | undefined = undefined
-  public rootEl: HTMLElement
+  public el: HTMLElement
   public opts: ParentOptions
   protected events: ParentEvent[] = []
 
@@ -35,7 +35,7 @@ export default abstract class Parent {
     if (!checkEl)
       throw this.error('The element/selector provided cannot be found.')
 
-    this.rootEl = checkEl
+    this.el = checkEl
 
     this.opts = options
   }
@@ -49,7 +49,7 @@ export default abstract class Parent {
    */
   protected emitEvent(name: string) {
     const event = new CustomEvent(`c.${name}`, { detail: this })
-    this.rootEl.dispatchEvent(event)
+    this.el.dispatchEvent(event)
   }
 
   /**

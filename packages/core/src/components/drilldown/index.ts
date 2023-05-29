@@ -29,11 +29,11 @@ export default class Drilldown extends Parent {
 
   public init() {
     this.name = 'drilldown'
-    this.currentEl = this.rootEl.querySelector('.c-drilldown-menu')
+    this.currentEl = this.el.querySelector('.c-drilldown-menu')
     if (!this.currentEl) {
       throw this.error(
         'The component needs to have an ul element : <nav class="c-drilldown"><ul class="c-drilldown-menu"></ul></nav>',
-        { cause: this.rootEl },
+        { cause: this.el },
       )
     }
 
@@ -46,8 +46,8 @@ export default class Drilldown extends Parent {
       this.updateHeight()
     })
 
-    this.resizeObserver.observe(this.rootEl)
-    this.mutationObserver.observe(this.rootEl, {
+    this.resizeObserver.observe(this.el)
+    this.mutationObserver.observe(this.el, {
       childList: true,
     })
 
@@ -62,13 +62,13 @@ export default class Drilldown extends Parent {
       menu.setAttribute('role', 'menu')
     })
 
-    const items = this.rootEl.querySelectorAll('.c-drilldown-menu > li')
+    const items = this.el.querySelectorAll('.c-drilldown-menu > li')
     items.forEach((item) => {
       item.setAttribute('role', 'none')
     })
 
-    const backs = this.rootEl.querySelectorAll('.c-drilldown-back')
-    const nexts = this.rootEl.querySelectorAll('.c-drilldown-next')
+    const backs = this.el.querySelectorAll('.c-drilldown-back')
+    const nexts = this.el.querySelectorAll('.c-drilldown-next')
     backs.forEach((back) => {
       back.setAttribute('role', 'menuitem')
     })
@@ -90,8 +90,8 @@ export default class Drilldown extends Parent {
     this.registerEvent({
       id: 'key',
       event: 'keydown',
-      el: this.rootEl,
-      function: (e) => {
+      el: this.el,
+      function: (e: KeyboardEvent) => {
         switch (e.key) {
           case 'ArrowUp':
           case 'Up':
@@ -146,8 +146,8 @@ export default class Drilldown extends Parent {
   }
 
   public initEvents() {
-    const backs = this.rootEl.querySelectorAll('.c-drilldown-back')
-    const nexts = this.rootEl.querySelectorAll('.c-drilldown-next')
+    const backs = this.el.querySelectorAll('.c-drilldown-back')
+    const nexts = this.el.querySelectorAll('.c-drilldown-next')
     this.destroyEvents(['back', 'next'])
     backs.forEach((back) => {
       this.registerEvent({
@@ -220,7 +220,7 @@ export default class Drilldown extends Parent {
       }
     }
 
-    this.rootEl.style.height = `${height}px`
+    this.el.style.height = `${height}px`
   }
 
   /**
@@ -242,7 +242,7 @@ export default class Drilldown extends Parent {
   }
 
   private disableFocusElements() {
-    const elsBeenDisable = this.rootEl.querySelectorAll('[data-c-hidden]')
+    const elsBeenDisable = this.el.querySelectorAll('[data-c-hidden]')
     elsBeenDisable.forEach((el) => {
       el.removeAttribute('data-c-hidden')
       el.removeAttribute('tabindex')
@@ -251,7 +251,7 @@ export default class Drilldown extends Parent {
     if (!this.currentEl)
       return
 
-    const tabbables = tabbable(this.rootEl)
+    const tabbables = tabbable(this.el)
     tabbables.forEach((item) => {
       const menu = item.closest('.c-drilldown-menu')
       if (menu === this.currentEl)
@@ -284,7 +284,6 @@ export default class Drilldown extends Parent {
 
   /**
    * Back to one level
-   *
    */
   private back() {
     if (!this.wrapper)

@@ -2,6 +2,9 @@ import Parent, { type ParentOptions } from '../_parent'
 
 export default class Collapse extends Parent {
   private triggers: HTMLElement[] = []
+  private expanded = false
+  private collapsing = false
+  private timeout: number | undefined = undefined
   constructor(el: HTMLElement | string, options: ParentOptions = {}) {
     super(el, options)
     if (this.isInitializable)
@@ -11,6 +14,7 @@ export default class Collapse extends Parent {
   public init() {
     this.name = 'collapse'
     this.update()
+    this.expanded = this.el.classList.contains('c-collapse--show')
     super.init()
   }
 
@@ -18,9 +22,6 @@ export default class Collapse extends Parent {
     this.triggers.forEach((trigger) => {
       if (trigger.tagName !== 'BUTTON')
         trigger.setAttribute('role', 'button')
-      const expanded = trigger.ariaExpanded
-      if (!expanded)
-        trigger.setAttribute('aria-expanded', 'false')
     })
   }
 
@@ -38,21 +39,89 @@ export default class Collapse extends Parent {
 
   public update() {
     this.triggers = Array.from(
-      document.querySelectorAll<HTMLElement>('.c-collapse-trigger'),
+      document.querySelectorAll<HTMLElement>(`.c-collapse-trigger[aria-controls="${this.el.id}"]`),
     )
     this.triggers.forEach((trigger) => {
-      const id = trigger.getAttribute('aria-controls')
-      if (!id) {
-        const error = this.error(
-          'The trigger element doesn\'t have an aria-controls attribute.',
-          { cause: trigger },
-        )
-        console.error(error)
-      }
+      trigger.setAttribute(
+        'aria-expanded',
+        this.expanded ? 'true' : 'false',
+      )
     })
   }
 
-  public toggle(e: Event) {
-    console.log('toogle')
+  public toggle() {
+    this.expanded ? this.hide() : this.show()
+  }
+
+  public show() {
+    this.expanded = true
+    if (this.hasTransition) {
+      this.collapsing = true
+      this.el.classList.add('c-collapse--collapsing')
+      const height = this.el.scrollHeight
+      this.el.style.height = `${height}px`
+      this.onCollapse()
+    }
+    this.el.classList.add('c-collapse--show')
+    this.update()
+  }
+
+  public hide() {
+    this.expanded = false
+    if (this.hasTransition) {
+      const height = this.el.scrollHeight
+      this.el.style.height = `${height}px`
+      // eslint-disable-next-line no-unused-expressions
+      this.el.offsetHeight // reflow
+      this.collapsing = true
+      this.el.classList.add('c-collapse--collapsing')
+      this.el.style.height = '0px'
+      this.onCollapse()
+    }
+    this.el.classList.remove('c-collapse--show')
+
+    this.update()
+  }
+
+  private onCollapse() {
+    clearTimeout(this.timeout)
+    this.timeout = setTimeout(() => {
+      this.el.classList.remove('c-collapse--collapsing')
+      this.collapsing = false
+      this.el.style.height = ''
+    }, this.transitionDuration)
+  }
+
+  public get isExpanded() {
+    return this.expanded
+  }
+
+  public get isCollapsing() {
+    return this.collapsing
+  }
+
+  private get hasTransition() {
+    return this.el.style.transition.length > 0
+  }
+
+  /**
+   * From bootstrap
+   * @see https://github.com/twbs/bootstrap/blob/main/js/src/util/index.js
+   */
+  private get transitionDuration() {
+    let { transitionDuration, transitionDelay } = window.getComputedStyle(this.el)
+
+    const floatTransitionDuration = Number.parseFloat(transitionDuration)
+    const floatTransitionDelay = Number.parseFloat(transitionDelay)
+
+    // Return 0 if element or transition duration is not found
+    if (!floatTransitionDuration && !floatTransitionDelay)
+      return 0
+
+    // If multiple durations are defined, take the first
+    transitionDuration = transitionDuration.split(',')[0]
+    transitionDelay = transitionDelay.split(',')[0]
+
+    return (Number.parseFloat(transitionDuration) + Number.parseFloat(transitionDelay)) * 1000
   }
 }
