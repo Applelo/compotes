@@ -101,7 +101,7 @@ export default class Collapse extends Parent {
   }
 
   private get hasTransition() {
-    return this.el.style.transition.length > 0
+    return this.transitionDuration === 0
   }
 
   /**
