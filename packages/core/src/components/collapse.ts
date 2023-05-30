@@ -13,8 +13,8 @@ export default class Collapse extends Parent {
 
   public init() {
     this.name = 'collapse'
-    this.update()
     this.expanded = this.el.classList.contains('c-collapse--show')
+    this.update()
     super.init()
   }
 
