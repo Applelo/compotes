@@ -35,6 +35,7 @@
   },
   "main": "./dist/compotes.umd.cjs",
   "module": "./dist/compotes.js",
+  "types": "./dist/index.ts",
   "files": [
     "dist"
   ],
