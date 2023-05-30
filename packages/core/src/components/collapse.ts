@@ -13,8 +13,8 @@ export default class Collapse extends Parent {
 
   public init() {
     this.name = 'collapse'
-    this.update()
     this.expanded = this.el.classList.contains('c-collapse--show')
+    this.update()
     super.init()
   }
 
@@ -101,7 +101,7 @@ export default class Collapse extends Parent {
   }
 
   private get hasTransition() {
-    return this.el.style.transition.length > 0
+    return this.transitionDuration === 0
   }
 
   /**
