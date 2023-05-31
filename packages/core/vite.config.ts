@@ -10,6 +10,16 @@ export default defineConfig({
       name: 'compotes',
       fileName: 'compotes',
     },
+    rollupOptions: {
+      external: ['tabbable'],
+      output: {
+        // Provide global variables to use in the UMD build
+        // for externalized deps
+        globals: {
+          tabbable: 'tabbable',
+        },
+      },
+    },
   },
   publicDir: './src/assets',
   plugins: [dts()],
