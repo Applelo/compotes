@@ -18,14 +18,14 @@ export default class Collapse extends Parent {
     super.init()
   }
 
-  protected initAccessibilityAttrs(): void {
+  public initAccessibilityAttrs(): void {
     this.triggers.forEach((trigger) => {
       if (trigger.tagName !== 'BUTTON')
         trigger.setAttribute('role', 'button')
     })
   }
 
-  protected initEvents(): void {
+  public initEvents(): void {
     this.destroyEvents(['toggle'])
     this.triggers.forEach((item) => {
       this.registerEvent({
@@ -37,6 +37,9 @@ export default class Collapse extends Parent {
     })
   }
 
+  /**
+   * Update trigger status
+   */
   public update() {
     this.triggers = Array.from(
       document.querySelectorAll<HTMLElement>(`.c-collapse-trigger[aria-controls="${this.el.id}"]`),
@@ -49,11 +52,17 @@ export default class Collapse extends Parent {
     })
   }
 
+  /**
+   * Toggle collapse
+   */
   public toggle() {
     this.expanded ? this.hide() : this.show()
   }
 
-  public show() {
+  /**
+   * Show collapse
+   */
+  public async show() {
     this.expanded = true
     if (this.hasTransition) {
       this.collapsing = true
@@ -66,6 +75,9 @@ export default class Collapse extends Parent {
     this.update()
   }
 
+  /**
+   * Hide collapse
+   */
   public hide() {
     this.expanded = false
     if (this.hasTransition) {
@@ -84,24 +96,34 @@ export default class Collapse extends Parent {
   }
 
   private onCollapse() {
+    this.emitEvent('collapse')
     clearTimeout(this.timeout)
+
     this.timeout = setTimeout(() => {
       this.el.classList.remove('c-collapse--collapsing')
       this.collapsing = false
       this.el.style.height = ''
+
+      this.emitEvent(this.expanded ? 'show' : 'hide')
     }, this.transitionDuration)
   }
 
+  /**
+   * Return the status of the collapse
+   */
   public get isExpanded() {
     return this.expanded
   }
 
+  /**
+   * Return if the collapse is collapsing
+   */
   public get isCollapsing() {
     return this.collapsing
   }
 
   private get hasTransition() {
-    return this.transitionDuration === 0
+    return this.transitionDuration !== 0
   }
 
   /**

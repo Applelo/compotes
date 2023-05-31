@@ -167,6 +167,9 @@ export default class Drilldown extends Parent {
     })
   }
 
+  /**
+   * Update the drilldown component
+   */
   public update(reloadItems = false) {
     if (!this.wrapper)
       return
@@ -285,8 +288,8 @@ export default class Drilldown extends Parent {
   /**
    * Back to one level
    */
-  private back() {
-    if (!this.wrapper)
+  public back() {
+    if (!this.wrapper || this.level === 0)
       return
 
     const nextsButtonExpanded = this.wrapper.querySelectorAll<HTMLElement>('.c-drilldown-next[aria-expanded="true"]')
