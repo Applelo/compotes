@@ -9,7 +9,10 @@ const drilldown = new Drilldown('.c-drilldown', {
 })
 drilldown.init()
 
-const collapse = new Collapse('.c-collapse', {
-  init: false,
+const collapses = document.querySelectorAll<HTMLElement>('.c-collapse')
+collapses.forEach((el) => {
+  const collapse = new Collapse(el, {
+    init: false,
+  })
+  collapse.init()
 })
-collapse.init()
