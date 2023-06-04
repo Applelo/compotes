@@ -1,6 +1,7 @@
 import { tabbable } from 'tabbable'
 import { focusChar, focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
 import Parent, { type ParentOptions } from './_parent'
+import { getTransitionDuration } from './../utils/animation'
 
 export interface DrilldownOptions extends ParentOptions {
   dynamicHeight?: boolean
@@ -58,6 +59,8 @@ export default class Drilldown extends Parent {
 
   public initAccessibilityAttrs() {
     this.wrapper?.setAttribute('role', 'menubar')
+    this.wrapper?.setAttribute('aria-multiselectable', 'false')
+    this.wrapper?.setAttribute('aria-orientation', 'vertical')
     this.wrapper?.querySelectorAll('.c-drilldown-menu').forEach((menu) => {
       menu.setAttribute('role', 'menu')
     })
@@ -127,7 +130,7 @@ export default class Drilldown extends Parent {
           case 'PageUp':
             // Moves focus to the first item in the submenu.
             if (this.currentEl)
-              focusFirst(this.currentEl)
+              focusFirst(this.currentEl, this.el)
             break
           case 'End':
           case 'PageDown':
@@ -175,6 +178,8 @@ export default class Drilldown extends Parent {
       return
 
     this.wrapper.style.transform = `translateX(-${this.level * 100}%)`
+    const delay = getTransitionDuration(this.wrapper)
+    this.wrapper.style.setProperty('--c-drilldown-delay', `${delay}ms`)
     this.disableFocusElements()
 
     if (reloadItems) {
@@ -281,7 +286,7 @@ export default class Drilldown extends Parent {
     this.currentEl = nextButton.parentElement?.querySelector('.c-drilldown-menu') as HTMLUListElement | null
     this.update()
     if (this.currentEl)
-      focusFirst(this.currentEl)
+      focusFirst(this.currentEl, this.el)
     this.emitEvent('next')
   }
 
@@ -304,8 +309,28 @@ export default class Drilldown extends Parent {
     this.level--
     this.currentEl = nextButton.closest('.c-drilldown-menu')
     this.update()
-    nextButton.focus()
+    if (this.currentEl)
+      focusFirst(this.currentEl, this.el)
     this.emitEvent('back')
+  }
+
+  /**
+   * Reset the drilldown to the root level
+   */
+  public reset() {
+    if (!this.wrapper || this.level === 0)
+      return
+
+    const nextsButtonExpanded = this.wrapper.querySelectorAll<HTMLElement>('.c-drilldown-next[aria-expanded="true"]')
+    nextsButtonExpanded.forEach((nextButton) => {
+      nextButton.setAttribute('aria-expanded', 'false')
+    })
+    this.currentEl = this.wrapper
+    this.level = 0
+    this.update()
+    if (this.currentEl)
+      focusFirst(this.currentEl, this.el)
+    this.emitEvent('reset')
   }
 
   public destroy() {

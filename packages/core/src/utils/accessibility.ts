@@ -13,12 +13,14 @@ export function generateId() {
 /**
  * Focus on the first element
  */
-export function focusFirst(container: HTMLElement) {
+export function focusFirst(container: HTMLElement, rootEl?: HTMLElement) {
   const tabbables = tabbable(container, { displayCheck: 'none' })
   if (tabbables.length === 0)
     return false
   const firstEl = tabbables[0]
   firstEl.focus()
+  if (rootEl)
+    rootEl.scrollTo(0, 0)
   return true
 }
 
