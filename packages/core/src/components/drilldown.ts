@@ -304,8 +304,25 @@ export default class Drilldown extends Parent {
     this.level--
     this.currentEl = nextButton.closest('.c-drilldown-menu')
     this.update()
-    nextButton.focus()
+    if (this.currentEl)
+      focusFirst(this.currentEl)
     this.emitEvent('back')
+  }
+
+  public reset() {
+    if (!this.wrapper || this.level === 0)
+      return
+
+    const nextsButtonExpanded = this.wrapper.querySelectorAll<HTMLElement>('.c-drilldown-next[aria-expanded="true"]')
+    nextsButtonExpanded.forEach((nextButton) => {
+      nextButton.setAttribute('aria-expanded', 'false')
+    })
+    this.currentEl = this.el.querySelector('.c-drilldown-menu')
+    this.level = 0
+    this.update()
+    if (this.currentEl)
+      focusFirst(this.currentEl)
+    this.emitEvent('reset')
   }
 
   public destroy() {
