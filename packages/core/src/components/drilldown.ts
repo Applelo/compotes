@@ -314,6 +314,9 @@ export default class Drilldown extends Parent {
     this.emitEvent('back')
   }
 
+  /**
+   * Reset the drilldown to the root level
+   */
   public reset() {
     if (!this.wrapper || this.level === 0)
       return
