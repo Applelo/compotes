@@ -2,7 +2,7 @@
   overflow: hidden;
 }
 
-.c-drilldown .c-drilldown-menu {
+.c-drilldown-menu {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -18,4 +18,6 @@
 
 .c-drilldown button[aria-expanded='false'] + .c-drilldown-menu {
   visibility: hidden;
+  transition-property: visibility;
+  transition-delay: var(--c-drilldown-delay, 0s);
 }

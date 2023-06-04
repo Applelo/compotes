@@ -1,4 +1,5 @@
 import Parent, { type ParentOptions } from './_parent'
+import { getTransitionDuration } from './../utils/animation'
 
 export default class Collapse extends Parent {
   private triggers: HTMLElement[] = []
@@ -105,7 +106,7 @@ export default class Collapse extends Parent {
       this.el.style.height = ''
 
       this.emitEvent(this.expanded ? 'show' : 'hide')
-    }, this.transitionDuration)
+    }, getTransitionDuration(this.el))
   }
 
   /**
@@ -123,27 +124,6 @@ export default class Collapse extends Parent {
   }
 
   private get hasTransition() {
-    return this.transitionDuration !== 0
-  }
-
-  /**
-   * From bootstrap
-   * @see https://github.com/twbs/bootstrap/blob/main/js/src/util/index.js
-   */
-  private get transitionDuration() {
-    let { transitionDuration, transitionDelay } = window.getComputedStyle(this.el)
-
-    const floatTransitionDuration = Number.parseFloat(transitionDuration)
-    const floatTransitionDelay = Number.parseFloat(transitionDelay)
-
-    // Return 0 if element or transition duration is not found
-    if (!floatTransitionDuration && !floatTransitionDelay)
-      return 0
-
-    // If multiple durations are defined, take the first
-    transitionDuration = transitionDuration.split(',')[0]
-    transitionDelay = transitionDelay.split(',')[0]
-
-    return (Number.parseFloat(transitionDuration) + Number.parseFloat(transitionDelay)) * 1000
+    return getTransitionDuration(this.el) !== 0
   }
 }

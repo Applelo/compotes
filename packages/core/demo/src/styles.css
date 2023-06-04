@@ -17,3 +17,7 @@ h2 {
 section + section {
   margin-top: 2rem;
 }
+
+.c-drilldown > .c-drilldown-menu {
+  transition: transform .3s linear;
+}
