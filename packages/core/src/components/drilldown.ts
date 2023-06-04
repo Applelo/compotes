@@ -310,7 +310,7 @@ export default class Drilldown extends Parent {
     this.currentEl = nextButton.closest('.c-drilldown-menu')
     this.update()
     if (this.currentEl)
-      focusFirst(this.currentEl)
+      focusFirst(this.currentEl, this.el)
     this.emitEvent('back')
   }
 
@@ -326,7 +326,7 @@ export default class Drilldown extends Parent {
     this.level = 0
     this.update()
     if (this.currentEl)
-      focusFirst(this.currentEl)
+      focusFirst(this.currentEl, this.el)
     this.emitEvent('reset')
   }
 
