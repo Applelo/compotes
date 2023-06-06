@@ -33,14 +33,19 @@
     "lint:fix": "eslint . --fix",
     "test": "pnpm run test:types",
     "test:types": "pnpm run -r test:types",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "docs": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.5",
     "eslint": "^8.42.0",
     "typescript": "^5.0.4",
     "vite": "^4.3.9",
+    "vitepress": "1.0.0-beta.1",
     "vitest": "^0.31.4",
+    "vue": "^3.3.4",
     "vue-tsc": "^1.6.5"
   }
 }

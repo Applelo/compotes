@@ -8,10 +8,10 @@ hero:
   actions:
     - theme: brand
       text: Get started
-      link: /get-started
+      link: /guide/
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text:  Demo
+      link: /demo/
 
 features:
   - title: Minimal CSS

@@ -20,9 +20,15 @@ importers:
       vite:
         specifier: ^4.3.9
         version: 4.3.9(@types/node@20.2.5)
+      vitepress:
+        specifier: 1.0.0-beta.1
+        version: 1.0.0-beta.1(@algolia/client-search@4.17.1)
       vitest:
         specifier: ^0.31.4
         version: 0.31.4
+      vue:
+        specifier: ^3.3.4
+        version: 3.3.4
       vue-tsc:
         specifier: ^1.6.5
         version: 1.6.5(typescript@5.0.4)
