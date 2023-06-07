@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "Compotes"
+  name: Compotes
   tagline: Components library focused on accessibility/customization
   actions:
     - theme: brand
