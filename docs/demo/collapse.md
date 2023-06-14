@@ -2,5 +2,5 @@
 prev: false
 ---
 
-# Collapse
+# Collapse Demo
 

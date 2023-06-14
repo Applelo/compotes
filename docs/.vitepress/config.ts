@@ -14,6 +14,9 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/' },
       { text: 'Demo', link: '/demo/collapse' },
     ],
+    search: {
+      provider: 'local',
+    },
     sidebar: [
       {
         text: 'Guide',

@@ -62,6 +62,7 @@ export default class Collapse extends Parent {
         this.expanded ? 'true' : 'false',
       )
     })
+    this.emitEvent('update')
   }
 
   /**

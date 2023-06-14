@@ -2,7 +2,7 @@
 
 The collapse component allow to collapse any elements you want. You can make an accordion with it for example.
 
-> This component is inspired by the Collapse component from Bootstrap
+> This component is inspired by the [Collapse](https://getbootstrap.com/docs/5.3/components/collapse/) component from Bootstrap.
 
 ```scss
 @import 'compotes/css/collapse';
@@ -34,11 +34,10 @@ You can access some data from the component.
 import { Collapse } from 'compotes'
 
 const collapse = new Collapse('#my-collapse', {
-  init: false, // [!code focus:3]
+  init: true, // [!code focus:3]
   initAccessibilityAttrs: true,
   initEvents: true
 })
-collapse.init()
 ```
 
 - `init` (boolean): Init the component on creation
@@ -87,7 +86,11 @@ console.log(collapse.expanded)// [!code focus]
 You can listen to emitted event directly on the collapse element like this:
 
 ```js
-collapseElement.addEventListener('c.collapse.init', (e) => {
+import { Collapse } from 'compotes'
+
+const collapseElement = document.getElementById('my-collapse')
+const collapse = new Collapse(collapseElement)
+collapseElement.addEventListener('c.collapse.init', (e) => { // [!code focus:3]
   console.log(e.detail)// collapse object
 })
 ```

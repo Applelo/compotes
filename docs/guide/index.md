@@ -74,6 +74,3 @@ Only the main css files is compiled and minified. The other parts are not. You n
 
 5. That's it! Check each component for details about structure, advice for accessibility, options and more!
 
-## Events
-
-Compotes provides events for each components.
