@@ -9,7 +9,7 @@
     "sourceMap": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["ES2016","dom"],
+    "lib": ["ES2016", "dom"],
     "skipLibCheck": true,
     "declaration": true,
     "outDir": "dist",
