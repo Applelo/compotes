@@ -3,6 +3,17 @@ import { focusChar, focusFirst, focusLast, focusSibling, generateId } from '../u
 import Parent, { type ParentOptions } from './_parent'
 import { getTransitionDuration } from './../utils/animation'
 
+declare global {
+  interface HTMLElementEventMap {
+    'c.drilldown.init': CustomEvent<Drilldown>
+    'c.drilldown.destroy': CustomEvent<Drilldown>
+    'c.drilldown.update': CustomEvent<Drilldown>
+    'c.drilldown.next': CustomEvent<Drilldown>
+    'c.drilldown.back': CustomEvent<Drilldown>
+    'c.drilldown.reset': CustomEvent<Drilldown>
+  }
+}
+
 export interface DrilldownOptions extends ParentOptions {
   dynamicHeight?: boolean
 }

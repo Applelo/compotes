@@ -24,8 +24,17 @@ yarn add -D compotes
 ```js
 import { Collapse } from 'compotes'
 
-const collapse = new Collapse('.c-collapse')
+const collapse = new Collapse('#my-collapse')
 ```
+
+::: info
+If you need to init several element, you need to do a loop.
+
+```js
+Array.from(document.getElementsByClassName('c-collapse'))
+  .forEach(el => new Collapse(el))
+```
+:::
 
 3. Import the CSS related to the component.
 
@@ -50,13 +59,13 @@ The above import will work on modern building tools, like ViteJS and Webpack 5, 
 Only the main css files is compiled and minified. The other parts are not. You need to processed them with your favorite tool.
 :::
 
-4. Use the markup for the component
+4. Use the HTML component markup
 
 ```html
-<button class="c-collapse-trigger" aria-controls="collapse">
+<button class="c-collapse-trigger" aria-controls="my-collapse">
   Trigger collapse
 </button>
-<div class="c-collapse" id="collapse">
+<div class="c-collapse" id="my-collapse">
   <p>
     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia facere possimus impedit facilis culpa illo earum deserunt consequuntur minus.
   </p>
@@ -64,3 +73,7 @@ Only the main css files is compiled and minified. The other parts are not. You n
 ```
 
 5. That's it! Check each component for details about structure, advice for accessibility, options and more!
+
+## Events
+
+Compotes provides events for each components.

@@ -1,6 +1,17 @@
 import Parent, { type ParentOptions } from './_parent'
 import { getTransitionDuration } from './../utils/animation'
 
+declare global {
+  interface HTMLElementEventMap {
+    'c.collapse.init': CustomEvent<Collapse>
+    'c.collapse.show': CustomEvent<Collapse>
+    'c.collapse.shown': CustomEvent<Collapse>
+    'c.collapse.hide': CustomEvent<Collapse>
+    'c.collapse.hidden': CustomEvent<Collapse>
+    'c.collapse.destroy': CustomEvent<Collapse>
+  }
+}
+
 export default class Collapse extends Parent {
   private triggers: HTMLElement[] = []
   private expanded = false
@@ -19,14 +30,14 @@ export default class Collapse extends Parent {
     super.init()
   }
 
-  public initAccessibilityAttrs(): void {
+  public initAccessibilityAttrs() {
     this.triggers.forEach((trigger) => {
       if (trigger.tagName !== 'BUTTON')
         trigger.setAttribute('role', 'button')
     })
   }
 
-  public initEvents(): void {
+  public initEvents() {
     this.destroyEvents(['toggle'])
     this.triggers.forEach((item) => {
       this.registerEvent({
@@ -63,7 +74,7 @@ export default class Collapse extends Parent {
   /**
    * Show collapse
    */
-  public async show() {
+  public show() {
     this.expanded = true
     if (this.hasTransition) {
       this.collapsing = true
@@ -71,6 +82,9 @@ export default class Collapse extends Parent {
       const height = this.el.scrollHeight
       this.el.style.height = `${height}px`
       this.onCollapse()
+    }
+    else {
+      this.emitEvent('shown')
     }
     this.el.classList.add('c-collapse--show')
     this.update()
@@ -91,21 +105,24 @@ export default class Collapse extends Parent {
       this.el.style.height = '0px'
       this.onCollapse()
     }
+    else {
+      this.emitEvent('hidden')
+    }
     this.el.classList.remove('c-collapse--show')
 
     this.update()
   }
 
   private onCollapse() {
-    this.emitEvent('collapse')
     clearTimeout(this.timeout)
+    this.emitEvent(this.expanded ? 'show' : 'hide')
 
     this.timeout = setTimeout(() => {
       this.el.classList.remove('c-collapse--collapsing')
       this.collapsing = false
       this.el.style.height = ''
 
-      this.emitEvent(this.expanded ? 'show' : 'hide')
+      this.emitEvent(this.expanded ? 'shown' : 'hidden')
     }, getTransitionDuration(this.el))
   }
 
