@@ -1,6 +1,6 @@
 # Collapse / Accordion
 
-The collapse component allow to collapse any elements you want. You can make an accordion with it for example.
+The collapse component allows to collapse any elements you want. You can make an accordion with it for example.
 
 > This component is inspired by the [Collapse](https://getbootstrap.com/docs/5.3/components/collapse/) component from Bootstrap.
 
@@ -14,6 +14,8 @@ import { Collapse } from 'compotes'
 const collapse = new Collapse('#my-collapse')
 ```
 
+You need to put an `id` to the element you want to collapse. To all your trigger buttons, add an `aria-controls` attribute refering to the `id` of the collapse.
+
 ```html
 <button class="c-collapse-trigger" aria-controls="my-collapse">
   Trigger collapse
@@ -25,6 +27,11 @@ const collapse = new Collapse('#my-collapse')
   </p>
 </div>
 ```
+
+## Accessibility
+
+To ensure accessibility feature, the component will inject `aria-expanded` to all trigger elements. This allow the user to know if the collapse is expanded or not. The user also knows what element it refer thanks to the `aria-controls` attribute.
+
 
 ## Options
 

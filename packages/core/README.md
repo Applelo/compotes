@@ -89,7 +89,7 @@ const drilldown = new Drilldown('.c-drilldown', {
       <button class="c-drilldown-next">
         Go to section 1
       </button>
-      <ul class="c-drilldown-menu" id="test">
+      <ul class="c-drilldown-menu" id="section-1">
         <li>
           <button class="c-drilldown-back">
             Go Back
