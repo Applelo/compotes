@@ -113,7 +113,6 @@ const drilldown = new Collapse('#my-drilldown', {
 - `initEvents` (boolean): Init events on the component
 - `dynamicHeight` (boolean): By default, the height of the drilldown is the tallest menu found. You can set this option to `true` to update the height to the current menu.
 
-
 ## Methods
 
 The collapse component provides several methods allowing you to control the component programatically.
@@ -146,7 +145,6 @@ console.log(drilldown.options)// [!code focus]
 ```
 
 - `options` (options object): Get options used to init the component
-
 
 ## Events
 

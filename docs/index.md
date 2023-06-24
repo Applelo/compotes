@@ -11,7 +11,7 @@ hero:
       link: /guide/
     - theme: alt
       text:  Demo
-      link: /demo/
+      link: /demo/collapse
 
 features:
   - title: Minimal CSS

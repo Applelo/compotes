@@ -28,10 +28,24 @@ You need to put an `id` to the element you want to collapse. To all your trigger
 </div>
 ```
 
+To make the collapse open by default, add the `c-collapse--show` class on the collapse element.
+
+```html
+<button class="c-collapse-trigger" aria-controls="my-collapse">
+  Trigger collapse
+</button>
+// [!code focus:2]
+<div class="c-collapse c-collapse--show" id="my-collapse">
+  <p>
+    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+    Mollitia facere possimus impedit facilis culpa illo earum deserunt consequuntur minus.
+  </p>
+</div>
+```
+
 ## Accessibility
 
 To ensure accessibility feature, the component will inject `aria-expanded` to all trigger elements. This allow the user to know if the collapse is expanded or not. The user also knows what element it refer thanks to the `aria-controls` attribute.
-
 
 ## Options
 
@@ -50,7 +64,6 @@ const collapse = new Collapse('#my-collapse', {
 - `init` (boolean): Init the component on creation
 - `initAccessibilityAttrs` (boolean): Init accessibility attributes on the component
 - `initEvents` (boolean): Init events on the component
-
 
 ## Methods
 
