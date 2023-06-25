@@ -3,12 +3,13 @@
   "version": "0.6.5",
   "private": "true",
   "packageManager": "pnpm@8.6.0",
-  "workspaces": [
-    "packages/*"
-  ],
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
+  "homepage": "https://compotes.dev",
+  "workspaces": [
+    "packages/*"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Applelo/compotes"

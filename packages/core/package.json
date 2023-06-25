@@ -6,6 +6,7 @@
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
+  "homepage": "https://compotes.dev",
   "repository": {
     "type": "git",
     "url": "https://github.com/Applelo/compotes"
