@@ -47,15 +47,15 @@ export default abstract class Parent {
   /**
    * Emit an event
    */
-  protected emitEvent(name: string) {
-    const event = new CustomEvent(`c.${name}`, { detail: this })
-    this.el.dispatchEvent(event)
+  protected emitEvent(name: string, cancelable = false) {
+    const event = new CustomEvent<this>(`c.${this.name}.${name}`, { detail: this, cancelable })
+    return this.el.dispatchEvent(event)
   }
 
   /**
    * Init the component
    */
-  protected init(): void {
+  protected init() {
     this.emitEvent('init')
     if (typeof this.opts.initAccessibilityAttrs === 'undefined' || this.opts.initAccessibilityAttrs)
       this.initAccessibilityAttrs()
@@ -76,7 +76,7 @@ export default abstract class Parent {
   /**
    * Register an event
    */
-  protected registerEvent(e: ParentEvent): void {
+  protected registerEvent(e: ParentEvent) {
     e.el.addEventListener(e.event, e.function)
     this.events.push(e)
   }
@@ -95,7 +95,7 @@ export default abstract class Parent {
   /**
    * Destroy the component
    */
-  protected destroy(): void {
+  public destroy() {
     this.emitEvent('destroy')
     this.destroyEvents()
   }

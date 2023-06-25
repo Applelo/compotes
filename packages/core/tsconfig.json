@@ -1,21 +1,19 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "target": "esnext",
+    "target": "es6",
     "useDefineForClassFields": true,
     "module": "esnext",
     "moduleResolution": "node",
     "strict": true,
-    "jsx": "preserve",
     "sourceMap": true,
-    "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "dom"],
+    "lib": ["ES2016", "dom"],
     "skipLibCheck": true,
     "declaration": true,
     "outDir": "dist",
     "types": ["vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }
