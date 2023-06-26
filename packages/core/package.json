@@ -50,7 +50,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "tabbable": "^6.1.2"
+    "tabbable": "^6.2.0"
   },
   "devDependencies": {
     "typescript": "^5.0.4",
