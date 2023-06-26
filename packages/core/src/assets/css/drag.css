@@ -1,5 +1,8 @@
 .c-drag {
   overflow: auto;
+}
+
+.c-drag--draggable {
   cursor: grab;
 }
 

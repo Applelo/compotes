@@ -11,11 +11,14 @@ declare global {
 
 export default class Drag extends Parent {
   private isDown = false
-  private dragClass = 'c-drag--dragging'
+  private draggableClass = 'c-drag--draggable'
+  private draggingClass = 'c-drag--dragging'
   private startX = 0
   private startY = 0
   private scrollLeft = 0
   private scrollTop = 0
+
+  private resizeObserver?: ResizeObserver
 
   constructor(el: HTMLElement | string, options: ParentOptions = {}) {
     super(el, options)
@@ -26,6 +29,12 @@ export default class Drag extends Parent {
   public init() {
     this.name = 'drag'
     super.init()
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this.el.classList.toggle(this.draggableClass, this.isDraggable)
+    })
+
+    this.resizeObserver.observe(this.el)
   }
 
   public initAccessibilityAttrs() {}
@@ -59,8 +68,10 @@ export default class Drag extends Parent {
   }
 
   private handleDragStart(e: MouseEvent) {
+    if (!this.isDraggable)
+      return
     this.isDown = true
-    this.el.classList.add(this.dragClass)
+    this.el.classList.add(this.draggingClass)
     this.startX = e.pageX - this.el.offsetLeft
     this.startY = e.pageY - this.el.offsetTop
     this.scrollLeft = this.el.scrollLeft
@@ -70,7 +81,7 @@ export default class Drag extends Parent {
 
   private handleDragEnd() {
     this.isDown = false
-    this.el.classList.remove(this.dragClass)
+    this.el.classList.remove(this.draggingClass)
     this.emitEvent('end')
   }
 
@@ -83,5 +94,15 @@ export default class Drag extends Parent {
     e.preventDefault()
     this.el.scrollLeft = this.scrollLeft - x
     this.el.scrollTop = this.scrollTop - y
+  }
+
+  private get isDraggable() {
+    return this.el.clientHeight !== this.el.scrollHeight
+    || this.el.clientWidth !== this.el.scrollWidth
+  }
+
+  public destroy() {
+    this.resizeObserver?.disconnect()
+    super.destroy()
   }
 }

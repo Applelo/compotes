@@ -37,6 +37,7 @@ export default defineConfig({
         collapsed: true,
         items: [
           { text: 'Collapse/Accordion', link: '/demo/collapse' },
+          { text: 'Drag', link: '/demo/drag' },
           { text: 'Drilldown', link: '/demo/drilldown' },
         ],
       },
