@@ -1,5 +1,6 @@
 import Drilldown from './components/drilldown'
 import Collapse from './components/collapse'
+import Drag from './components/drag'
 
 import.meta.glob(['./assets/css/*.css'], {
   eager: true,
@@ -8,4 +9,5 @@ import.meta.glob(['./assets/css/*.css'], {
 export {
   Drilldown,
   Collapse,
+  Drag,
 }
