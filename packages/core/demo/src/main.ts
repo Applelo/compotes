@@ -1,4 +1,4 @@
-import { Collapse, Drilldown } from './../../src'
+import { Collapse, Drag, Drilldown } from './../../src'
 import './styles.css'
 import './../../src/assets/css/drilldown.css'
 import './../../src/assets/css/collapse.css'
@@ -22,3 +22,5 @@ collapses.forEach((el) => {
   })
   collapse.init()
 })
+
+const _drag = new Drag('.c-drag')

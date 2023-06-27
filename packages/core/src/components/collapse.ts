@@ -38,7 +38,7 @@ export default class Collapse extends Parent {
   }
 
   public initEvents() {
-    this.destroyEvents(['toggle'])
+    this.destroyEvents()
     this.triggers.forEach((item) => {
       this.registerEvent({
         id: 'toggle',

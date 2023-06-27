@@ -14,7 +14,6 @@ prev: false
     const collapses = document.querySelectorAll('.c-collapse')
     collapses.forEach((el) => {
       const collapse = new Collapse(el)
-      collapse.init()
     })
   })
 </script>

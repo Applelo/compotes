@@ -103,7 +103,7 @@ console.log(collapse.expanded)// [!code focus]
 
 ## Events
 
-You can listen to emitted event directly on the collapse element like this:
+You can listen to emitted events directly on the collapse element like this:
 
 ```js
 import { Collapse } from 'compotes'

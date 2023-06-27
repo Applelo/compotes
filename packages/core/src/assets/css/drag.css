@@ -1,0 +1,15 @@
+.c-drag {
+  overflow: auto;
+}
+
+.c-drag--draggable {
+  cursor: grab;
+}
+
+.c-drag--dragging {
+  cursor: grabbing;
+}
+
+.c-drag--dragging * {
+  user-select: none;
+}
