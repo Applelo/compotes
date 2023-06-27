@@ -2,7 +2,7 @@
 
 ## Browser support
 
-**Compotes** uses modern API to work like `ResizableObserver`, `MutationObserver` or `:scope` selector : so IE11 is not supported.
+**Compotes** uses modern API to work like `ResizableObserver`, `MutationObserver`, css variables or `:scope` selector: so IE11 is not supported.
 
 ## Installation
 
