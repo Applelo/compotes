@@ -27,6 +27,10 @@ export default defineConfig({
             link: '/guide/collapse',
           },
           {
+            text: 'Drag',
+            link: '/guide/drag',
+          },
+          {
             text: 'Drilldown',
             link: '/guide/drilldown',
           },

@@ -96,9 +96,13 @@ export default class Drag extends Parent {
     this.el.scrollTop = this.scrollTop - y
   }
 
-  private get isDraggable() {
+  public get isDraggable() {
     return this.el.clientHeight !== this.el.scrollHeight
     || this.el.clientWidth !== this.el.scrollWidth
+  }
+
+  public get isDragging() {
+    return this.isDown
   }
 
   public destroy() {

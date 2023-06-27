@@ -148,7 +148,7 @@ console.log(drilldown.options)// [!code focus]
 
 ## Events
 
-You can listen to emitted event directly on the drilldown element like this:
+You can listen to emitted events directly on the drilldown element like this:
 
 ```js
 drilldownElement.addEventListener('c.drilldown.init', (e) => {
