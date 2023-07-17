@@ -1,4 +1,7 @@
 import './../../../core/src/assets/css/drag.css'
 import { Drag } from './../../src'
 
-const _drag = new Drag('.c-drag')
+const el = document.querySelector<HTMLElement>('.c-drag')
+if (el) {
+  const _drag = new Drag(el)
+}

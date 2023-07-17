@@ -25,12 +25,12 @@ export interface ParentEvent {
 }
 
 export default abstract class Parent {
-  protected name: string | undefined = undefined
+  protected name = ''
   public el: HTMLElement
   public opts: ParentOptions
   protected events: ParentEvent[] = []
 
-  constructor(el: HTMLElement | string, options: ParentOptions) {
+  constructor(el: HTMLElement | string, options: ParentOptions = {}) {
     const checkEl = typeof el === 'string' ? document.querySelector<HTMLElement>(el) : el
     if (!checkEl)
       throw this.error('The element/selector provided cannot be found.')
@@ -55,7 +55,7 @@ export default abstract class Parent {
   /**
    * Init the component
    */
-  protected init() {
+  public init() {
     this.emitEvent('init')
     if (typeof this.opts.initAccessibilityAttrs === 'undefined' || this.opts.initAccessibilityAttrs)
       this.initAccessibilityAttrs()

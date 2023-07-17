@@ -9,8 +9,10 @@ const config: InlineConfig = {
   build: {
     lib: false,
     outDir: resolve(__dirname, './dist'),
+    emptyOutDir: true,
     rollupOptions: {
       input: {
+        parent: resolve(__dirname, './components/parent.html'),
         drag: resolve(__dirname, './components/drag.html'),
       },
     },

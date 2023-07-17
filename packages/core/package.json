@@ -53,8 +53,8 @@
     "tabbable": "^6.2.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.4",
-    "vite": "^4.3.9",
-    "vite-plugin-dts": "^3.0.3"
+    "typescript": "^5.1.6",
+    "vite": "^4.4.2",
+    "vite-plugin-dts": "^3.1.1"
   }
 }
