@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
     "target": "es6",
     "useDefineForClassFields": true,
     "module": "esnext",
@@ -13,7 +12,16 @@
     "skipLibCheck": true,
     "declaration": true,
     "outDir": "dist",
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "baseUrl": "src",
+    "paths": {
+      "@src/*": ["./*"],
+      "@css/*": ["./assets/css/*"],
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "test/**/*.ts"
+  ]
 }

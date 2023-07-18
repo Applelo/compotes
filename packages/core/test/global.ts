@@ -17,6 +17,12 @@ const config: InlineConfig = {
       },
     },
   },
+  resolve: {
+    alias: {
+      '@@': resolve(__dirname, './../src'),
+      '@css': resolve(__dirname, './../src/assets/css')
+    }
+  },
 }
 
 export default async () => {

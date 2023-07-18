@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import Parent from './../../src/components/_parent'
+import Parent from '@src/components/_parent'
 
 class Child extends Parent {
   public init() {

@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
@@ -19,6 +21,12 @@ export default defineConfig({
           tabbable: 'tabbable',
         },
       },
+    },
+  },
+  resolve: {
+    alias: {
+      '@src': resolve(__dirname, './src'),
+      '@css': resolve(__dirname, './src/assets/css'),
     },
   },
   publicDir: './src/assets',
