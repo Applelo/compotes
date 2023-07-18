@@ -19,9 +19,9 @@ const config: InlineConfig = {
   },
   resolve: {
     alias: {
-      '@@': resolve(__dirname, './../src'),
-      '@css': resolve(__dirname, './../src/assets/css')
-    }
+      '@src': resolve(__dirname, './src'),
+      '@css': resolve(__dirname, './src/assets/css'),
+    },
   },
 }
 
