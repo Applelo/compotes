@@ -31,15 +31,6 @@ async function dragBox(page: Page) {
   if (!dragElBoundingBox || !previousLastDragElBoundingBox)
     return {}
 
-  // await page.evaluate(() => document.addEventListener('mousemove', (e) => {
-  //   const pos = e
-  //   const dot = document.createElement('div')
-  //   dot.className = 'dot'
-  //   dot.style.left = `${pos.x}px`
-  //   dot.style.top = `${pos.y}px`
-  //   document.body.appendChild(dot)
-  // }))
-
   await page.mouse.move(
     dragElBoundingBox.x + dragElBoundingBox.width / 2,
     dragElBoundingBox.y + dragElBoundingBox.height / 4,
