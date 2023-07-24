@@ -70,7 +70,10 @@ describe.concurrent('drag', async () => {
 
     await dragBox(page)
 
-    const result = (await Promise.all([startEvent, endEvent])).map(item => item.text())
+    const result = (await Promise.all([
+      startEvent,
+      endEvent,
+    ])).map(item => item.text())
     expect(result).toContain('c.drag.start')
     expect(result).toContain('c.drag.end')
   })

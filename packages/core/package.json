@@ -46,6 +46,7 @@
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",
+    "test:vitest": "vitest",
     "test:types": "tsc --noEmit && vue-tsc --noEmit",
     "prepublishOnly": "pnpm build"
   },
@@ -54,7 +55,7 @@
   },
   "devDependencies": {
     "typescript": "^5.1.6",
-    "vite": "^4.4.4",
+    "vite": "^4.4.7",
     "vite-plugin-dts": "^3.3.1"
   }
 }

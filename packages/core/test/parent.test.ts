@@ -12,7 +12,7 @@ afterAll(async () => {
   browser.close()
 })
 
-describe.concurrent('parent', async () => {
+describe('parent', async () => {
   it('events', async () => {
     const page = await browser.newPage()
     const initEvent = page.waitForEvent('console', msg => msg.text().includes('c.child.init'))

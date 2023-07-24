@@ -14,13 +14,14 @@ const config: InlineConfig = {
       input: {
         parent: resolve(__dirname, './components/parent.html'),
         drag: resolve(__dirname, './components/drag.html'),
+        collapse: resolve(__dirname, './components/collapse.html'),
       },
     },
   },
   resolve: {
     alias: {
-      '@src': resolve(__dirname, './src'),
-      '@css': resolve(__dirname, './src/assets/css'),
+      '@src': resolve(__dirname, './../src'),
+      '@css': resolve(__dirname, './../src/assets/css'),
     },
   },
 }
