@@ -24,8 +24,8 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/compotes.umd.cjs",
-      "import": "./dist/compotes.js"
+      "import": "./dist/compotes.js",
+      "require": "./dist/compotes.umd.cjs"
     },
     "./css": "./dist/style.css",
     "./css/style.css": "./dist/style.css",
