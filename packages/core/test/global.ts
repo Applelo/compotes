@@ -12,9 +12,10 @@ const config: InlineConfig = {
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        parent: resolve(__dirname, './components/parent.html'),
-        drag: resolve(__dirname, './components/drag.html'),
         collapse: resolve(__dirname, './components/collapse.html'),
+        drag: resolve(__dirname, './components/drag.html'),
+        drilldown: resolve(__dirname, './components/drilldown.html'),
+        parent: resolve(__dirname, './components/parent.html'),
       },
     },
   },

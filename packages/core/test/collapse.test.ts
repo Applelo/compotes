@@ -5,9 +5,7 @@ import { chromium } from 'playwright'
 let browser: Browser
 
 beforeAll(async () => {
-  browser = await chromium.launch({
-    headless: false,
-  })
+  browser = await chromium.launch()
 })
 
 afterAll(async () => {
@@ -17,6 +15,12 @@ afterAll(async () => {
 describe('collapse', async () => {
   it.concurrent('events', async () => {
     const page = await browser.newPage()
+    const events = [
+      'c.collapse.show',
+      'c.collapse.hide',
+      'c.collapse.hidden',
+      'c.collapse.shown',
+    ]
     const showEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.show'))
     const hideEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.hide'))
     const shownEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.shown'))
@@ -27,7 +31,12 @@ describe('collapse', async () => {
       const el = document.querySelector('.c-collapse')
       if (!el)
         return
-      ['c.collapse.show', 'c.collapse.hide', 'c.collapse.hidden', 'c.collapse.shown'].forEach((e) => {
+      [
+        'c.collapse.show',
+        'c.collapse.hide',
+        'c.collapse.hidden',
+        'c.collapse.shown',
+      ].forEach((e) => {
         el.addEventListener(e, () => {
           // eslint-disable-next-line no-console
           console.log(e)
@@ -35,7 +44,7 @@ describe('collapse', async () => {
       })
     })
 
-    const triggerEl = page.locator('.c-collapse-trigger')
+    const triggerEl = page.locator('.c-collapse-trigger').first()
     triggerEl.click()
     await shownEvent
     triggerEl.click()
@@ -47,9 +56,6 @@ describe('collapse', async () => {
       hiddenEvent,
     ])).map(item => item.text())
 
-    expect(result).toContain('c.collapse.show')
-    expect(result).toContain('c.collapse.hide')
-    expect(result).toContain('c.collapse.hidden')
-    expect(result).toContain('c.collapse.shown')
+    events.forEach(e => expect(result).toContain(e))
   })
 })

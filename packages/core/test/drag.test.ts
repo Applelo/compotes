@@ -5,9 +5,7 @@ import { chromium } from 'playwright'
 let browser: Browser
 
 beforeAll(async () => {
-  browser = await chromium.launch({
-    // headless: false,
-  })
+  browser = await chromium.launch()
 })
 
 afterAll(async () => {
@@ -15,7 +13,7 @@ afterAll(async () => {
 })
 
 async function dragBox(page: Page) {
-  const dragEl = page.locator('.c-drag')
+  const dragEl = page.locator('.c-drag').first()
   const lastDragEl = dragEl.locator('p:last-child').last()
 
   expect(dragEl).not.toBeNull()
@@ -50,6 +48,7 @@ async function dragBox(page: Page) {
 
 describe.concurrent('drag', async () => {
   it('events', async () => {
+    const events = ['c.drag.start', 'c.drag.end']
     const page = await browser.newPage()
     await page.goto('http://127.0.0.1:4173/drag.html')
 
@@ -74,8 +73,8 @@ describe.concurrent('drag', async () => {
       startEvent,
       endEvent,
     ])).map(item => item.text())
-    expect(result).toContain('c.drag.start')
-    expect(result).toContain('c.drag.end')
+
+    events.forEach(e => expect(result).toContain(e))
   })
 
   // mouse drag doesn't work with playwright
