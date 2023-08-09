@@ -13,6 +13,13 @@ afterAll(async () => {
 })
 
 describe('drilldown', async () => {
+  it.concurrent('generateId', async () => {
+    const page = await browser.newPage()
+    await page.goto('http://127.0.0.1:4173/drilldown.html')
+    const item = page.locator('#c-id-1').first()
+    expect(item).toBeDefined()
+  })
+
   it.concurrent('events', async () => {
     const page = await browser.newPage()
     const events = [
