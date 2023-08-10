@@ -15,7 +15,7 @@ afterAll(async () => {
 describe('drilldown', async () => {
   it.concurrent('generateId', async () => {
     const page = await browser.newPage()
-    await page.goto('http://127.0.0.1:4173/drilldown.html')
+    await page.goto('http://127.0.0.1:5173/drilldown.html')
     const item = page.locator('#c-id-1').first()
     expect(item).toBeDefined()
   })
@@ -32,7 +32,7 @@ describe('drilldown', async () => {
     const nextEvent = page.waitForEvent('console', msg => msg.text().includes('c.drilldown.next'))
     const backEvent = page.waitForEvent('console', msg => msg.text().includes('c.drilldown.back'))
     const resetEvent = page.waitForEvent('console', msg => msg.text().includes('c.drilldown.reset'))
-    await page.goto('http://127.0.0.1:4173/drilldown.html')
+    await page.goto('http://127.0.0.1:5173/drilldown.html')
 
     await page.evaluate(() => {
       const el = document.querySelector('.c-drilldown')

@@ -1,6 +1,6 @@
 import { resolve } from 'node:path'
 import type { InlineConfig } from 'vite'
-import { build, preview } from 'vite'
+import { createServer } from 'vite'
 
 const config: InlineConfig = {
   configFile: false,
@@ -28,6 +28,7 @@ const config: InlineConfig = {
 }
 
 export default async () => {
-  await build(config)
-  await preview(config)
+  const server = await createServer(config)
+  await server.listen()
+  // server.printUrls()
 }

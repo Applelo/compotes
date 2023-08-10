@@ -25,7 +25,7 @@ describe('collapse', async () => {
     const hideEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.hide'))
     const shownEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.shown'))
     const hiddenEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.hidden'))
-    await page.goto('http://127.0.0.1:4173/collapse.html')
+    await page.goto('http://127.0.0.1:5173/collapse.html')
 
     await page.evaluate(() => {
       const el = document.querySelector('.c-collapse')
