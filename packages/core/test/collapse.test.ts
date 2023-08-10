@@ -1,15 +1,21 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { Browser } from 'playwright'
 import { chromium } from 'playwright'
+import type { PreviewServer } from 'vite'
+import { mergeConfig, preview } from 'vite'
+import { config } from './global'
 
 let browser: Browser
+let server: PreviewServer
 
 beforeAll(async () => {
   browser = await chromium.launch()
+  server = await preview(mergeConfig(config, { preview: { port: 3001 } }))
 })
 
 afterAll(async () => {
   browser.close()
+  server.httpServer.close()
 })
 
 describe('collapse', async () => {
@@ -25,7 +31,7 @@ describe('collapse', async () => {
     const hideEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.hide'))
     const shownEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.shown'))
     const hiddenEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.hidden'))
-    await page.goto('http://127.0.0.1:5173/collapse.html')
+    await page.goto('http://127.0.0.1:3001/collapse.html')
 
     await page.evaluate(() => {
       const el = document.querySelector('.c-collapse')

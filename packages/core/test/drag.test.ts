@@ -1,15 +1,21 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
+import type { PreviewServer } from 'vite'
+import { mergeConfig, preview } from 'vite'
+import { config } from './global'
 
 let browser: Browser
+let server: PreviewServer
 
 beforeAll(async () => {
   browser = await chromium.launch()
+  server = await preview(mergeConfig(config, { preview: { port: 3003 } }))
 })
 
 afterAll(async () => {
   browser.close()
+  server.httpServer.close()
 })
 
 async function dragBox(page: Page) {
@@ -50,7 +56,7 @@ describe.concurrent('drag', async () => {
   it('events', async () => {
     const events = ['c.drag.start', 'c.drag.end']
     const page = await browser.newPage()
-    await page.goto('http://127.0.0.1:5173/drag.html')
+    await page.goto('http://127.0.0.1:3003/drag.html')
 
     await page.evaluate(() => {
       const el = document.querySelector('.c-drag')
@@ -80,7 +86,7 @@ describe.concurrent('drag', async () => {
   // mouse drag doesn't work with playwright
   it.skip('mouse drag', async () => {
     const page = await browser.newPage()
-    await page.goto('http://127.0.0.1:5173/drag.html')
+    await page.goto('http://127.0.0.1:3003/drag.html')
     const { lastDragEl, previousLastDragElBoundingBox } = await dragBox(page)
     // await page.pause()
 
