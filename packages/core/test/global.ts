@@ -30,5 +30,5 @@ const config: InlineConfig = {
 export default async () => {
   const server = await createServer(config)
   await server.listen()
-  // server.printUrls()
+  server.printUrls()
 }

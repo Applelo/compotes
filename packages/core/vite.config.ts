@@ -32,6 +32,7 @@ export default defineConfig({
   publicDir: './src/assets',
   plugins: [dts()],
   test: {
+    globals: true,
     globalSetup: './test/global.ts',
   },
 })
