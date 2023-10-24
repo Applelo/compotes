@@ -45,9 +45,9 @@ describe('collapse', async () => {
     })
 
     const triggerEl = page.locator('.c-collapse-trigger').first()
-    triggerEl.click()
+    await triggerEl.click()
     await shownEvent
-    triggerEl.click()
+    await triggerEl.click()
 
     const result = (await Promise.all([
       showEvent,

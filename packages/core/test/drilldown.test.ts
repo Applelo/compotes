@@ -55,12 +55,10 @@ describe('drilldown', async () => {
     const backBtn = page.locator('.c-drilldown-back').first()
     const resetBtn = page.locator('.js-drilldown-reset').first()
 
-    nextBtn.click()
-    await nextEvent
-    backBtn.click()
-    await backEvent
-    nextBtn.click()
-    resetBtn.click()
+    await nextBtn.click()
+    await backBtn.click()
+    await nextBtn.click()
+    await resetBtn.click()
 
     const result = (await Promise.all([
       updateEvent,
