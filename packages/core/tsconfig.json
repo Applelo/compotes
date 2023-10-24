@@ -1,23 +1,23 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "lib": ["ES2016", "dom"],
     "useDefineForClassFields": true,
+    "baseUrl": "src",
     "module": "esnext",
     "moduleResolution": "node",
-    "strict": true,
-    "sourceMap": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "lib": ["ES2016", "dom"],
-    "skipLibCheck": true,
-    "declaration": true,
-    "outDir": "dist",
-    "types": ["vite/client"],
-    "baseUrl": "src",
     "paths": {
       "@src/*": ["./*"],
       "@css/*": ["./assets/css/*"]
-    }
+    },
+    "types": ["vite/client"],
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",
