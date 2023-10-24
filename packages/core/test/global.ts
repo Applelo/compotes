@@ -1,11 +1,14 @@
 import { resolve } from 'node:path'
 import type { InlineConfig } from 'vite'
-import { build } from 'vite'
+import { build, preview } from 'vite'
 
-export const config: InlineConfig = {
+const config: InlineConfig = {
   configFile: false,
   root: resolve(__dirname, './components'),
   publicDir: false,
+  preview: {
+    port:3000,
+  },
   build: {
     lib: false,
     outDir: resolve(__dirname, './dist'),
@@ -29,4 +32,6 @@ export const config: InlineConfig = {
 
 export default async () => {
   await build(config)
+  const previewServer = await preview(config)
+  previewServer.printUrls()
 }
