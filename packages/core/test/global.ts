@@ -7,7 +7,7 @@ const config: InlineConfig = {
   root: resolve(__dirname, './components'),
   publicDir: false,
   preview: {
-    port:3000,
+    port: 3000,
   },
   build: {
     lib: false,

@@ -1,7 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
-import type { PreviewServer } from 'vite'
 
 let browser: Browser
 
@@ -51,7 +50,7 @@ describe.concurrent('drag', async () => {
   it('events', async () => {
     const events = ['c.drag.start', 'c.drag.end']
     const page = await browser.newPage()
-   await page.pause()
+    await page.pause()
     await page.goto('http://localhost:3000/drag.html')
 
     await page.evaluate(() => {
