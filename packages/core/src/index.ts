@@ -11,5 +11,5 @@ export {
   Drilldown,
   Collapse,
   Drag,
-  Marquee
+  Marquee,
 }

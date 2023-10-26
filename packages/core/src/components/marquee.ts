@@ -12,7 +12,6 @@ export interface MarqueeOptions extends ParentOptions {
 }
 
 export default class Marquee extends Parent {
-
   constructor(el: HTMLElement | string, options: MarqueeOptions = {}) {
     super(el, options)
     if (this.isInitializable)
