@@ -119,11 +119,17 @@ export default class Drag extends Parent {
     this.el.scrollTop = newY
   }
 
+  /**
+   * Tell if the element is draggable or not
+   */
   public get isDraggable() {
     return this.el.clientHeight !== this.el.scrollHeight
     || this.el.clientWidth !== this.el.scrollWidth
   }
 
+  /**
+   * Tell if the element is dragging
+   */
   public get isDragging() {
     return this.isDown
   }
