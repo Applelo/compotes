@@ -1,8 +1,8 @@
 {
   "name": "compotes",
   "type": "module",
-  "version": "0.7.0",
-  "packageManager": "pnpm@8.6.0",
+  "version": "0.7.1",
+  "packageManager": "pnpm@8.9.2",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
@@ -24,8 +24,8 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/compotes.umd.cjs",
-      "import": "./dist/compotes.js"
+      "import": "./dist/compotes.js",
+      "require": "./dist/compotes.umd.cjs"
     },
     "./css": "./dist/style.css",
     "./css/style.css": "./dist/style.css",
@@ -46,6 +46,7 @@
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",
+    "test:vitest": "vitest",
     "test:types": "tsc --noEmit && vue-tsc --noEmit",
     "prepublishOnly": "pnpm build"
   },
@@ -53,8 +54,8 @@
     "tabbable": "^6.2.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.4",
-    "vite": "^4.3.9",
-    "vite-plugin-dts": "^2.3.0"
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0",
+    "vite-plugin-dts": "^3.6.1"
   }
 }

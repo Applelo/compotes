@@ -1,7 +1,7 @@
 /**
-   * From bootstrap
-   * @see https://github.com/twbs/bootstrap/blob/main/js/src/util/index.js
-   */
+ * From bootstrap
+ * @see https://github.com/twbs/bootstrap/blob/main/js/src/util/index.js
+ */
 export function getTransitionDuration(el: HTMLElement) {
   let { transitionDuration, transitionDelay } = window.getComputedStyle(el)
 

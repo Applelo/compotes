@@ -118,7 +118,7 @@ export default class Collapse extends Parent {
     clearTimeout(this.timeout)
     this.emitEvent(this.expanded ? 'show' : 'hide')
 
-    this.timeout = setTimeout(() => {
+    this.timeout = window.setTimeout(() => {
       this.el.classList.remove('c-collapse--collapsing')
       this.collapsing = false
       this.el.style.height = ''
