@@ -2,17 +2,20 @@ import ErrorCompotes from '../utils/error'
 
 export interface ParentOptions {
   /**
-   * Init the component on creation
+   * Init the component on creation.
+   * @default true
    */
   init?: boolean
   /**
-   * Init accessibility attributes on the component
+   * Init accessibility attributes on the component.
    * Don't disable it if you don't know what your doing
+   * @default true
    */
   initAccessibilityAttrs?: boolean
   /**
-   * Init events on the component
+   * Init events on the component.
    * Don't disable it if you don't know what your doing
+   * @default true
    */
   initEvents?: boolean
 }

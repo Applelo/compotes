@@ -6,21 +6,46 @@
   import { onMounted } from 'vue'
 
   onMounted(() => {
-    const marquee = new Marquee('.c-marquee')
+    const marqueeDefault = new Marquee('#marquee-default')
+    const marqueeLeft = new Marquee('#marquee-left', {
+      direction: 'left'
+    })
+    const marqueeDown = new Marquee('#marquee-down', {
+      direction: 'down'
+    })
+    const marqueeAlternate = new Marquee('#marquee-alternate', {
+      behavior: 'alternate'
+    })
   })
 </script>
 <style>
-.c-marquee.c-marquee {
+.c-marquee .c-marquee-container {
   list-style: none;
   padding-left: 0;
   margin: 0;
 }
 .c-marquee li + li {
-  margin-left: 1rem;
+  margin: 0 0 0 1rem;
 }
 </style>
-<div style="margin-top: 2rem;">
-  <ul class="c-marquee">
-    <li>This is a marquee</li>
+<div id="marquee-default" class="c-marquee" style="margin-top: 2rem;">
+  <ul class="c-marquee-container">
+    <li>This is the default marquee</li>
+    <li>Marquee or marquii</li>
+  </ul>
+</div>
+<div id="marquee-left" class="c-marquee" style="margin-top: 2rem;">
+  <ul class="c-marquee-container">
+    <li>Marquee Left Direction</li>
+  </ul>
+</div>
+<div id="marquee-down" class="c-marquee" style="margin-top: 2rem; height: 500px;">
+  <ul class="c-marquee-container">
+    <li>Marquee Bottom Direction</li>
+  </ul>
+</div>
+<div id="marquee-alternate" class="c-marquee" style="margin-top: 2rem; width: 100px;">
+  <ul class="c-marquee-container">
+    <li>Alternate</li>
   </ul>
 </div>

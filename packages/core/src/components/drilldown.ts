@@ -15,6 +15,10 @@ declare global {
 }
 
 export interface DrilldownOptions extends ParentOptions {
+  /**
+   * Adjust height dynamically with the current menu height
+   * @default false
+   */
   dynamicHeight?: boolean
 }
 
