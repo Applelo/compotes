@@ -24,7 +24,7 @@
 
 .c-marquee-container {
   display: flex;
-  animation: c-anim-marquee-x 10s infinite linear;
+  animation: c-anim-marquee-x var(--c-marquee-duration) infinite linear;
 }
 
 .c-marquee--direction-top .c-marquee-container,
@@ -39,6 +39,12 @@
 .c-marquee--direction-top .c-marquee-container,
 .c-marquee--direction-left .c-marquee-container {
   animation-direction: reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .c-marquee-container {
+    animation-play-state: paused;
+  }
 }
 
 .c-marquee-container > * {

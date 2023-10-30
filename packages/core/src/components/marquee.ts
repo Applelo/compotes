@@ -70,6 +70,26 @@ export default class Marquee extends Parent {
     const currentDirection = this.opts.direction || 'right'
     const directions = ['left', 'right', 'top', 'bottom']
 
+    // Duration
+    let duration: string
+    if (typeof this.opts.duration === 'string') {
+      duration = this.opts.duration
+    }
+    else {
+      let multiplier: number
+      if (this.opts.direction === 'up' || this.opts.direction === 'down')
+        multiplier = (this.opts.duration || 1) * 0.05 * this.el.clientHeight
+      else
+        multiplier = (this.opts.duration || 1) * 0.05 * this.el.clientWidth
+
+      duration = `${Math.round(multiplier)}s`
+    }
+
+    this.el.style.setProperty(
+      '--c-marquee-duration',
+      duration,
+    )
+
     // Behavior
     this.el.classList.toggle('c-marquee--behavior-alternate', this.opts?.behavior === 'alternate')
     this.el.classList.toggle('c-marquee--behavior-scroll', this.opts?.behavior !== 'alternate')
