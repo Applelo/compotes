@@ -24,6 +24,7 @@
 
 .c-marquee-container {
   display: flex;
+  flex-shrink: 0;
   animation: c-anim-marquee-x var(--c-marquee-duration) infinite linear;
 }
 
@@ -45,6 +46,10 @@
   .c-marquee-container {
     animation-play-state: paused;
   }
+}
+
+.c-marquee--pause .c-marquee-container {
+  animation-play-state: paused;
 }
 
 .c-marquee-container > * {

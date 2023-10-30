@@ -4,6 +4,9 @@ declare global {
   interface HTMLElementEventMap {
     'c.marquee.init': CustomEvent<Marquee>
     'c.marquee.destroy': CustomEvent<Marquee>
+    'c.marquee.play': CustomEvent<Marquee>
+    'c.marquee.pause': CustomEvent<Marquee>
+    'c.marquee.loop': CustomEvent<Marquee>
   }
 }
 
@@ -39,6 +42,7 @@ export interface MarqueeOptions extends ParentOptions {
 export default class Marquee extends Parent {
   declare public opts: MarqueeOptions
   private resizeObserver?: ResizeObserver
+  private mutationObserver?: MutationObserver
 
   constructor(el: HTMLElement | string, options: MarqueeOptions = {}) {
     super(el, options)
@@ -51,6 +55,9 @@ export default class Marquee extends Parent {
     super.init()
     this.update()
 
+    this.mutationObserver = new MutationObserver(() => {
+      this.update()
+    })
     this.resizeObserver = new ResizeObserver(() => {
       this.update()
     })
@@ -61,6 +68,15 @@ export default class Marquee extends Parent {
 
   public initEvents() {
     this.destroyEvents()
+
+    this.registerEvent({
+      id: 'animationiteration',
+      function: () => {
+        this.emitEvent('loop')
+      },
+      event: 'animationiteration',
+      el: this.el,
+    })
   }
 
   /**
@@ -115,7 +131,18 @@ export default class Marquee extends Parent {
     }
   }
 
+  public play() {
+    this.el.classList.remove('c-marquee--pause')
+    this.emitEvent('play')
+  }
+
+  public pause() {
+    this.el.classList.add('c-marquee--pause')
+    this.emitEvent('pause')
+  }
+
   public destroy() {
+    this.mutationObserver?.disconnect()
     this.resizeObserver?.disconnect()
     super.destroy()
   }

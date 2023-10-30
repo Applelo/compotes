@@ -51,7 +51,13 @@ export default abstract class Parent {
    * Emit an event
    */
   protected emitEvent(name: string, cancelable = false) {
-    const event = new CustomEvent<this>(`c.${this.name}.${name}`, { detail: this, cancelable })
+    const event = new CustomEvent<this>(
+      `c.${this.name}.${name}`,
+      {
+        detail: this,
+        cancelable,
+      },
+    )
     return this.el.dispatchEvent(event)
   }
 

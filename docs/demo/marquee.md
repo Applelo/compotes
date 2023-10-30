@@ -13,7 +13,8 @@
     const marqueeDown = new Marquee('#marquee-down', {
       direction: 'down'
     })
-    const marqueeAlternate = new Marquee('#marquee-alternate', {
+    const marqueeAlternateEl = document.getElementById('marquee-alternate')
+    const marqueeAlternate = new Marquee(marqueeAlternateEl, {
       behavior: 'alternate'
     })
   })
