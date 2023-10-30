@@ -65,6 +65,7 @@ export default class Drilldown extends Parent {
     this.resizeObserver.observe(this.el)
     this.mutationObserver.observe(this.el, {
       childList: true,
+      subtree: true,
     })
 
     super.init()

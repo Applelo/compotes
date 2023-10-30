@@ -41,6 +41,7 @@ export interface MarqueeOptions extends ParentOptions {
 
 export default class Marquee extends Parent {
   declare public opts: MarqueeOptions
+  private containerEl: HTMLElement | null = null
   private resizeObserver?: ResizeObserver
   private mutationObserver?: MutationObserver
 
@@ -54,6 +55,7 @@ export default class Marquee extends Parent {
     this.name = 'marquee'
     super.init()
     this.update()
+    this.containerEl = this.el.querySelector('.c-marquee-container')
 
     this.mutationObserver = new MutationObserver(() => {
       this.update()
@@ -61,7 +63,12 @@ export default class Marquee extends Parent {
     this.resizeObserver = new ResizeObserver(() => {
       this.update()
     })
+
     this.resizeObserver.observe(this.el)
+    this.mutationObserver.observe(this.el, {
+      childList: true,
+      subtree: true,
+    })
   }
 
   public initAccessibilityAttrs() {}
@@ -83,6 +90,8 @@ export default class Marquee extends Parent {
    * Update the marquee
    */
   public update() {
+    if (!this.containerEl)
+      return
     const currentDirection = this.opts.direction || 'right'
     const directions = ['left', 'right', 'top', 'bottom']
 
@@ -94,9 +103,9 @@ export default class Marquee extends Parent {
     else {
       let multiplier: number
       if (this.opts.direction === 'up' || this.opts.direction === 'down')
-        multiplier = (this.opts.duration || 1) * 0.05 * this.el.clientHeight
+        multiplier = (this.opts.duration || 1) * 0.05 * Math.max(this.containerEl.clientHeight, this.el.clientHeight)
       else
-        multiplier = (this.opts.duration || 1) * 0.05 * this.el.clientWidth
+        multiplier = (this.opts.duration || 1) * 0.05 * Math.max(this.containerEl.clientWidth, this.el.clientWidth)
 
       duration = `${Math.round(multiplier)}s`
     }
