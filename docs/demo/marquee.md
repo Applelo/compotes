@@ -8,7 +8,8 @@
   onMounted(() => {
     const marqueeDefault = new Marquee('#marquee-default')
     const marqueeLeft = new Marquee('#marquee-left', {
-      direction: 'left'
+      direction: 'left',
+      fill: true
     })
     const marqueeDown = new Marquee('#marquee-down', {
       direction: 'down'
