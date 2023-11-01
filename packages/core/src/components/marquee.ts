@@ -27,11 +27,6 @@ export interface MarqueeOptions extends ParentOptions {
    */
   behavior?: 'scroll' | 'alternate'
   /**
-   * Loop the marquee
-   * @default true
-   */
-  loop?: boolean
-  /**
    * Set the duration of the marquee animation.
    * Accept multiplier calculation via a number or animation-duration value via string.
    * @default 1
