@@ -24,4 +24,3 @@ features:
     icon: 📠
     details: Typescript for better world
 ---
-

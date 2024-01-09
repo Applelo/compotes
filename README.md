@@ -74,7 +74,6 @@ pnpm add -D @compotes/nuxt
 
 > Vue 3/Nuxt 3 packages will arrive soon stay tuned!
 
-
 ## 🙋‍♂️ Why ?
 
 A lot of components library are already shipped with styles but as a Front End developer, I always wants to override a lot. Futhermore, there are not always accessible or they are shipped with jQuery.

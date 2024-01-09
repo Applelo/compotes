@@ -124,7 +124,7 @@ export default class Drag extends Parent {
    */
   public get isDraggable() {
     return this.el.clientHeight !== this.el.scrollHeight
-    || this.el.clientWidth !== this.el.scrollWidth
+      || this.el.clientWidth !== this.el.scrollWidth
   }
 
   /**
