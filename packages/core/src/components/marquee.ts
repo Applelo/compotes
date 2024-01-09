@@ -95,8 +95,8 @@ export default class Marquee extends Parent {
     const currentDirection = this.opts.direction || 'right'
     const directions = ['left', 'right', 'top', 'bottom']
     const elSize = this.opts.direction === 'up' || this.opts.direction === 'down' ? this.el.clientHeight : this.el.clientWidth
-    const containerSize = this.opts.direction === 'up' || this.opts.direction === 'down' ? this.containerEl.clientHeight / this.fillMultiplier : this.containerEl.clientWidth / this.fillMultiplier
-    const currentFillMultiplier = this.opts.fill ? Math.ceil(elSize / containerSize) + 1 : 1
+    const containerSize = this.opts.direction === 'up' || this.opts.direction === 'down' ? this.containerEl.clientHeight / (this.fillMultiplier + 1) : this.containerEl.clientWidth / (this.fillMultiplier + 1)
+    const currentFillMultiplier = this.opts.fill ? Math.ceil(elSize / containerSize) : 1
 
     // Duration
     let duration: string
@@ -104,7 +104,8 @@ export default class Marquee extends Parent {
       duration = this.opts.duration
     }
     else {
-      const multiplier = (this.opts.duration || 1) * 0.05 * Math.max(containerSize, elSize)
+      const multiplierSpeed = this.opts.fill ? 0.01 : 0.05
+      const multiplier = (this.opts.duration || 1) * multiplierSpeed * Math.max(containerSize, elSize)
 
       duration = `${Math.round(multiplier)}s`
     }
@@ -117,7 +118,7 @@ export default class Marquee extends Parent {
     // Fill
     this.el.classList.toggle(
       'c-marquee--fill',
-      this.opts?.fill,
+      this.opts?.fill === true,
     )
 
     if (
@@ -158,14 +159,14 @@ export default class Marquee extends Parent {
     })
 
     if (this.opts.fill) {
-      // this.el.style.setProperty(
-      //   '--c-marquee-start',
-      //   `${Math.ceil(containerSize / 2)}px`,
-      // )
-      // this.el.style.setProperty(
-      //   '--c-marquee-end',
-      //   `-${Math.ceil(containerSize / 2)}px`,
-      // )
+      this.el.style.setProperty(
+        '--c-marquee-start',
+        `0`,
+      )
+      this.el.style.setProperty(
+        '--c-marquee-end',
+        `-${Math.ceil(containerSize)}px`,
+      )
     }
     else {
       this.el.style.setProperty(

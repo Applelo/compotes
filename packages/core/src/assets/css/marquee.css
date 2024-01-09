@@ -24,6 +24,7 @@
 
 .c-marquee-container {
   display: flex;
+  margin: 0;
   flex-shrink: 0;
   animation: c-anim-marquee-x var(--c-marquee-duration) infinite linear;
 }
@@ -31,14 +32,20 @@
 .c-marquee--direction-top .c-marquee-container,
 .c-marquee--direction-down .c-marquee-container {
   animation-name: c-anim-marquee-y;
+  flex-direction: column;
 }
 
 .c-marquee--behavior-alternate .c-marquee-container {
   animation-direction: alternate;
 }
 
-.c-marquee--direction-top .c-marquee-container,
-.c-marquee--direction-left .c-marquee-container {
+.c-marquee--direction-top:not(.c-marquee--fill) .c-marquee-container,
+.c-marquee--direction-left:not(.c-marquee--fill) .c-marquee-container {
+  animation-direction: reverse;
+}
+
+.c-marquee--fill.c-marquee--direction-bottom .c-marquee-container,
+.c-marquee--fill.c-marquee--direction-right .c-marquee-container {
   animation-direction: reverse;
 }
 
@@ -51,11 +58,6 @@
 .c-marquee--pause .c-marquee-container {
   animation-play-state: paused;
 }
-
-/* .c-marquee--fill .c-marquee-container {
-  width: 200%;
-  justify-content: center;
-} */
 
 .c-marquee-container > * {
   flex-shrink: 0;

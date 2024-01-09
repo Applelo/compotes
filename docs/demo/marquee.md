@@ -8,11 +8,12 @@
   onMounted(() => {
     // const marqueeDefault = new Marquee('#marquee-default')
     const marqueeLeft = new Marquee('#marquee-left', {
-      // direction: 'left',
+      direction: 'left',
       fill: true
     })
     const marqueeDown = new Marquee('#marquee-down', {
-      direction: 'down'
+      direction: 'down',
+      fill: true
     })
     const marqueeAlternateEl = document.getElementById('marquee-alternate')
     const marqueeAlternate = new Marquee(marqueeAlternateEl, {
@@ -24,10 +25,11 @@
 .c-marquee .c-marquee-container {
   list-style: none;
   padding-left: 0;
-  margin: 0;
+  margin: 0!important;
 }
-.c-marquee li + li {
-  margin: 0 0 0 1rem;
+.c-marquee li {
+  margin: 0!important;
+  padding: 0 .5rem;
 }
 </style>
 <!-- <div id="marquee-default" class="c-marquee" style="margin-top: 2rem;">
