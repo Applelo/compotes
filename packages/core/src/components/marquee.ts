@@ -96,7 +96,7 @@ export default class Marquee extends Parent {
     const directions = ['left', 'right', 'top', 'bottom']
     const elSize = this.opts.direction === 'up' || this.opts.direction === 'down' ? this.el.clientHeight : this.el.clientWidth
     const containerSize = this.opts.direction === 'up' || this.opts.direction === 'down' ? this.containerEl.clientHeight / this.fillMultiplier : this.containerEl.clientWidth / this.fillMultiplier
-    const currentFillMultiplier = this.opts.fill ? Math.ceil(elSize / containerSize) : 1
+    const currentFillMultiplier = this.opts.fill ? Math.ceil(elSize / containerSize) + 1 : 1
 
     // Duration
     let duration: string
@@ -115,6 +115,11 @@ export default class Marquee extends Parent {
     )
 
     // Fill
+    this.el.classList.toggle(
+      'c-marquee--fill',
+      this.opts?.fill,
+    )
+
     if (
       (currentFillMultiplier && this.fillMultiplier !== currentFillMultiplier) || forceFillRegeneration
     ) {
@@ -152,16 +157,20 @@ export default class Marquee extends Parent {
         this.el.classList.remove(`c-marquee--direction-${direction}`)
     })
 
-    if (this.opts.direction === 'up' || this.opts.direction === 'down') {
-      this.el.style.setProperty(
-        '--c-marquee-end',
-        `${Math.ceil(this.el.clientHeight)}px`,
-      )
+    if (this.opts.fill) {
+      // this.el.style.setProperty(
+      //   '--c-marquee-start',
+      //   `${Math.ceil(containerSize / 2)}px`,
+      // )
+      // this.el.style.setProperty(
+      //   '--c-marquee-end',
+      //   `-${Math.ceil(containerSize / 2)}px`,
+      // )
     }
     else {
       this.el.style.setProperty(
         '--c-marquee-end',
-        `${Math.ceil(this.el.clientWidth)}px`,
+        `${Math.ceil(elSize)}px`,
       )
     }
   }

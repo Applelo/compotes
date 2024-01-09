@@ -6,9 +6,9 @@
   import { onMounted } from 'vue'
 
   onMounted(() => {
-    const marqueeDefault = new Marquee('#marquee-default')
+    // const marqueeDefault = new Marquee('#marquee-default')
     const marqueeLeft = new Marquee('#marquee-left', {
-      direction: 'left',
+      // direction: 'left',
       fill: true
     })
     const marqueeDown = new Marquee('#marquee-down', {
@@ -30,12 +30,12 @@
   margin: 0 0 0 1rem;
 }
 </style>
-<div id="marquee-default" class="c-marquee" style="margin-top: 2rem;">
+<!-- <div id="marquee-default" class="c-marquee" style="margin-top: 2rem;">
   <ul class="c-marquee-container">
     <li>This is the default marquee</li>
     <li>Marquee or marquii</li>
   </ul>
-</div>
+</div> -->
 <div id="marquee-left" class="c-marquee" style="margin-top: 2rem;">
   <ul class="c-marquee-container">
     <li>Marquee Left Direction</li>
