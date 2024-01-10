@@ -95,7 +95,7 @@ export default class Drag extends Parent {
     this.emitEvent('start')
   }
 
-  private handleDragEnd(e: Event) {
+  private handleDragEnd() {
     this.isDown = false
     this.el.classList.remove(this.draggingClass)
     this.emitEvent('end')
