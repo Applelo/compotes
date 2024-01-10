@@ -6,7 +6,7 @@
   import { onMounted } from 'vue'
 
   onMounted(() => {
-    // const marqueeDefault = new Marquee('#marquee-default')
+    const marqueeDefault = new Marquee('#marquee-default')
     const marqueeLeft = new Marquee('#marquee-left', {
       direction: 'left',
       fill: true
@@ -32,15 +32,16 @@
   padding: 0 .5rem;
 }
 </style>
-<!-- <div id="marquee-default" class="c-marquee" style="margin-top: 2rem;">
+<div id="marquee-default" class="c-marquee" style="margin-top: 2rem;">
   <ul class="c-marquee-container">
-    <li>This is the default marquee</li>
-    <li>Marquee or marquii</li>
+    <li>This is the default <a href="#">marquee</a></li>
+    <li>Marquee or <a href="#">marquii</a></li>
   </ul>
-</div> -->
+</div>
 <div id="marquee-left" class="c-marquee" style="margin-top: 2rem;">
   <ul class="c-marquee-container">
     <li>Marquee Left Direction</li>
+    <li><img width="25" height="25" src="https://vitejs.dev/logo.svg"/></li>
   </ul>
 </div>
 <div id="marquee-down" class="c-marquee" style="margin-top: 2rem; height: 500px;">

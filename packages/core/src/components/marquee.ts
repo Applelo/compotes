@@ -122,7 +122,8 @@ export default class Marquee extends Parent {
     )
 
     if (
-      (currentFillMultiplier && this.fillMultiplier !== currentFillMultiplier) || forceFillRegeneration
+      this.opts.fill && (
+        (currentFillMultiplier && this.fillMultiplier !== currentFillMultiplier) || forceFillRegeneration)
     ) {
       this.clones.forEach(clone => clone.remove())
 
