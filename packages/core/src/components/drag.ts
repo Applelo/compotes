@@ -17,6 +17,7 @@ export default class Drag extends Parent {
   private startY = 0
   private scrollLeft = 0
   private scrollTop = 0
+  private hasMoved = false
 
   private resizeObserver?: ResizeObserver
 
@@ -65,6 +66,21 @@ export default class Drag extends Parent {
       event: 'mousedown',
       el: this.el,
     })
+
+    this.registerEvent({
+      id: 'handleClick',
+      function: this.blockClick.bind(this),
+      event: 'click',
+      el: this.el,
+    })
+  }
+
+  private blockClick(e: Event) {
+    if (!this.hasMoved)
+      return
+
+    e.preventDefault()
+    this.hasMoved = false
   }
 
   private handleDragStart(e: MouseEvent) {
@@ -88,12 +104,19 @@ export default class Drag extends Parent {
   private handleDragMove(e: MouseEvent) {
     if (!this.isDown)
       return
+    e.preventDefault()
+
     const x = e.pageX - this.el.offsetLeft - this.startX
     const y = e.pageY - this.el.offsetTop - this.startY
 
-    e.preventDefault()
-    this.el.scrollLeft = this.scrollLeft - x
-    this.el.scrollTop = this.scrollTop - y
+    const newX = this.scrollLeft - x
+    const newY = this.scrollTop - y
+
+    if (this.el.scrollLeft !== newX || this.el.scrollTop !== newY)
+      this.hasMoved = true
+
+    this.el.scrollLeft = newX
+    this.el.scrollTop = newY
   }
 
   public get isDraggable() {
