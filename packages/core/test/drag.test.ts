@@ -77,18 +77,4 @@ describe.concurrent('drag', async () => {
 
     events.forEach(e => expect(result).toContain(e))
   })
-
-  // mouse drag doesn't work with playwright
-  it.skip('mouse drag', async () => {
-    const page = await browser.newPage()
-    await page.goto('http://localhost/drag.html')
-    const { lastDragEl, previousLastDragElBoundingBox } = await dragBox(page)
-
-    if (!lastDragEl || !previousLastDragElBoundingBox)
-      return
-
-    const currentLastDragElBoundingBox = await lastDragEl.boundingBox()
-    expect(currentLastDragElBoundingBox).not.toBeNull()
-    expect(currentLastDragElBoundingBox).not.toEqual(previousLastDragElBoundingBox)
-  })
 })

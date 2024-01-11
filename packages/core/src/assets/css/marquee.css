@@ -24,6 +24,8 @@
 
 .c-marquee-container {
   display: flex;
+  list-style: none;
+  padding: 0;
   margin: 0;
   flex-shrink: 0;
   animation: c-anim-marquee-x var(--c-marquee-duration) infinite linear;
@@ -57,9 +59,8 @@
   flex-shrink: 0;
 }
 
-.c-marquee--a11y:focus-visible .c-marquee-container,
 .c-marquee--a11y.c-marquee--keyboard:focus-within .c-marquee-container {
-  animation: none!important;
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

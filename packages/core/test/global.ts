@@ -18,6 +18,7 @@ const config: InlineConfig = {
         collapse: resolve(__dirname, './components/collapse.html'),
         drag: resolve(__dirname, './components/drag.html'),
         drilldown: resolve(__dirname, './components/drilldown.html'),
+        marquee: resolve(__dirname, './components/marquee.html'),
         parent: resolve(__dirname, './components/parent.html'),
       },
     },

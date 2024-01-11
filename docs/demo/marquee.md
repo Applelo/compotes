@@ -26,8 +26,8 @@
 <style>
 .c-marquee .c-marquee-container {
   list-style: none;
-  padding-left: 0;
-  margin: 0!important;
+  padding: 0;
+  margin: 0;
 }
 .c-marquee li {
   margin: 0!important;
