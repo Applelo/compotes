@@ -133,10 +133,10 @@ export default class Marquee extends Parent {
       duration = this.opts.duration
     }
     else {
-      const multiplierSpeed = this.opts.fill ? 0.01 : 0.05
+      const multiplierSpeed = this.opts.fill ? this.containerSize / this.elSize * 0.05 : 0.05
       const multiplier = (this.opts.duration || 1) * multiplierSpeed * Math.max(this.containerSize, this.elSize)
 
-      duration = `${Math.round(multiplier)}s`
+      duration = `${multiplier.toFixed(2)}s`
     }
 
     this.el.style.setProperty(
