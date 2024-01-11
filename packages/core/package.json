@@ -32,7 +32,9 @@
     "./css/drilldown": "./dist/css/drilldown.css",
     "./css/drilldown.css": "./dist/css/drilldown.css",
     "./css/collapse": "./dist/css/collapse.css",
-    "./css/collapse.css": "./dist/css/collapse.css"
+    "./css/collapse.css": "./dist/css/collapse.css",
+    "./css/marquee": "./dist/css/marquee.css",
+    "./css/marquee.css": "./dist/css/marquee.css"
   },
   "main": "./dist/compotes.umd.cjs",
   "module": "./dist/compotes.js",
