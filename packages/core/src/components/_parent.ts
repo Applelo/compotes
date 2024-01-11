@@ -66,10 +66,14 @@ export default abstract class Parent {
    */
   public init() {
     this.emitEvent('init')
-    if (typeof this.opts.initAccessibilityAttrs === 'undefined' || this.opts.initAccessibilityAttrs)
+    if (this.initAccessibility)
       this.initAccessibilityAttrs()
     if (typeof this.opts.initEvents === 'undefined' || this.opts.initEvents)
       this.initEvents()
+  }
+
+  protected get initAccessibility() {
+    return typeof this.opts.initEvents === 'undefined' || this.opts.initEvents
   }
 
   /**

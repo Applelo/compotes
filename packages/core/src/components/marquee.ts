@@ -72,7 +72,9 @@ export default class Marquee extends Parent {
     })
   }
 
-  public initAccessibilityAttrs() {}
+  public initAccessibilityAttrs() {
+    this.el.setAttribute('tabindex', '0')
+  }
 
   public initEvents() {
     this.destroyEvents()
@@ -86,6 +88,9 @@ export default class Marquee extends Parent {
       el: this.el,
     })
 
+    if (!this.initAccessibility)
+      return
+
     this.registerEvent({
       id: 'addKeyboardClass',
       function: () => {
@@ -97,12 +102,16 @@ export default class Marquee extends Parent {
 
     this.registerEvent({
       id: 'removeKeyboardClass',
-      function: () => {
-        if (document.activeElement && document.activeElement.closest('.c-marquee'))
+      function: (e: FocusEvent) => {
+        const target = e.target as Element
+        if (
+          target.classList.contains('.c-marquee')
+          || target.closest('.c-marquee')
+        )
           return
         this.el.classList.remove('c-marquee--keyboard')
       },
-      event: 'blur',
+      event: 'focusout',
       el: this.el,
     })
   }
@@ -221,7 +230,8 @@ export default class Marquee extends Parent {
       items.forEach((item) => {
         const clone = item.cloneNode(true) as Element
         clone.classList.add('c-marquee-clone')
-        clone.setAttribute('aria-hidden', 'true')
+        if (this.initAccessibility)
+          clone.setAttribute('aria-hidden', 'true')
         this.clones.push(clone)
         this.containerEl?.append(clone)
       })

@@ -29,6 +29,7 @@
   animation: c-anim-marquee-x var(--c-marquee-duration) infinite linear;
 }
 
+.c-marquee:focus-visible .c-marquee-container,
 .c-marquee--keyboard:focus-within .c-marquee-container {
   animation: none!important;
 }
