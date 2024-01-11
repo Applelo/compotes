@@ -29,6 +29,10 @@
   animation: c-anim-marquee-x var(--c-marquee-duration) infinite linear;
 }
 
+.c-marquee--keyboard:focus-within .c-marquee-container {
+  animation: none!important;
+}
+
 .c-marquee--direction-top .c-marquee-container,
 .c-marquee--direction-down .c-marquee-container {
   animation-name: c-anim-marquee-y;
@@ -51,7 +55,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .c-marquee-container {
-    animation-play-state: paused;
+    animation: none;
   }
 }
 

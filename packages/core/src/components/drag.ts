@@ -75,7 +75,7 @@ export default class Drag extends Parent {
     })
   }
 
-  private blockClick(e: Event) {
+  private blockClick(e: MouseEvent) {
     if (!this.hasMoved)
       return
 

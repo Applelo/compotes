@@ -291,7 +291,7 @@ export default class Drilldown extends Parent {
    *
    * @param {(HTMLButtonElement | Event)} button
    */
-  private next(button: HTMLButtonElement | Event) {
+  private next(button: HTMLButtonElement | MouseEvent) {
     const nextButton = this.getButton(button, 'next')
 
     if (!nextButton)

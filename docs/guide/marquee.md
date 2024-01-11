@@ -28,7 +28,9 @@ You are not limited to text. You can also add any kind of valid HTML like image.
 
 ## Accessibility
 
-If you are using the `fill` option, all cloned element will be set to `aria-hidden` to hide the  non necessary content to the screen reader.
+- If the user has configure `prefers-reduced-motion` on his browser, the marquee animation will not be played.
+- If you are using the `fill` option, all cloned element will be set to `aria-hidden` to hide the  non necessary content to the screen reader.
+- If an element is focus with the keyboard, the marquee animation will be stop.
 
 ## Options
 

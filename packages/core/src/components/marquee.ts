@@ -77,11 +77,31 @@ export default class Marquee extends Parent {
     this.destroyEvents()
 
     this.registerEvent({
-      id: 'animationiteration',
+      id: 'registerLoopEvent',
       function: () => {
         this.emitEvent('loop')
       },
       event: 'animationiteration',
+      el: this.el,
+    })
+
+    this.registerEvent({
+      id: 'addKeyboardClass',
+      function: () => {
+        this.el.classList.add('c-marquee--keyboard')
+      },
+      event: 'keydown',
+      el: this.el,
+    })
+
+    this.registerEvent({
+      id: 'removeKeyboardClass',
+      function: () => {
+        if (document.activeElement && document.activeElement.closest('.c-marquee'))
+          return
+        this.el.classList.remove('c-marquee--keyboard')
+      },
+      event: 'blur',
       el: this.el,
     })
   }
