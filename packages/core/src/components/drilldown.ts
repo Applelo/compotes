@@ -202,7 +202,7 @@ export default class Drilldown extends Parent {
     if (reloadItems) {
       this.updateItems(this.wrapper)
       this.updateHeight()
-      if (this.opts.initAccessibilityAttrs === true)
+      if (this.accessibilityStatus.attrs === true)
         this.initAccessibilityAttrs()
 
       return
