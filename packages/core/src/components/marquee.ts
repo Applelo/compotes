@@ -61,7 +61,8 @@ export default class Marquee extends Parent {
         this.update(this.opts.fill)
     })
     this.resizeObserver = new ResizeObserver(() => {
-      this.update()
+      // fix wrong calculation from Firefox
+      setTimeout(() => this.update(), 1)
     })
 
     this.resizeObserver.observe(this.el)
@@ -106,6 +107,16 @@ export default class Marquee extends Parent {
     })
   }
 
+  private get elSize() {
+    return this.opts.direction === 'up' || this.opts.direction === 'down' ? this.el.clientHeight : this.el.clientWidth
+  }
+
+  private get containerSize() {
+    if (!this.containerEl)
+      return 0
+    return this.opts.direction === 'up' || this.opts.direction === 'down' ? this.containerEl.clientHeight / (this.fillMultiplier + 1) : this.containerEl.clientWidth / (this.fillMultiplier + 1)
+  }
+
   /**
    * Update the marquee
    */
@@ -114,9 +125,7 @@ export default class Marquee extends Parent {
       return
     const currentDirection = this.opts.direction || 'right'
     const directions = ['left', 'right', 'top', 'bottom']
-    const elSize = this.opts.direction === 'up' || this.opts.direction === 'down' ? this.el.clientHeight : this.el.clientWidth
-    const containerSize = this.opts.direction === 'up' || this.opts.direction === 'down' ? this.containerEl.clientHeight / (this.fillMultiplier + 1) : this.containerEl.clientWidth / (this.fillMultiplier + 1)
-    const currentFillMultiplier = this.opts.fill ? Math.ceil(elSize / containerSize) : 1
+    const currentFillMultiplier = this.opts.fill ? Math.ceil(this.elSize / this.containerSize) : 1
 
     // Duration
     let duration: string
@@ -125,7 +134,7 @@ export default class Marquee extends Parent {
     }
     else {
       const multiplierSpeed = this.opts.fill ? 0.01 : 0.05
-      const multiplier = (this.opts.duration || 1) * multiplierSpeed * Math.max(containerSize, elSize)
+      const multiplier = (this.opts.duration || 1) * multiplierSpeed * Math.max(this.containerSize, this.elSize)
 
       duration = `${Math.round(multiplier)}s`
     }
@@ -145,20 +154,7 @@ export default class Marquee extends Parent {
       this.opts.fill && (
         (currentFillMultiplier && this.fillMultiplier !== currentFillMultiplier) || forceFillRegeneration)
     ) {
-      this.clones.forEach(clone => clone.remove())
-
-      const items = Array.from(this.containerEl.children)
-      this.clones = []
-      for (let index = 0; index < currentFillMultiplier; index++) {
-        items.forEach((item) => {
-          const clone = item.cloneNode(true) as Element
-          clone.classList.add('c-marquee-clone')
-          clone.setAttribute('aria-hidden', 'true')
-          this.clones.push(clone)
-          this.containerEl?.append(clone)
-        })
-      }
-
+      this.fill(currentFillMultiplier)
       this.fillMultiplier = currentFillMultiplier
     }
 
@@ -186,13 +182,13 @@ export default class Marquee extends Parent {
       )
       this.el.style.setProperty(
         '--c-marquee-end',
-        `-${Math.ceil(containerSize)}px`,
+        `-${Math.ceil(this.containerSize)}px`,
       )
     }
     else {
       this.el.style.setProperty(
         '--c-marquee-end',
-        `${Math.ceil(elSize)}px`,
+        `${Math.ceil(this.elSize)}px`,
       )
     }
   }
@@ -211,5 +207,24 @@ export default class Marquee extends Parent {
     this.mutationObserver?.disconnect()
     this.resizeObserver?.disconnect()
     super.destroy()
+  }
+
+  private fill(fillMultiplier: number) {
+    if (!this.containerEl)
+      return
+
+    this.clones.forEach(clone => clone.remove())
+
+    const items = Array.from(this.containerEl.children)
+    this.clones = []
+    for (let index = 0; index < fillMultiplier; index++) {
+      items.forEach((item) => {
+        const clone = item.cloneNode(true) as Element
+        clone.classList.add('c-marquee-clone')
+        clone.setAttribute('aria-hidden', 'true')
+        this.clones.push(clone)
+        this.containerEl?.append(clone)
+      })
+    }
   }
 }
