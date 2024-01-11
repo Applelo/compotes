@@ -43,6 +43,8 @@ To make the collapse open by default, add the `c-collapse--show` class on the co
 </div>
 ```
 
+You can set the CSS transition to the collapse element. The component will show and hide with the duration of your transition automatically.
+
 ## Accessibility
 
 To ensure accessibility feature, the component will inject `aria-expanded` to all trigger elements. This allow the user to know if the collapse is expanded or not. The user also knows what element it refer thanks to the `aria-controls` attribute.

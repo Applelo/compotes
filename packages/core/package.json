@@ -1,8 +1,8 @@
 {
   "name": "compotes",
   "type": "module",
-  "version": "0.7.2",
-  "packageManager": "pnpm@8.9.2",
+  "version": "0.8.0",
+  "packageManager": "pnpm@8.14.1",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
@@ -29,10 +29,14 @@
     },
     "./css": "./dist/style.css",
     "./css/style.css": "./dist/style.css",
+    "./css/collapse": "./dist/css/collapse.css",
+    "./css/collapse.css": "./dist/css/collapse.css",
+    "./css/drag": "./dist/css/drag.css",
+    "./css/drag.css": "./dist/css/drag.css",
     "./css/drilldown": "./dist/css/drilldown.css",
     "./css/drilldown.css": "./dist/css/drilldown.css",
-    "./css/collapse": "./dist/css/collapse.css",
-    "./css/collapse.css": "./dist/css/collapse.css"
+    "./css/marquee": "./dist/css/marquee.css",
+    "./css/marquee.css": "./dist/css/marquee.css"
   },
   "main": "./dist/compotes.umd.cjs",
   "module": "./dist/compotes.js",
@@ -54,8 +58,9 @@
     "tabbable": "^6.2.0"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
-    "vite": "^4.5.0",
-    "vite-plugin-dts": "^3.6.1"
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11",
+    "vite-plugin-dts": "^3.7.0"
   }
 }

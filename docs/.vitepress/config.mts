@@ -34,6 +34,10 @@ export default defineConfig({
             text: 'Drilldown',
             link: '/guide/drilldown',
           },
+          {
+            text: 'Marquee',
+            link: '/guide/marquee',
+          },
         ],
       },
       {
@@ -43,6 +47,7 @@ export default defineConfig({
           { text: 'Collapse/Accordion', link: '/demo/collapse' },
           { text: 'Drag', link: '/demo/drag' },
           { text: 'Drilldown', link: '/demo/drilldown' },
+          { text: 'Marquee', link: '/demo/marquee' },
         ],
       },
     ],

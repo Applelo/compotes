@@ -18,6 +18,7 @@ To learn more, check the *[documentation](https://compotes.dev)*.
 - Drilldown ([demo](https://compotes.dev/demo/collapse.html))
 - Collapse/Accordion ([demo](https://compotes.dev/demo/drilldown.html))
 - Drag ([demo](https://compotes.dev/demo/drag.html))
+- Marquee ([demo](https://compotes.dev/demo/marquee.html))
 
 And more to come!
 

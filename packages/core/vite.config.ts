@@ -30,7 +30,9 @@ export default defineConfig({
     },
   },
   publicDir: './src/assets',
-  plugins: [dts()],
+  plugins: [dts({
+    exclude: ['node_modules/**', 'test/**'],
+  })],
   test: {
     globalSetup: './test/global.ts',
   },

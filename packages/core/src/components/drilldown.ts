@@ -15,6 +15,10 @@ declare global {
 }
 
 export interface DrilldownOptions extends ParentOptions {
+  /**
+   * Adjust height dynamically with the current menu height
+   * @default false
+   */
   dynamicHeight?: boolean
 }
 
@@ -61,10 +65,12 @@ export default class Drilldown extends Parent {
     this.resizeObserver.observe(this.el)
     this.mutationObserver.observe(this.el, {
       childList: true,
+      subtree: true,
     })
 
     super.init()
-    this.initAccessibilityEvents()
+    if (this.accessibilityStatus.events)
+      this.initAccessibilityEvents()
     this.update(true)
   }
 
@@ -196,7 +202,7 @@ export default class Drilldown extends Parent {
     if (reloadItems) {
       this.updateItems(this.wrapper)
       this.updateHeight()
-      if (this.opts.initAccessibilityAttrs === true)
+      if (this.accessibilityStatus.attrs === true)
         this.initAccessibilityAttrs()
 
       return
@@ -286,7 +292,7 @@ export default class Drilldown extends Parent {
    *
    * @param {(HTMLButtonElement | Event)} button
    */
-  private next(button: HTMLButtonElement | Event) {
+  private next(button: HTMLButtonElement | MouseEvent) {
     const nextButton = this.getButton(button, 'next')
 
     if (!nextButton)
