@@ -7,11 +7,15 @@ export interface ParentOptions {
    */
   init?: boolean
   /**
-   * Init accessibility attributes on the component.
+   * Init accessibility on the component.
    * Don't disable it if you don't know what your doing
    * @default true
    */
-  initAccessibilityAttrs?: boolean
+  initAccessibility?: boolean | {
+    attrs?: boolean
+    events?: boolean
+    styles?: boolean
+  }
   /**
    * Init events on the component.
    * Don't disable it if you don't know what your doing
@@ -47,6 +51,24 @@ export default abstract class Parent {
     return typeof this.opts.init === 'undefined' || this.opts.init === true
   }
 
+  protected get accessibilityStatus() {
+    if (typeof this.opts.initAccessibility === 'object') {
+      return {
+        attrs: typeof this.opts.initAccessibility.attrs === 'undefined' || this.opts.initAccessibility.attrs === true,
+        events: typeof this.opts.initAccessibility.events === 'undefined' || this.opts.initAccessibility.events === true,
+        styles: typeof this.opts.initAccessibility.styles === 'undefined' || this.opts.initAccessibility.styles === true,
+      }
+    }
+    else {
+      const status = typeof this.opts.initAccessibility === 'undefined' || this.opts.initAccessibility === true
+      return {
+        attrs: status,
+        events: status,
+        styles: status,
+      }
+    }
+  }
+
   /**
    * Emit an event
    */
@@ -66,14 +88,14 @@ export default abstract class Parent {
    */
   public init() {
     this.emitEvent('init')
-    if (this.initAccessibility)
+    if (this.accessibilityStatus.styles)
+      this.el.classList.add(`c-${this.name}--a11y`)
+
+    if (this.accessibilityStatus.attrs)
       this.initAccessibilityAttrs()
+
     if (typeof this.opts.initEvents === 'undefined' || this.opts.initEvents)
       this.initEvents()
-  }
-
-  protected get initAccessibility() {
-    return typeof this.opts.initEvents === 'undefined' || this.opts.initEvents
   }
 
   /**

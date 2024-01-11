@@ -69,7 +69,8 @@ export default class Drilldown extends Parent {
     })
 
     super.init()
-    this.initAccessibilityEvents()
+    if (this.accessibilityStatus.events)
+      this.initAccessibilityEvents()
     this.update(true)
   }
 

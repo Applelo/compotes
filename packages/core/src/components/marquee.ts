@@ -1,3 +1,4 @@
+import { tabbable } from 'tabbable'
 import Parent, { type ParentOptions } from './_parent'
 
 declare global {
@@ -88,7 +89,7 @@ export default class Marquee extends Parent {
       el: this.el,
     })
 
-    if (!this.initAccessibility)
+    if (!this.accessibilityStatus.events)
       return
 
     this.registerEvent({
@@ -230,10 +231,17 @@ export default class Marquee extends Parent {
       items.forEach((item) => {
         const clone = item.cloneNode(true) as Element
         clone.classList.add('c-marquee-clone')
-        if (this.initAccessibility)
+
+        if (this.accessibilityStatus.attrs)
           clone.setAttribute('aria-hidden', 'true')
+
         this.clones.push(clone)
         this.containerEl?.append(clone)
+
+        if (this.accessibilityStatus.attrs) {
+          const tabbables = tabbable(clone)
+          tabbables.forEach(item => item.setAttribute('tabindex', '-1'))
+        }
       })
     }
   }

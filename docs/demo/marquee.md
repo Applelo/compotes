@@ -6,7 +6,9 @@
   import { onMounted } from 'vue'
 
   onMounted(() => {
-    const marqueeDefault = new Marquee('#marquee-default')
+    const marqueeDefault = new Marquee('#marquee-default', {
+      fill: true
+    })
     const marqueeLeft = new Marquee('#marquee-left', {
       direction: 'left',
       fill: true

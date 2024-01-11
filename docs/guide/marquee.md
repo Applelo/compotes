@@ -1,6 +1,6 @@
 # Marquee
 
-The marquee component allows to create a animated text copying the old [marquee](https://developer.mozilla.org/fr/docs/Web/HTML/Element/marquee) element with modern support.
+The marquee component allows to create an animated text copying the old [marquee](https://developer.mozilla.org/fr/docs/Web/HTML/Element/marquee) element with modern support.
 
 ```scss
 @import 'compotes/css/marquee';
@@ -30,7 +30,7 @@ You are not limited to text. You can also add any kind of valid HTML like image.
 
 - Make the marquee tabbable and stop it if it is in focus via the keyboard
 - If the user has configure `prefers-reduced-motion` on his browser, the marquee animation will not be played.
-- If you are using the `fill` option, all cloned element will be set to `aria-hidden` to hide the  non necessary content to the screen reader.
+- If you are using the `fill` option, all cloned element will be set to `aria-hidden` to hide the non necessary content to the screen reader and not be tabbable thank to a `tabindex="-1"`.
 - If an element is focus with the keyboard, the marquee animation will be stop.
 
 ## Options

@@ -29,11 +29,6 @@
   animation: c-anim-marquee-x var(--c-marquee-duration) infinite linear;
 }
 
-.c-marquee:focus-visible .c-marquee-container,
-.c-marquee--keyboard:focus-within .c-marquee-container {
-  animation: none!important;
-}
-
 .c-marquee--direction-top .c-marquee-container,
 .c-marquee--direction-down .c-marquee-container {
   animation-name: c-anim-marquee-y;
@@ -54,16 +49,21 @@
   animation-direction: reverse;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .c-marquee-container {
-    animation: none;
-  }
-}
-
 .c-marquee--pause .c-marquee-container {
   animation-play-state: paused;
 }
 
 .c-marquee-container > * {
   flex-shrink: 0;
+}
+
+.c-marquee--a11y:focus-visible .c-marquee-container,
+.c-marquee--a11y.c-marquee--keyboard:focus-within .c-marquee-container {
+  animation: none!important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .c-marquee--a11y .c-marquee-container {
+    animation: none;
+  }
 }
