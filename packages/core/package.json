@@ -1,8 +1,8 @@
 {
   "name": "compotes",
   "type": "module",
-  "version": "0.8.0",
-  "packageManager": "pnpm@8.14.1",
+  "version": "0.8.1",
+  "packageManager": "pnpm@8.15.1",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
@@ -40,7 +40,7 @@
   },
   "main": "./dist/compotes.umd.cjs",
   "module": "./dist/compotes.js",
-  "types": "./dist/index.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -58,9 +58,9 @@
     "tabbable": "^6.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0",
+    "@types/node": "^20.11.16",
     "typescript": "^5.3.3",
-    "vite": "^5.0.11",
-    "vite-plugin-dts": "^3.7.0"
+    "vite": "^5.0.12",
+    "vite-plugin-dts": "^3.7.2"
   }
 }
