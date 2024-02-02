@@ -15,9 +15,10 @@ To learn more, check the *[documentation](https://compotes.dev)*.
 
 ## 🍏 Compotes
 
-- Drilldown ([demo](https://compotes.dev/demo/collapse.html))
 - Collapse/Accordion ([demo](https://compotes.dev/demo/drilldown.html))
 - Drag ([demo](https://compotes.dev/demo/drag.html))
+- Drilldown ([demo](https://compotes.dev/demo/collapse.html))
+- Dropdown ([demo](https://compotes.dev/demo/dropdown.html))
 - Marquee ([demo](https://compotes.dev/demo/marquee.html))
 
 And more to come!

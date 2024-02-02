@@ -1,7 +1,7 @@
 {
   "name": "@compotes/root",
   "type": "module",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "private": "true",
   "packageManager": "pnpm@8.15.1",
   "description": "Components library focused on accessibility/customization",

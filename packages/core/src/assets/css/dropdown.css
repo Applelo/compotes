@@ -1,0 +1,17 @@
+.c-dropdown  {
+  position: relative;
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.c-dropdown > ul {
+  position: absolute;
+  display: none;
+}
+
+.c-dropdown:hover > ul,
+.c-dropdown--keyboard:focus-within > ul {
+  display: block;
+}
+

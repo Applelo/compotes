@@ -38,7 +38,10 @@ export default abstract class Parent {
   protected events: ParentEvent[] = []
 
   constructor(el: HTMLElement | string, options: ParentOptions = {}) {
-    const checkEl = typeof el === 'string' ? document.querySelector<HTMLElement>(el) : el
+    const checkEl = typeof el === 'string'
+      ? document.querySelector<HTMLElement>(el)
+      : el
+
     if (!checkEl)
       throw this.error('The element/selector provided cannot be found.')
 

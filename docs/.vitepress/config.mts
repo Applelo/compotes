@@ -47,6 +47,7 @@ export default defineConfig({
           { text: 'Collapse/Accordion', link: '/demo/collapse' },
           { text: 'Drag', link: '/demo/drag' },
           { text: 'Drilldown', link: '/demo/drilldown' },
+          { text: 'Dropdown', link: '/demo/dropdown' },
           { text: 'Marquee', link: '/demo/marquee' },
         ],
       },

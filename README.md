@@ -15,9 +15,10 @@ To learn more, check the *[documentation](https://compotes.dev)*.
 
 ## 🍏 Compotes
 
-- Drilldown ([demo](https://compotes.dev/demo/collapse.html))
 - Collapse/Accordion ([demo](https://compotes.dev/demo/drilldown.html))
 - Drag ([demo](https://compotes.dev/demo/drag.html))
+- Drilldown ([demo](https://compotes.dev/demo/collapse.html))
+- Dropdown ([demo](https://compotes.dev/demo/dropdown.html))
 - Marquee ([demo](https://compotes.dev/demo/marquee.html))
 <!--
 - Tabs
@@ -80,7 +81,7 @@ A lot of components library are already shipped with styles but as a Front End d
 
 There are some good library like [React Aria](https://react-spectrum.adobe.com/react-aria/react-aria-components.html) but it's made to work on one framework and I work on different tech like Wordpress, Symfony or VueJS.
 
-> This library provide only the compotes and it's you to make a tart.
+> This library provides only the compotes and it's you to make a tart.
 
 ## 👨‍💼 License
 
