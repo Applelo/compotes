@@ -9,7 +9,10 @@ declare global {
   }
 }
 
+export interface DragOptions extends ParentOptions {}
+
 export default class Drag extends Parent {
+  declare public opts: DragOptions
   private isDown = false
   private draggableClass = 'c-drag--draggable'
   private draggingClass = 'c-drag--dragging'
@@ -21,7 +24,7 @@ export default class Drag extends Parent {
 
   private resizeObserver?: ResizeObserver
 
-  constructor(el: HTMLElement | string, options: ParentOptions = {}) {
+  constructor(el: HTMLElement | string, options: DragOptions = {}) {
     super(el, options)
     if (this.isInitializable)
       this.init()

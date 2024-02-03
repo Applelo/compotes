@@ -20,6 +20,11 @@ export interface DrilldownOptions extends ParentOptions {
    * @default false
    */
   dynamicHeight?: boolean
+  /**
+   * Use MutationObserver to update component on changes
+   * @default true
+   */
+  mutationObserver?: boolean
 }
 
 interface DrilldownItem {
@@ -55,15 +60,17 @@ export default class Drilldown extends Parent {
 
     this.wrapper = this.currentEl
 
-    this.mutationObserver = new MutationObserver(() => {
-      this.update(true)
-    })
+    this.mutationObserver = this.opts.mutationObserver === false
+      ? undefined
+      : new MutationObserver(() => {
+        this.update(true)
+      })
     this.resizeObserver = new ResizeObserver(() => {
       this.updateHeight()
     })
 
     this.resizeObserver.observe(this.el)
-    this.mutationObserver.observe(this.el, {
+    this.mutationObserver?.observe(this.el, {
       childList: true,
       subtree: true,
     })

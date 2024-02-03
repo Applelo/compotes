@@ -5,13 +5,14 @@
   padding: 0;
 }
 
-.c-dropdown > ul {
+.c-dropdown > ul,
+.c-dropdown > div {
   position: absolute;
   display: none;
 }
 
-.c-dropdown:hover > ul,
-.c-dropdown--keyboard:focus-within > ul {
+.c-dropdown [aria-expanded="true"] + ul,
+.c-dropdown [aria-expanded="true"] + div {
   display: block;
 }
 

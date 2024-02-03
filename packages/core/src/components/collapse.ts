@@ -12,12 +12,16 @@ declare global {
   }
 }
 
+export interface CollapseOptions extends ParentOptions {}
+
 export default class Collapse extends Parent {
+  declare public opts: CollapseOptions
   private triggers: HTMLElement[] = []
   private expanded = false
   private collapsing = false
   private timeout: number | undefined = undefined
-  constructor(el: HTMLElement | string, options: ParentOptions = {}) {
+
+  constructor(el: HTMLElement | string, options: CollapseOptions = {}) {
     super(el, options)
     if (this.isInitializable)
       this.init()
