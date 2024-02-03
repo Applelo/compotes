@@ -28,7 +28,7 @@ export interface ParentEvent {
   id: string
   event: string
   function: any
-  el: Element
+  el: Element | Window
 }
 
 export default abstract class Parent {

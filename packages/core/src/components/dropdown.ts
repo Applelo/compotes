@@ -28,7 +28,7 @@ export default class Dropdown extends Parent {
   declare public opts: DropdownOptions
   private triggerEl: HTMLButtonElement | HTMLLinkElement | null = null
   private menuEl: HTMLUListElement | null = null
-  private opened: boolean
+  private opened: boolean = false
 
   private mutationObserver?: MutationObserver
 
@@ -66,6 +66,7 @@ export default class Dropdown extends Parent {
       childList: true,
       subtree: true,
     })
+    this.opened = this.triggerEl.getAttribute('aria-expanded') === 'true'
 
     super.init()
   }
@@ -73,7 +74,7 @@ export default class Dropdown extends Parent {
   public initAccessibilityAttrs() {
     if (!this.triggerEl || !this.menuEl)
       return
-    this.triggerEl.setAttribute('aria-expanded', 'false')
+    this.triggerEl.setAttribute('aria-expanded', this.opened ? 'true' : 'false')
     this.triggerEl.setAttribute('aria-haspopup', 'true')
     if (this.triggerEl.tagName === 'A')
       this.triggerEl.setAttribute('role', 'button')
@@ -140,6 +141,19 @@ export default class Dropdown extends Parent {
         event: 'click',
         function: this.toggle.bind(this),
       })
+      this.registerEvent({
+        id: 'mousedown',
+        el: window,
+        event: 'mousedown',
+        function: (e: MouseEvent) => {
+          const target = e.target as HTMLElement | null
+          if (!target)
+            return
+          const dropdown = target.closest('.c-dropdown')
+          if (!dropdown)
+            this.close()
+        },
+      })
     }
   }
 
@@ -183,6 +197,9 @@ export default class Dropdown extends Parent {
       this.open()
   }
 
+  /**
+   * Return if the dropdown is opened
+   */
   public get isOpened() {
     return this.opened
   }
