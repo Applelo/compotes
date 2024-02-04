@@ -55,10 +55,6 @@ The above import will work on modern building tools, like ViteJS and Webpack 5, 
 ```
 :::
 
-::: warning
-Only the main css files is compiled and minified. The other parts are not. You need to processed them with your favorite tool.
-:::
-
 4. Use the HTML component markup
 
 ```html
