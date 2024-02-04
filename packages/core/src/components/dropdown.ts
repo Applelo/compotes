@@ -1,4 +1,4 @@
-import { generateId } from '../utils/accessibility'
+import { focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
 import Parent, { type ParentOptions } from './_parent'
 
 declare global {
@@ -41,15 +41,15 @@ export default class Dropdown extends Parent {
   public init() {
     this.name = 'dropdown'
 
-    this.triggerEl = this.el.querySelector(':scope > a, :scope > button')
+    this.triggerEl = this.el.querySelector(':scope > :is([role="button"], button)')
     if (!this.triggerEl) {
       throw this.error(
-        'The component needs to have a <button> or <a> element as a direct child',
+        'The component needs to have a <button> or element with the role "button", <a role="button"> for example, as a direct child',
         { cause: this.el },
       )
     }
 
-    this.menuEl = this.el.querySelector(':scope > ul, :scope > div')
+    this.menuEl = this.el.querySelector(':scope > :not(button, [role="button"])')
     if (!this.menuEl) {
       throw this.error(
         'The component needs to have a <ul> or a <div> element as a direct child',
@@ -76,14 +76,12 @@ export default class Dropdown extends Parent {
       return
     this.triggerEl.setAttribute('aria-expanded', this.opened ? 'true' : 'false')
     this.triggerEl.setAttribute('aria-haspopup', 'true')
-    if (this.triggerEl.tagName === 'A')
-      this.triggerEl.setAttribute('role', 'button')
 
     const id = this.menuEl.id || generateId()
     this.triggerEl.setAttribute('aria-controls', id)
     this.menuEl.setAttribute('id', id)
 
-    if (this.menuEl.tagName !== 'UL')
+    if (this.type === 'default')
       return
     this.menuEl.setAttribute('role', 'menu')
     const lis = this.menuEl.querySelectorAll(':scope > li')
@@ -99,6 +97,13 @@ export default class Dropdown extends Parent {
   public initEvents() {
     if (!this.triggerEl || !this.menuEl)
       return
+    this.destroyEvents(['click'])
+    this.registerEvent({
+      id: 'click',
+      el: this.triggerEl,
+      event: 'click',
+      function: this.toggle.bind(this),
+    })
     if (this.opts.openOn === 'hover') {
       this.destroyEvents([
         'triggerEnter',
@@ -132,21 +137,13 @@ export default class Dropdown extends Parent {
       })
     }
     else {
-      this.destroyEvents([
-        'click',
-      ])
-      this.registerEvent({
-        id: 'click',
-        el: this.triggerEl,
-        event: 'click',
-        function: this.toggle.bind(this),
-      })
+      this.destroyEvents(['mousedown'])
       this.registerEvent({
         id: 'mousedown',
         el: window,
         event: 'mousedown',
         function: (e: MouseEvent) => {
-          const target = e.target as HTMLElement | null
+          const target = e.target as Element | null
           if (!target)
             return
           const dropdown = target.closest('.c-dropdown')
@@ -155,6 +152,67 @@ export default class Dropdown extends Parent {
         },
       })
     }
+    if (this.accessibilityStatus.events)
+      this.initAccessibilityEvents()
+  }
+
+  /**
+   * Init accessibility events.
+   */
+  public initAccessibilityEvents() {
+    this.destroyEvents(['key', 'focusOut'])
+
+    this.registerEvent({
+      id: 'key',
+      event: 'keydown',
+      el: this.el,
+      function: (e: KeyboardEvent) => {
+        switch (e.key) {
+          case 'Escape':
+            this.close()
+            this.triggerEl?.focus()
+            break
+          case 'ArrowUp':
+          case 'Up':
+            // Focus to previous element
+            if (this.menuEl && this.type === 'menu')
+              focusSibling(this.menuEl, 'previous')
+            break
+          case 'ArrowDown':
+          case 'Down':
+            // Focus to next element
+            if (this.menuEl && this.type === 'menu')
+              focusSibling(this.menuEl, 'next')
+            break
+          case 'Home':
+          case 'PageUp':
+            // Moves focus to the first item in the submenu.
+            if (this.menuEl && this.type === 'menu')
+              focusFirst(this.menuEl)
+            break
+          case 'End':
+          case 'PageDown':
+            // Moves focus to the last item in the submenu.
+            if (this.menuEl && this.type === 'menu')
+              focusLast(this.menuEl)
+            break
+        }
+      },
+    })
+
+    // this.registerEvent({
+    //   id: 'focusOut',
+    //   function: (e: FocusEvent) => {
+    //     const target = e.target as Element
+    //     console.log(e.target)
+    //     if (this.menuEl?.contains(target))
+    //       return
+    //     this.close()
+    //     this.triggerEl?.focus()
+    //   },
+    //   event: 'focusout',
+    //   el: this.el,
+    // })
   }
 
   /**
@@ -174,6 +232,16 @@ export default class Dropdown extends Parent {
     this.triggerEl.setAttribute('aria-expanded', 'true')
     this.opened = true
     this.emitEvent('opened')
+  }
+
+  /**
+   * Return the type of the dropdown
+   *
+   */
+  public get type() {
+    return this.menuEl?.tagName === 'UL'
+      ? 'menu'
+      : 'default'
   }
 
   /**

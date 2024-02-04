@@ -43,7 +43,7 @@
     "publish": "pnpm run -r publish"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "2.6.3",
+    "@antfu/eslint-config": "2.6.4",
     "eslint": "^8.56.0",
     "playwright": "^1.41.2",
     "typescript": "^5.3.3",

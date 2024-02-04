@@ -76,8 +76,6 @@ export default class Drilldown extends Parent {
     })
 
     super.init()
-    if (this.accessibilityStatus.events)
-      this.initAccessibilityEvents()
     this.update(true)
   }
 
@@ -111,7 +109,35 @@ export default class Drilldown extends Parent {
     })
   }
 
-  // Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/
+  public initEvents() {
+    const backs = this.el.querySelectorAll('.c-drilldown-back')
+    const nexts = this.el.querySelectorAll('.c-drilldown-next')
+    this.destroyEvents(['back', 'next'])
+    backs.forEach((back) => {
+      this.registerEvent({
+        id: 'back',
+        el: back,
+        event: 'click',
+        function: this.back.bind(this),
+      })
+    })
+    nexts.forEach((next) => {
+      this.registerEvent({
+        id: 'next',
+        el: next,
+        event: 'click',
+        function: this.next.bind(this),
+      })
+    })
+
+    if (this.accessibilityStatus.events)
+      this.initAccessibilityEvents()
+  }
+
+  /**
+   * Init accessibility events.
+   * Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/ controls
+   */
   public initAccessibilityEvents() {
     this.destroyEvents(['key'])
     this.registerEvent({
@@ -169,28 +195,6 @@ export default class Drilldown extends Parent {
             break
         }
       },
-    })
-  }
-
-  public initEvents() {
-    const backs = this.el.querySelectorAll('.c-drilldown-back')
-    const nexts = this.el.querySelectorAll('.c-drilldown-next')
-    this.destroyEvents(['back', 'next'])
-    backs.forEach((back) => {
-      this.registerEvent({
-        id: 'back',
-        el: back,
-        event: 'click',
-        function: this.back.bind(this),
-      })
-    })
-    nexts.forEach((next) => {
-      this.registerEvent({
-        id: 'next',
-        el: next,
-        event: 'click',
-        function: this.next.bind(this),
-      })
     })
   }
 

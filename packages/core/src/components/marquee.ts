@@ -78,7 +78,7 @@ export default class Marquee extends Parent {
   }
 
   public initEvents() {
-    this.destroyEvents()
+    this.destroyEvents(['registerLoopEvent'])
 
     this.registerEvent({
       id: 'registerLoopEvent',
@@ -89,9 +89,15 @@ export default class Marquee extends Parent {
       el: this.el,
     })
 
-    if (!this.accessibilityStatus.events)
-      return
+    if (this.accessibilityStatus.events)
+      this.initAccessibilityEvents()
+  }
 
+  /**
+   * Init accessibility events.
+   */
+  public initAccessibilityEvents() {
+    this.destroyEvents(['addKeyboardClass', 'removeKeyboardClass'])
     this.registerEvent({
       id: 'addKeyboardClass',
       function: () => {

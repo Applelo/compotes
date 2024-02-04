@@ -5,14 +5,12 @@
   padding: 0;
 }
 
-.c-dropdown > ul,
-.c-dropdown > div {
+.c-dropdown > *:not([role="button"], button) {
   position: absolute;
   display: none;
 }
 
-.c-dropdown [aria-expanded="true"] + ul,
-.c-dropdown [aria-expanded="true"] + div {
+.c-dropdown [aria-expanded="true"] + * {
   display: block;
 }
 
