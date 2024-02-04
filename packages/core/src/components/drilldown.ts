@@ -265,10 +265,15 @@ export default class Drilldown extends Parent {
   private getButton(button: HTMLButtonElement | Event, type: 'back' | 'next') {
     let btn: HTMLButtonElement | null = null
     if ('target' in button) {
-      const target = button.target as HTMLButtonElement
-      btn = target.classList.contains(`c-drilldown-${type}`)
-        ? target
-        : target.closest(`.c-drilldown-${type}`)
+      const target = button.target as HTMLButtonElement | null
+      if (target) {
+        btn = target.classList.contains(`c-drilldown-${type}`)
+          ? target
+          : target.closest(`.c-drilldown-${type}`)
+      }
+      else {
+        btn = null
+      }
     }
     else {
       btn = button

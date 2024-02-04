@@ -199,20 +199,6 @@ export default class Dropdown extends Parent {
         }
       },
     })
-
-    // this.registerEvent({
-    //   id: 'focusOut',
-    //   function: (e: FocusEvent) => {
-    //     const target = e.target as Element
-    //     console.log(e.target)
-    //     if (this.menuEl?.contains(target))
-    //       return
-    //     this.close()
-    //     this.triggerEl?.focus()
-    //   },
-    //   event: 'focusout',
-    //   el: this.el,
-    // })
   }
 
   /**

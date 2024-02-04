@@ -110,10 +110,12 @@ export default class Marquee extends Parent {
     this.registerEvent({
       id: 'removeKeyboardClass',
       function: (e: FocusEvent) => {
-        const target = e.target as Element
+        const target = e.target as Element | null
         if (
-          target.classList.contains('.c-marquee')
-          || target.closest('.c-marquee')
+          target && (
+            target.classList.contains('.c-marquee')
+            || target.closest('.c-marquee')
+          )
         )
           return
         this.el.classList.remove('c-marquee--keyboard')
