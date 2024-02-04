@@ -31,7 +31,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@src': resolve(__dirname, './src'),
-      '@css': resolve(__dirname, './src/assets/css'),
+      '@css': resolve(__dirname, './src/css'),
     },
   },
   plugins: [dts({
