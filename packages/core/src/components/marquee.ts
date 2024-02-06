@@ -78,7 +78,7 @@ export default class Marquee extends Parent {
   }
 
   public initEvents() {
-    this.destroyEvents()
+    this.destroyEvents(['registerLoopEvent'])
 
     this.registerEvent({
       id: 'registerLoopEvent',
@@ -89,9 +89,15 @@ export default class Marquee extends Parent {
       el: this.el,
     })
 
-    if (!this.accessibilityStatus.events)
-      return
+    if (this.accessibilityStatus.events)
+      this.initAccessibilityEvents()
+  }
 
+  /**
+   * Init accessibility events.
+   */
+  public initAccessibilityEvents() {
+    this.destroyEvents(['addKeyboardClass', 'removeKeyboardClass'])
     this.registerEvent({
       id: 'addKeyboardClass',
       function: () => {
@@ -104,10 +110,12 @@ export default class Marquee extends Parent {
     this.registerEvent({
       id: 'removeKeyboardClass',
       function: (e: FocusEvent) => {
-        const target = e.target as Element
+        const target = e.target as Element | null
         if (
-          target.classList.contains('.c-marquee')
-          || target.closest('.c-marquee')
+          target && (
+            target.classList.contains('.c-marquee')
+            || target.closest('.c-marquee')
+          )
         )
           return
         this.el.classList.remove('c-marquee--keyboard')

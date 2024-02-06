@@ -1,0 +1,16 @@
+.c-dropdown  {
+  position: relative;
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.c-dropdown-container {
+  position: absolute;
+  display: none;
+}
+
+.c-dropdown-trigger[aria-expanded="true"] + .c-dropdown-container {
+  display: block;
+}
+

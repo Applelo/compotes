@@ -14,7 +14,7 @@ import { Collapse } from 'compotes'
 const collapse = new Collapse('#my-collapse')
 ```
 
-You need to put an `id` to the element you want to collapse. To all your trigger buttons, add an `aria-controls` attribute refering to the `id` of the collapse.
+It is recommended to put an `id` to the element you want to collapse. To all your trigger buttons, add an `aria-controls` attribute refering to the `id` of the collapse.
 
 ```html
 <button class="c-collapse-trigger" aria-controls="my-collapse">
@@ -51,7 +51,7 @@ To ensure accessibility feature, the component will inject `aria-expanded` to al
 
 ## Options
 
-You can access some data from the component.
+You can change some options from the component.
 
 ```js
 import { Collapse } from 'compotes'

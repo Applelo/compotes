@@ -47,16 +47,12 @@ Array.from(document.getElementsByClassName('c-collapse'))
 ```
 
 ::: info
-The above import will work on modern building tools, like ViteJS and Webpack 5, which support package imports. If not, you can use the direct CSS location :
+The above import will work on modern building tools, like ViteJS and Webpack 5, which support package imports. If not, you can use the direct CSS location:
 
 ```scss
 @import 'compotes/style.css';
 @import 'compotes/css/collapse.css';
 ```
-:::
-
-::: warning
-Only the main css files is compiled and minified. The other parts are not. You need to processed them with your favorite tool.
 :::
 
 4. Use the HTML component markup

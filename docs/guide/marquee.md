@@ -35,7 +35,7 @@ You are not limited to text. You can also add any kind of valid HTML like image.
 
 ## Options
 
-You can access some data from the component.
+You can change some options from the component.
 
 ```js
 import { Drag } from 'compotes'
@@ -59,7 +59,7 @@ const drag = new Drag('.c-drag', {
 
 ## Methods
 
-The marquee component provides several methods to init and destroy the components.
+The marquee component provides several methods to init and destroy it. You can also control the marquee animation.
 
 ```js
 import { Marquee } from 'compotes'
@@ -83,10 +83,7 @@ marquee.init()// [!code focus]
 You can listen to emitted events directly on the marquee element like this:
 
 ```js
-import { Marquee } from 'compotes'
-
-const marquee = new Drag('.c-marquee')
-marquee.addEventListener('c.marquee.init', (e) => { // [!code focus:3]
+marqueeEl.addEventListener('c.marquee.init', (e) => { // [!code focus:3]
   console.log(e.detail)// marquee object
 })
 ```

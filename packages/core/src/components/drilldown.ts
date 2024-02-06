@@ -20,6 +20,11 @@ export interface DrilldownOptions extends ParentOptions {
    * @default false
    */
   dynamicHeight?: boolean
+  /**
+   * Use MutationObserver to update component on changes
+   * @default true
+   */
+  mutationObserver?: boolean
 }
 
 interface DrilldownItem {
@@ -55,22 +60,22 @@ export default class Drilldown extends Parent {
 
     this.wrapper = this.currentEl
 
-    this.mutationObserver = new MutationObserver(() => {
-      this.update(true)
-    })
+    this.mutationObserver = this.opts.mutationObserver === false
+      ? undefined
+      : new MutationObserver(() => {
+        this.update(true)
+      })
     this.resizeObserver = new ResizeObserver(() => {
       this.updateHeight()
     })
 
     this.resizeObserver.observe(this.el)
-    this.mutationObserver.observe(this.el, {
+    this.mutationObserver?.observe(this.el, {
       childList: true,
       subtree: true,
     })
 
     super.init()
-    if (this.accessibilityStatus.events)
-      this.initAccessibilityEvents()
     this.update(true)
   }
 
@@ -104,7 +109,35 @@ export default class Drilldown extends Parent {
     })
   }
 
-  // Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/
+  public initEvents() {
+    const backs = this.el.querySelectorAll('.c-drilldown-back')
+    const nexts = this.el.querySelectorAll('.c-drilldown-next')
+    this.destroyEvents(['back', 'next'])
+    backs.forEach((back) => {
+      this.registerEvent({
+        id: 'back',
+        el: back,
+        event: 'click',
+        function: this.back.bind(this),
+      })
+    })
+    nexts.forEach((next) => {
+      this.registerEvent({
+        id: 'next',
+        el: next,
+        event: 'click',
+        function: this.next.bind(this),
+      })
+    })
+
+    if (this.accessibilityStatus.events)
+      this.initAccessibilityEvents()
+  }
+
+  /**
+   * Init accessibility events.
+   * Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/ controls
+   */
   public initAccessibilityEvents() {
     this.destroyEvents(['key'])
     this.registerEvent({
@@ -162,28 +195,6 @@ export default class Drilldown extends Parent {
             break
         }
       },
-    })
-  }
-
-  public initEvents() {
-    const backs = this.el.querySelectorAll('.c-drilldown-back')
-    const nexts = this.el.querySelectorAll('.c-drilldown-next')
-    this.destroyEvents(['back', 'next'])
-    backs.forEach((back) => {
-      this.registerEvent({
-        id: 'back',
-        el: back,
-        event: 'click',
-        function: this.back.bind(this),
-      })
-    })
-    nexts.forEach((next) => {
-      this.registerEvent({
-        id: 'next',
-        el: next,
-        event: 'click',
-        function: this.next.bind(this),
-      })
     })
   }
 
@@ -254,10 +265,15 @@ export default class Drilldown extends Parent {
   private getButton(button: HTMLButtonElement | Event, type: 'back' | 'next') {
     let btn: HTMLButtonElement | null = null
     if ('target' in button) {
-      const target = button.target as HTMLButtonElement
-      btn = target.classList.contains(`c-drilldown-${type}`)
-        ? target
-        : target.closest(`.c-drilldown-${type}`)
+      const target = button.target as HTMLButtonElement | null
+      if (target) {
+        btn = target.classList.contains(`c-drilldown-${type}`)
+          ? target
+          : target.closest(`.c-drilldown-${type}`)
+      }
+      else {
+        btn = null
+      }
     }
     else {
       btn = button

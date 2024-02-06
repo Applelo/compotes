@@ -11,13 +11,22 @@ export function generateId() {
 }
 
 /**
+ * Get first or last focusable element inside an element
+ */
+export function getFocusElement(container: Element, position: 'first' | 'last') {
+  const tabbables = tabbable(container, { displayCheck: 'none' })
+  if (tabbables.length === 0)
+    return null
+  return position === 'first' ? tabbables[0] : tabbables[tabbables.length - 1]
+}
+
+/**
  * Focus on the first element
  */
 export function focusFirst(container: HTMLElement, rootEl?: HTMLElement) {
-  const tabbables = tabbable(container, { displayCheck: 'none' })
-  if (tabbables.length === 0)
-    return false
-  const firstEl = tabbables[0]
+  const firstEl = getFocusElement(container, 'first')
+  if (!firstEl)
+    return
   firstEl.focus()
   if (rootEl)
     rootEl.scrollTo(0, 0)
@@ -28,10 +37,9 @@ export function focusFirst(container: HTMLElement, rootEl?: HTMLElement) {
  * Focus on the last element
  */
 export function focusLast(container: HTMLElement) {
-  const tabbables = tabbable(container, { displayCheck: 'none' })
-  if (tabbables.length === 0)
-    return false
-  const lastEl = tabbables[tabbables.length - 1]
+  const lastEl = getFocusElement(container, 'last')
+  if (!lastEl)
+    return
   lastEl.focus()
   return true
 }
@@ -77,8 +85,7 @@ export function focusChar(container: HTMLElement, char: string) {
   const items = Array.from(container.querySelectorAll(':scope > *'))
   for (let index = 0; index < items.length; index++) {
     const item = items[index]
-    const tabbables = tabbable(item, { displayCheck: 'none' })
-    const focusEl = tabbables.length ? tabbables[0] : null
+    const focusEl = getFocusElement(item, 'first')
 
     if (
       focusEl

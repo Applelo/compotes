@@ -1,7 +1,7 @@
 {
   "name": "compotes",
   "type": "module",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "packageManager": "pnpm@8.15.1",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
@@ -24,8 +24,14 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/compotes.js",
-      "require": "./dist/compotes.umd.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/compotes.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/compotes.umd.cjs"
+      }
     },
     "./css": "./dist/style.css",
     "./css/style.css": "./dist/style.css",
@@ -35,6 +41,8 @@
     "./css/drag.css": "./dist/css/drag.css",
     "./css/drilldown": "./dist/css/drilldown.css",
     "./css/drilldown.css": "./dist/css/drilldown.css",
+    "./css/dropdown": "./dist/css/dropdown.css",
+    "./css/dropdown.css": "./dist/css/dropdown.css",
     "./css/marquee": "./dist/css/marquee.css",
     "./css/marquee.css": "./dist/css/marquee.css"
   },
@@ -59,6 +67,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.16",
+    "fast-glob": "^3.3.2",
+    "lightningcss": "^1.23.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
     "vite-plugin-dts": "^3.7.2"
