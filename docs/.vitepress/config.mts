@@ -35,6 +35,10 @@ export default defineConfig({
             link: '/guide/drilldown',
           },
           {
+            text: 'Dropdown',
+            link: '/guide/dropdown',
+          },
+          {
             text: 'Marquee',
             link: '/guide/marquee',
           },

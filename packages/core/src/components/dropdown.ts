@@ -18,6 +18,12 @@ export interface DropdownOptions extends ParentOptions {
    */
   openOn?: 'hover' | 'click'
   /**
+   * Enforce the dropdown menu type.
+   * By default, it will detect the container element to apply the dropdown type.
+   * @default undefined
+   */
+  enforceType?: 'default' | 'menu'
+  /**
    * Use MutationObserver to update component on changes
    * @default true
    */
@@ -41,18 +47,18 @@ export default class Dropdown extends Parent {
   public init() {
     this.name = 'dropdown'
 
-    this.triggerEl = this.el.querySelector(':scope > :is([role="button"], button)')
+    this.triggerEl = this.el.querySelector('.c-dropdown-trigger')
     if (!this.triggerEl) {
       throw this.error(
-        'The component needs to have a <button> or element with the role "button", <a role="button"> for example, as a direct child',
+        'The component needs to have a trigger element with the class `c-dropdown-trigger` as a direct child',
         { cause: this.el },
       )
     }
 
-    this.menuEl = this.el.querySelector(':scope > :not(button, [role="button"])')
+    this.menuEl = this.el.querySelector('.c-dropdown-container')
     if (!this.menuEl) {
       throw this.error(
-        'The component needs to have a <ul> or a <div> element as a direct child',
+        'The component needs to have a container element with the class `c-dropdown-trigger` as a direct child',
         { cause: this.el },
       )
     }
@@ -76,6 +82,8 @@ export default class Dropdown extends Parent {
       return
     this.triggerEl.setAttribute('aria-expanded', this.opened ? 'true' : 'false')
     this.triggerEl.setAttribute('aria-haspopup', 'true')
+    if (this.triggerEl.tagName !== 'BUTTON')
+      this.triggerEl.setAttribute('role', 'button')
 
     const id = this.menuEl.id || generateId()
     this.triggerEl.setAttribute('aria-controls', id)
@@ -225,6 +233,8 @@ export default class Dropdown extends Parent {
    *
    */
   public get type() {
+    if (this.opts.enforceType)
+      return this.opts.enforceType
     return this.menuEl?.tagName === 'UL'
       ? 'menu'
       : 'default'
@@ -254,7 +264,7 @@ export default class Dropdown extends Parent {
   /**
    * Return if the dropdown is opened
    */
-  public get isOpened() {
+  public get isOpen() {
     return this.opened
   }
 

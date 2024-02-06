@@ -12,7 +12,7 @@ import { Drag } from 'compotes'
 const drag = new Drag('.c-drag')
 ```
 
-You need to have a width and/or height define on the component because it uses `overflow: auto;`.
+You need to have elements overflowing inside the component because it uses the css property `overflow: auto;`.
 
 ```html
 
@@ -23,7 +23,7 @@ You need to have a width and/or height define on the component because it uses `
 
 ## Options
 
-You can access some data from the component.
+You can change some options from the component.
 
 ```js
 import { Drag } from 'compotes'
@@ -39,7 +39,7 @@ const drag = new Drag('.c-drag', {
 
 ## Methods
 
-The drag component provides several methods to init and destroy the components.
+The drag component provides several methods to init and destroy it.
 
 ```js
 import { Drag } from 'compotes'
@@ -75,10 +75,7 @@ console.log(drag.isDraggable)// [!code focus]
 You can listen to emitted events directly on the drag element like this:
 
 ```js
-import { Drag } from 'compotes'
-
-const drag = new Drag('.c-drag')
-drag.addEventListener('c.drag.init', (e) => { // [!code focus:3]
+dragEl.addEventListener('c.drag.init', (e) => { // [!code focus:3]
   console.log(e.detail)// drag object
 })
 ```

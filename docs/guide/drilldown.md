@@ -95,7 +95,7 @@ The drilldown menu comes with keyboard shortcut if your focus is inside the comp
 
 ## Options
 
-You can access some data from the component.
+You can change some options from the component.
 
 ```js
 import { Drilldown } from 'compotes'
@@ -127,6 +127,7 @@ drilldown.reset()// [!code focus]
 - `init()`: Init the component
 - `initAccessibilityAttrs()`: Init accessibility attributes
 - `initEvents()`: Init component events
+- `initAccessibilityEvents()`: Init component accessibility events
 - `update()`: Update drilldown trigger status
 - `reset()`: Reset the drilldown to the root menu
 - `back()`: Back to the previous menu
