@@ -54,9 +54,9 @@ You can change some options from the component.
 import { Dropdown } from 'compotes'
 
 const drag = new Drag('.c-drag', {
-  init: true, // [!code focus:3]
+  init: true, // [!code focus:4]
   initEvents: true,
-  enforceType: 'default',
+  enforceType: undefined,
   openOn: 'click',
 })
 ```

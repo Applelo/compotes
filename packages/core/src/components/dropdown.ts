@@ -168,7 +168,7 @@ export default class Dropdown extends Parent {
    * Init accessibility events.
    */
   public initAccessibilityEvents() {
-    this.destroyEvents(['key', 'focusOut'])
+    this.destroyEvents(['key', 'focusin'])
 
     this.registerEvent({
       id: 'key',
@@ -205,6 +205,18 @@ export default class Dropdown extends Parent {
               focusLast(this.menuEl)
             break
         }
+      },
+    })
+
+    this.registerEvent({
+      id: 'focusin',
+      event: 'focusin',
+      el: window,
+      function: (e: Event) => {
+        const target = e.target as Element | null
+        if (target?.closest('.c-dropdown') === this.el)
+          return
+        this.close()
       },
     })
   }

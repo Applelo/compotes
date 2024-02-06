@@ -17,6 +17,7 @@ const config: InlineConfig = {
       input: {
         collapse: resolve(__dirname, './components/collapse.html'),
         drag: resolve(__dirname, './components/drag.html'),
+        dropdown: resolve(__dirname, './components/dropdown.html'),
         drilldown: resolve(__dirname, './components/drilldown.html'),
         marquee: resolve(__dirname, './components/marquee.html'),
         parent: resolve(__dirname, './components/parent.html'),

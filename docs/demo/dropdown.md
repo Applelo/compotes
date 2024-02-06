@@ -31,7 +31,7 @@
 </div>
 
 <div class="c-dropdown" id="dropdown-menu" style="margin-top: 2rem;">
-  <button aria-controls="dropdown-menu-container">Item 1 - Dropdown Menu</button>
+  <button class="c-dropdown-trigger" aria-controls="dropdown-menu-container">Item 1 - Dropdown Menu</button>
   <ul class="c-dropdown-container" id="dropdown-menu-container">
     <li><a href="#">Item 1</a></li>
     <li><a href="#">Item 2</a></li>
