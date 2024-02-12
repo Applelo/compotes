@@ -44,7 +44,7 @@ const drag = new Drag('.c-drag', {
   init: true, // [!code focus:6]
   initEvents: true,
   fill: false,
-  direction: 'left',
+  direction: 'right',
   behavior: 'scroll',
   duration: 1
 })
