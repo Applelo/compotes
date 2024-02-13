@@ -96,7 +96,7 @@ You can access data from the component like this:
 import { Collapse } from 'compotes'
 
 const collapse = new Collapse('#my-collapse')
-console.log(collapse.expanded)// [!code focus]
+console.log(collapse.isExpanded)// [!code focus]
 ```
 
 - `options` (options object): Get options used to init the component

@@ -9,7 +9,7 @@ The marquee component allows to create an animated text copying the old [marquee
 ```js
 import { Marquee } from 'compotes'
 
-const marquee = new Drag('.c-marquee')
+const marquee = new Marquee('.c-marquee')
 ```
 
 The structure consists to a list of element. All animation are CSS based.
@@ -38,15 +38,16 @@ You are not limited to text. You can also add any kind of valid HTML like image.
 You can change some options from the component.
 
 ```js
-import { Drag } from 'compotes'
+import { Marquee } from 'compotes'
 
-const drag = new Drag('.c-drag', {
+const marquee = new Marquee('.c-marquee', {
   init: true, // [!code focus:6]
   initEvents: true,
   fill: false,
   direction: 'right',
   behavior: 'scroll',
-  duration: 1
+  duration: 1,
+  mutationObserver: true
 })
 ```
 
@@ -56,6 +57,7 @@ const drag = new Drag('.c-drag', {
 - `direction` ('left' | 'right' | 'up' | 'down'): Direction of marquee animation
 - `behavior` ('scroll' | 'alternate'): The behavior the marquee animation
 - `duration` (number or string): The duration of the marquee animation
+- `mutationObserver` (boolean): Use MutationObserver to update component on changes
 
 ## Methods
 
@@ -78,6 +80,20 @@ marquee.init()// [!code focus]
 - `play()`: Play the marquee component
 - `pause()`: Pause the marquee component
 
+## Data
+
+You can access data from the component like this:
+
+```js
+import { Marquee } from 'compotes'
+
+const marquee = new Marquee('#my-marquee')
+console.log(marquee.isPaused)// [!code focus]
+```
+
+- `options` (options object): Get options used to init the component
+- `isPaused` (boolean): If the marquee is paused or not
+
 ## Events
 
 You can listen to emitted events directly on the marquee element like this:
@@ -89,7 +105,7 @@ marqueeEl.addEventListener('c.marquee.init', (e) => { // [!code focus:3]
 ```
 
 - `c.marquee.init`: On component init
-- `c.marquee.play`: On component drag play
-- `c.marquee.pause`: On component drag pause
+- `c.marquee.play`: On component marquee play
+- `c.marquee.pause`: On component marquee pause
 - `c.marquee.loop`: On component marquee loop
 - `c.marquee.destroy`: On component destroy
