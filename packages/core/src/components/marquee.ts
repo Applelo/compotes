@@ -33,6 +33,11 @@ export interface MarqueeOptions extends ParentOptions {
    * @default 1
    */
   duration?: number | string
+  /**
+   * Use MutationObserver to update component on changes
+   * @default true
+   */
+  mutationObserver?: boolean
 }
 
 export default class Marquee extends Parent {
@@ -68,19 +73,21 @@ export default class Marquee extends Parent {
     this.update()
     this.containerEl = this.el.querySelector('.c-marquee-container')
 
-    this.mutationObserver = new MutationObserver(([el]) => {
-      const addedEls = Array.from(el.addedNodes) as HTMLElement[]
-      const isFilling = addedEls.findIndex(item => item.classList.contains('c-marquee-clone')) === -1
-      if (!isFilling)
-        this.update(this.opts.fill)
-    })
+    this.mutationObserver = this.opts.mutationObserver === false
+      ? undefined
+      : new MutationObserver(([el]) => {
+        const addedEls = Array.from(el.addedNodes) as HTMLElement[]
+        const isFilling = addedEls.findIndex(item => item.classList.contains('c-marquee-clone')) === -1
+        if (!isFilling)
+          this.update(this.opts.fill)
+      })
     this.resizeObserver = new ResizeObserver(() => {
       // fix wrong calculation from Firefox
       setTimeout(() => this.update(), 1)
     })
 
     this.resizeObserver.observe(this.el)
-    this.mutationObserver.observe(this.el, {
+    this.mutationObserver?.observe(this.el, {
       childList: true,
       subtree: true,
     })
