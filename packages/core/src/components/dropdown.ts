@@ -23,11 +23,11 @@ export interface DropdownOptions extends ParentOptions {
    * @default undefined
    */
   enforceType?: 'default' | 'menu'
-  /**
-   * Use ResizeObserver to get and set the width on the trigger and the container
-   * @default false
-   */
-  setWidth?: boolean
+  // /**
+  //  * Use ResizeObserver to get and set the width on the trigger and the container
+  //  * @default false
+  //  */
+  // setWidth?: boolean
   /**
    * Use MutationObserver to update component on changes
    * @default true
@@ -42,8 +42,8 @@ export default class Dropdown extends Parent {
   private opened: boolean = false
 
   private mutationObserver?: MutationObserver
-  private resizeObserver?: ResizeObserver
-  private widthCssVar = '--c-dropdown-width'
+  // private resizeObserver?: ResizeObserver
+  // private widthCssVar = '--c-dropdown-width'
 
   constructor(el: HTMLElement | string, options: DropdownOptions = {}) {
     super(el, options)
@@ -75,16 +75,16 @@ export default class Dropdown extends Parent {
       : new MutationObserver(() => {
         this.update()
       })
-    this.resizeObserver = this.opts.setWidth === true
-      ? new ResizeObserver(() => {
-        this.setWidth()
-      })
-      : undefined
+    // this.resizeObserver = this.opts.setWidth === true
+    //   ? new ResizeObserver(() => {
+    //     this.setWidth()
+    //   })
+    //   : undefined
     this.mutationObserver?.observe(this.el, {
       childList: true,
       subtree: true,
     })
-    this.resizeObserver?.observe(this.el)
+    // this.resizeObserver?.observe(this.el)
     this.opened = this.triggerEl.getAttribute('aria-expanded') === 'true'
 
     super.init()
@@ -265,18 +265,17 @@ export default class Dropdown extends Parent {
       : 'default'
   }
 
-  private setWidth() {
-    this.el.classList.remove('c-dropdown--setwidth')
-    this.el.style.removeProperty(this.widthCssVar)
-    if (!this.triggerEl || !this.menuEl)
-      return
-    const triggerWidth = this.triggerEl.clientWidth
-    const containerWidth = this.menuEl.clientWidth
-    console.log(triggerWidth, containerWidth)
-    const maxWidth = Math.max(triggerWidth, containerWidth)
-    this.el.style.setProperty(this.widthCssVar, `${Math.ceil(maxWidth)}px`)
-    this.el.classList.add('c-dropdown--setwidth')
-  }
+  // private setWidth() {
+  //   this.el.classList.remove('c-dropdown--setwidth')
+  //   this.el.style.removeProperty(this.widthCssVar)
+  //   if (!this.triggerEl || !this.menuEl)
+  //     return
+  //   const triggerWidth = this.triggerEl.clientWidth
+  //   const containerWidth = this.menuEl.clientWidth
+  //   const maxWidth = Math.max(triggerWidth, containerWidth)
+  //   this.el.style.setProperty(this.widthCssVar, `${Math.ceil(maxWidth)}px`)
+  //   this.el.classList.add('c-dropdown--setwidth')
+  // }
 
   /**
    * Close the dropdown
@@ -307,7 +306,7 @@ export default class Dropdown extends Parent {
   }
 
   public destroy() {
-    this.resizeObserver?.disconnect()
+    // this.resizeObserver?.disconnect()
     this.mutationObserver?.disconnect()
     if (this.triggerEl) {
       if (this.triggerEl.tagName !== 'BUTTON')
