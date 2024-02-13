@@ -46,7 +46,7 @@ export default class Drag extends Parent {
   public initEvents() {
     this.destroyEvents()
 
-    const mouseEvents = ['mouseleave', 'mouseup']
+    const mouseEvents: (keyof HTMLElementEventMap)[] = ['mouseleave', 'mouseup']
     mouseEvents.forEach((event) => {
       this.registerEvent({
         id: 'handleDragEnd',

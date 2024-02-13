@@ -118,13 +118,27 @@ export default class Dropdown extends Parent {
   public initEvents() {
     if (!this.triggerEl || !this.menuEl)
       return
-    this.destroyEvents(['click'])
+    this.destroyEvents(['click', 'pointerdown'])
     this.registerEvent({
       id: 'click',
       el: this.triggerEl,
       event: 'click',
       function: this.toggle.bind(this),
     })
+    this.registerEvent({
+      id: 'pointerdown',
+      el: window,
+      event: 'pointerdown',
+      function: (e: PointerEvent) => {
+        const target = e.target as Element | null
+        if (!target)
+          return
+        const dropdown = target.closest('.c-dropdown')
+        if (!dropdown)
+          this.close()
+      },
+    })
+
     if (this.opts.openOn === 'hover') {
       this.destroyEvents([
         'triggerEnter',
@@ -135,40 +149,36 @@ export default class Dropdown extends Parent {
       this.registerEvent({
         id: 'triggerEnter',
         el: this.triggerEl,
-        event: 'mouseenter',
-        function: this.open.bind(this),
+        event: 'pointerenter',
+        function: (e: PointerEvent) => {
+          if (e.pointerType === 'mouse')
+            this.open()
+        },
       })
       this.registerEvent({
         id: 'triggerLeave',
         el: this.triggerEl,
-        event: 'mouseleave',
-        function: this.close.bind(this),
+        event: 'pointerleave',
+        function: (e: PointerEvent) => {
+          if (e.pointerType === 'mouse')
+            this.close()
+        },
       })
       this.registerEvent({
         id: 'menuEnter',
         el: this.menuEl,
-        event: 'mouseenter',
-        function: this.open.bind(this),
+        event: 'pointerenter',
+        function: (e: PointerEvent) => {
+          if (e.pointerType === 'mouse')
+            this.open()
+        },
       })
       this.registerEvent({
         id: 'menuLeave',
         el: this.menuEl,
-        event: 'mouseleave',
-        function: this.close.bind(this),
-      })
-    }
-    else {
-      this.destroyEvents(['mousedown'])
-      this.registerEvent({
-        id: 'mousedown',
-        el: window,
-        event: 'mousedown',
-        function: (e: MouseEvent) => {
-          const target = e.target as Element | null
-          if (!target)
-            return
-          const dropdown = target.closest('.c-dropdown')
-          if (!dropdown)
+        event: 'pointerleave',
+        function: (e: PointerEvent) => {
+          if (e.pointerType === 'mouse')
             this.close()
         },
       })

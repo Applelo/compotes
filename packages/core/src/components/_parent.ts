@@ -26,7 +26,7 @@ export interface ParentOptions {
 
 export interface ParentEvent {
   id: string
-  event: string
+  event: keyof HTMLElementEventMap
   function: any
   el: Element | Window
 }
