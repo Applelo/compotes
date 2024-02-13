@@ -7,7 +7,8 @@
 
   onMounted(() => {
     const dropdown = new Dropdown('#dropdown', {
-      openOn: 'hover'
+      openOn: 'hover',
+      setWidth: true
     })
     const dropdownMenu = new Dropdown('#dropdown-menu')
   })

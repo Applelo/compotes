@@ -23,6 +23,11 @@ export interface DropdownOptions extends ParentOptions {
    * @default undefined
    */
   enforceType?: 'default' | 'menu'
+  // /**
+  //  * Use ResizeObserver to get and set the width on the trigger and the container
+  //  * @default false
+  //  */
+  // setWidth?: boolean
   /**
    * Use MutationObserver to update component on changes
    * @default true
@@ -37,6 +42,8 @@ export default class Dropdown extends Parent {
   private opened: boolean = false
 
   private mutationObserver?: MutationObserver
+  // private resizeObserver?: ResizeObserver
+  // private widthCssVar = '--c-dropdown-width'
 
   constructor(el: HTMLElement | string, options: DropdownOptions = {}) {
     super(el, options)
@@ -68,10 +75,16 @@ export default class Dropdown extends Parent {
       : new MutationObserver(() => {
         this.update()
       })
+    // this.resizeObserver = this.opts.setWidth === true
+    //   ? new ResizeObserver(() => {
+    //     this.setWidth()
+    //   })
+    //   : undefined
     this.mutationObserver?.observe(this.el, {
       childList: true,
       subtree: true,
     })
+    // this.resizeObserver?.observe(this.el)
     this.opened = this.triggerEl.getAttribute('aria-expanded') === 'true'
 
     super.init()
@@ -105,13 +118,27 @@ export default class Dropdown extends Parent {
   public initEvents() {
     if (!this.triggerEl || !this.menuEl)
       return
-    this.destroyEvents(['click'])
+    this.destroyEvents(['click', 'pointerdown'])
     this.registerEvent({
       id: 'click',
       el: this.triggerEl,
       event: 'click',
       function: this.toggle.bind(this),
     })
+    this.registerEvent({
+      id: 'pointerdown',
+      el: window,
+      event: 'pointerdown',
+      function: (e: PointerEvent) => {
+        const target = e.target as Element | null
+        if (!target)
+          return
+        const dropdown = target.closest('.c-dropdown')
+        if (!dropdown)
+          this.close()
+      },
+    })
+
     if (this.opts.openOn === 'hover') {
       this.destroyEvents([
         'triggerEnter',
@@ -122,40 +149,36 @@ export default class Dropdown extends Parent {
       this.registerEvent({
         id: 'triggerEnter',
         el: this.triggerEl,
-        event: 'mouseenter',
-        function: this.open.bind(this),
+        event: 'pointerenter',
+        function: (e: PointerEvent) => {
+          if (e.pointerType === 'mouse')
+            this.open()
+        },
       })
       this.registerEvent({
         id: 'triggerLeave',
         el: this.triggerEl,
-        event: 'mouseleave',
-        function: this.close.bind(this),
+        event: 'pointerleave',
+        function: (e: PointerEvent) => {
+          if (e.pointerType === 'mouse')
+            this.close()
+        },
       })
       this.registerEvent({
         id: 'menuEnter',
         el: this.menuEl,
-        event: 'mouseenter',
-        function: this.open.bind(this),
+        event: 'pointerenter',
+        function: (e: PointerEvent) => {
+          if (e.pointerType === 'mouse')
+            this.open()
+        },
       })
       this.registerEvent({
         id: 'menuLeave',
         el: this.menuEl,
-        event: 'mouseleave',
-        function: this.close.bind(this),
-      })
-    }
-    else {
-      this.destroyEvents(['mousedown'])
-      this.registerEvent({
-        id: 'mousedown',
-        el: window,
-        event: 'mousedown',
-        function: (e: MouseEvent) => {
-          const target = e.target as Element | null
-          if (!target)
-            return
-          const dropdown = target.closest('.c-dropdown')
-          if (!dropdown)
+        event: 'pointerleave',
+        function: (e: PointerEvent) => {
+          if (e.pointerType === 'mouse')
             this.close()
         },
       })
@@ -252,6 +275,18 @@ export default class Dropdown extends Parent {
       : 'default'
   }
 
+  // private setWidth() {
+  //   this.el.classList.remove('c-dropdown--setwidth')
+  //   this.el.style.removeProperty(this.widthCssVar)
+  //   if (!this.triggerEl || !this.menuEl)
+  //     return
+  //   const triggerWidth = this.triggerEl.clientWidth
+  //   const containerWidth = this.menuEl.clientWidth
+  //   const maxWidth = Math.max(triggerWidth, containerWidth)
+  //   this.el.style.setProperty(this.widthCssVar, `${Math.ceil(maxWidth)}px`)
+  //   this.el.classList.add('c-dropdown--setwidth')
+  // }
+
   /**
    * Close the dropdown
    */
@@ -281,7 +316,28 @@ export default class Dropdown extends Parent {
   }
 
   public destroy() {
+    // this.resizeObserver?.disconnect()
     this.mutationObserver?.disconnect()
+    if (this.triggerEl) {
+      if (this.triggerEl.tagName !== 'BUTTON')
+        this.triggerEl.removeAttribute('role')
+      this.triggerEl.removeAttribute('aria-controls')
+    }
+
+    if (this.menuEl && this.menuEl.id.startsWith('c-'))
+      this.menuEl.removeAttribute('id')
+
+    if (this.type === 'menu' && this.menuEl) {
+      this.menuEl?.removeAttribute('role')
+      const lis = this.menuEl.querySelectorAll(':scope > li')
+      lis.forEach((li) => {
+        li.removeAttribute('role')
+      })
+      const actions = this.menuEl.querySelectorAll(':scope > li > button, :scope > li > a')
+      actions.forEach((action) => {
+        action.removeAttribute('role')
+      })
+    }
     super.destroy()
   }
 }

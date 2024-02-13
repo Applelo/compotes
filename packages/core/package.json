@@ -1,7 +1,7 @@
 {
   "name": "compotes",
   "type": "module",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "packageManager": "pnpm@8.15.1",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
@@ -66,11 +66,11 @@
     "tabbable": "^6.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.17",
     "fast-glob": "^3.3.2",
     "lightningcss": "^1.23.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.12",
+    "vite": "^5.1.1",
     "vite-plugin-dts": "^3.7.2"
   }
 }

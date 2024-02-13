@@ -46,7 +46,7 @@ export default class Drag extends Parent {
   public initEvents() {
     this.destroyEvents()
 
-    const mouseEvents = ['mouseleave', 'mouseup']
+    const mouseEvents: (keyof HTMLElementEventMap)[] = ['mouseleave', 'mouseup']
     mouseEvents.forEach((event) => {
       this.registerEvent({
         id: 'handleDragEnd',
@@ -139,6 +139,8 @@ export default class Drag extends Parent {
 
   public destroy() {
     this.resizeObserver?.disconnect()
+    this.el.classList.remove(this.draggingClass)
+    this.el.classList.remove(this.draggableClass)
     super.destroy()
   }
 }

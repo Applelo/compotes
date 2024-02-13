@@ -33,6 +33,11 @@ export interface MarqueeOptions extends ParentOptions {
    * @default 1
    */
   duration?: number | string
+  /**
+   * Use MutationObserver to update component on changes
+   * @default true
+   */
+  mutationObserver?: boolean
 }
 
 export default class Marquee extends Parent {
@@ -42,6 +47,19 @@ export default class Marquee extends Parent {
   private mutationObserver?: MutationObserver
   private clones: Element[] = []
   private fillMultiplier = 1
+
+  private keyboardClass = 'c-marquee--keyboard'
+  private pauseClass = 'c-marquee--pause'
+  private behaviorAlternateClass = 'c-marquee--behavior-alternate'
+  private behaviorScrollClass = 'c-marquee--behavior-scroll'
+  private directionLeftClass = 'c-marquee--direction-left'
+  private directionRightClass = 'c-marquee--direction-right'
+  private directionTopClass = 'c-marquee--direction-top'
+  private directionBottomClass = 'c-marquee--direction-bottom'
+  private fillClass = 'c-marquee--fill'
+  private startCssVar = '--c-marquee-start'
+  private endCssVar = '--c-marquee-end'
+  private durationCssVar = '--c-marquee-duration'
 
   constructor(el: HTMLElement | string, options: MarqueeOptions = {}) {
     super(el, options)
@@ -55,19 +73,21 @@ export default class Marquee extends Parent {
     this.update()
     this.containerEl = this.el.querySelector('.c-marquee-container')
 
-    this.mutationObserver = new MutationObserver(([el]) => {
-      const addedEls = Array.from(el.addedNodes) as HTMLElement[]
-      const isFilling = addedEls.findIndex(item => item.classList.contains('c-marquee-clone')) === -1
-      if (!isFilling)
-        this.update(this.opts.fill)
-    })
+    this.mutationObserver = this.opts.mutationObserver === false
+      ? undefined
+      : new MutationObserver(([el]) => {
+        const addedEls = Array.from(el.addedNodes) as HTMLElement[]
+        const isFilling = addedEls.findIndex(item => item.classList.contains('c-marquee-clone')) === -1
+        if (!isFilling)
+          this.update(this.opts.fill)
+      })
     this.resizeObserver = new ResizeObserver(() => {
       // fix wrong calculation from Firefox
       setTimeout(() => this.update(), 1)
     })
 
     this.resizeObserver.observe(this.el)
-    this.mutationObserver.observe(this.el, {
+    this.mutationObserver?.observe(this.el, {
       childList: true,
       subtree: true,
     })
@@ -101,7 +121,7 @@ export default class Marquee extends Parent {
     this.registerEvent({
       id: 'addKeyboardClass',
       function: () => {
-        this.el.classList.add('c-marquee--keyboard')
+        this.el.classList.add(this.keyboardClass)
       },
       event: 'keydown',
       el: this.el,
@@ -118,7 +138,7 @@ export default class Marquee extends Parent {
           )
         )
           return
-        this.el.classList.remove('c-marquee--keyboard')
+        this.el.classList.remove(this.keyboardClass)
       },
       event: 'focusout',
       el: this.el,
@@ -158,13 +178,13 @@ export default class Marquee extends Parent {
     }
 
     this.el.style.setProperty(
-      '--c-marquee-duration',
+      this.durationCssVar,
       duration,
     )
 
     // Fill
     this.el.classList.toggle(
-      'c-marquee--fill',
+      this.fillClass,
       this.opts?.fill === true,
     )
 
@@ -178,11 +198,11 @@ export default class Marquee extends Parent {
 
     // Behavior
     this.el.classList.toggle(
-      'c-marquee--behavior-alternate',
+      this.behaviorAlternateClass,
       this.opts?.behavior === 'alternate',
     )
     this.el.classList.toggle(
-      'c-marquee--behavior-scroll',
+      this.behaviorScrollClass,
       this.opts?.behavior !== 'alternate',
     )
 
@@ -195,36 +215,34 @@ export default class Marquee extends Parent {
 
     if (this.opts.fill) {
       this.el.style.setProperty(
-        '--c-marquee-start',
+        this.startCssVar,
         `0`,
       )
       this.el.style.setProperty(
-        '--c-marquee-end',
+        this.endCssVar,
         `-${Math.ceil(this.containerSize)}px`,
       )
     }
     else {
       this.el.style.setProperty(
-        '--c-marquee-end',
+        this.endCssVar,
         `${Math.ceil(this.elSize)}px`,
       )
     }
   }
 
   public play() {
-    this.el.classList.remove('c-marquee--pause')
+    this.el.classList.remove(this.pauseClass)
     this.emitEvent('play')
   }
 
   public pause() {
-    this.el.classList.add('c-marquee--pause')
+    this.el.classList.add(this.pauseClass)
     this.emitEvent('pause')
   }
 
-  public destroy() {
-    this.mutationObserver?.disconnect()
-    this.resizeObserver?.disconnect()
-    super.destroy()
+  public get isPaused() {
+    return this.el.classList.contains(this.pauseClass)
   }
 
   private fill(fillMultiplier: number) {
@@ -252,5 +270,25 @@ export default class Marquee extends Parent {
         }
       })
     }
+  }
+
+  public destroy() {
+    this.mutationObserver?.disconnect()
+    this.resizeObserver?.disconnect()
+    this.clones.forEach(clone => clone.remove())
+    this.el.removeAttribute('tabindex')
+    this.el.classList.remove(this.pauseClass)
+    this.el.classList.remove(this.keyboardClass)
+    this.el.classList.remove(this.behaviorAlternateClass)
+    this.el.classList.remove(this.behaviorScrollClass)
+    this.el.classList.remove(this.directionLeftClass)
+    this.el.classList.remove(this.directionRightClass)
+    this.el.classList.remove(this.directionTopClass)
+    this.el.classList.remove(this.directionBottomClass)
+    this.el.classList.remove(this.fillClass)
+    this.el.style.removeProperty(this.startCssVar)
+    this.el.style.removeProperty(this.endCssVar)
+    this.el.style.removeProperty(this.durationCssVar)
+    super.destroy()
   }
 }

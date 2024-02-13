@@ -26,7 +26,7 @@ export interface ParentOptions {
 
 export interface ParentEvent {
   id: string
-  event: string
+  event: keyof HTMLElementEventMap
   function: any
   el: Element | Window
 }
@@ -135,6 +135,7 @@ export default abstract class Parent {
    */
   public destroy() {
     this.emitEvent('destroy')
+    this.el.classList.remove(`c-${this.name}--a11y`)
     this.destroyEvents()
   }
 
