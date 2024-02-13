@@ -395,7 +395,8 @@ export default class Drilldown extends Parent {
       if (!next.getAttribute('aria-controls')) {
         const menu = next.parentElement?.querySelector('.c-drilldown-menu')
         next.removeAttribute('aria-controls')
-        menu?.removeAttribute('id')
+        if (menu && menu.id.startsWith('c-'))
+          menu.removeAttribute('id')
       }
     })
     const elsBeenDisable = this.el.querySelectorAll('[data-c-hidden]')

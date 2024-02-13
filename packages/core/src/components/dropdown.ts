@@ -287,6 +287,10 @@ export default class Dropdown extends Parent {
         this.triggerEl.removeAttribute('role')
       this.triggerEl.removeAttribute('aria-controls')
     }
+
+    if (this.menuEl && this.menuEl.id.startsWith('c-'))
+      this.menuEl.removeAttribute('id')
+
     if (this.type === 'menu' && this.menuEl) {
       this.menuEl?.removeAttribute('role')
       const lis = this.menuEl.querySelectorAll(':scope > li')
