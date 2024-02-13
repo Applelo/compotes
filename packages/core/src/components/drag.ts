@@ -139,6 +139,8 @@ export default class Drag extends Parent {
 
   public destroy() {
     this.resizeObserver?.disconnect()
+    this.el.classList.remove(this.draggingClass)
+    this.el.classList.remove(this.draggableClass)
     super.destroy()
   }
 }

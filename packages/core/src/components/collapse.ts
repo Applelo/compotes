@@ -21,6 +21,8 @@ export default class Collapse extends Parent {
   private expanded = false
   private collapsing = false
   private timeout: number | undefined = undefined
+  private showClass = 'c-collapse--show'
+  private collapsingClass = 'c-collapse--collapsing'
 
   constructor(el: HTMLElement | string, options: CollapseOptions = {}) {
     super(el, options)
@@ -30,7 +32,7 @@ export default class Collapse extends Parent {
 
   public init() {
     this.name = 'collapse'
-    this.expanded = this.el.classList.contains('c-collapse--show')
+    this.expanded = this.el.classList.contains(this.showClass)
     this.update()
     super.init()
   }
@@ -84,7 +86,7 @@ export default class Collapse extends Parent {
     this.expanded = true
     if (this.hasTransition) {
       this.collapsing = true
-      this.el.classList.add('c-collapse--collapsing')
+      this.el.classList.add(this.collapsingClass)
       const height = this.el.scrollHeight
       this.el.style.height = `${height}px`
       this.onCollapse()
@@ -92,7 +94,7 @@ export default class Collapse extends Parent {
     else {
       this.emitEvent('shown')
     }
-    this.el.classList.add('c-collapse--show')
+    this.el.classList.add(this.showClass)
     this.update()
   }
 
@@ -107,14 +109,14 @@ export default class Collapse extends Parent {
       // eslint-disable-next-line no-unused-expressions
       this.el.offsetHeight // reflow
       this.collapsing = true
-      this.el.classList.add('c-collapse--collapsing')
+      this.el.classList.add(this.collapsingClass)
       this.el.style.height = '0px'
       this.onCollapse()
     }
     else {
       this.emitEvent('hidden')
     }
-    this.el.classList.remove('c-collapse--show')
+    this.el.classList.remove(this.showClass)
 
     this.update()
   }
@@ -124,7 +126,7 @@ export default class Collapse extends Parent {
     this.emitEvent(this.expanded ? 'show' : 'hide')
 
     this.timeout = window.setTimeout(() => {
-      this.el.classList.remove('c-collapse--collapsing')
+      this.el.classList.remove(this.collapsingClass)
       this.collapsing = false
       this.el.style.height = ''
 
@@ -148,5 +150,13 @@ export default class Collapse extends Parent {
 
   private get hasTransition() {
     return getTransitionDuration(this.el) !== 0
+  }
+
+  public destroy(): void {
+    this.el.classList.remove(this.collapsingClass)
+    this.triggers.forEach((trigger) => {
+      trigger.removeAttribute('aria-expanded')
+    })
+    super.destroy()
   }
 }

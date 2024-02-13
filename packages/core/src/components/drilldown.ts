@@ -42,6 +42,9 @@ export default class Drilldown extends Parent {
   private resizeObserver?: ResizeObserver
   private mutationObserver?: MutationObserver
 
+  private delayCssVar = '--c-drilldown-delay'
+  private hiddenData = 'data-c-hidden'
+
   constructor(el: HTMLElement | string, options: DrilldownOptions = {}) {
     super(el, options)
     if (this.isInitializable)
@@ -207,7 +210,7 @@ export default class Drilldown extends Parent {
 
     this.wrapper.style.transform = `translateX(-${this.level * 100}%)`
     const delay = getTransitionDuration(this.wrapper)
-    this.wrapper.style.setProperty('--c-drilldown-delay', `${delay}ms`)
+    this.wrapper.style.setProperty(this.delayCssVar, `${delay}ms`)
     this.disableFocusElements()
 
     if (reloadItems) {
@@ -285,7 +288,7 @@ export default class Drilldown extends Parent {
   private disableFocusElements() {
     const elsBeenDisable = this.el.querySelectorAll('[data-c-hidden]')
     elsBeenDisable.forEach((el) => {
-      el.removeAttribute('data-c-hidden')
+      el.removeAttribute(this.hiddenData)
       el.removeAttribute('tabindex')
     })
 
@@ -298,7 +301,7 @@ export default class Drilldown extends Parent {
       if (menu === this.currentEl)
         return
 
-      item.setAttribute('data-c-hidden', 'true')
+      item.setAttribute(this.hiddenData, 'true')
       item.setAttribute('tabindex', '-1')
     })
   }
@@ -369,6 +372,39 @@ export default class Drilldown extends Parent {
   public destroy() {
     this.mutationObserver?.disconnect()
     this.resizeObserver?.disconnect()
+    this.wrapper?.removeAttribute('role')
+    this.wrapper?.removeAttribute('aria-multiselectable')
+    this.wrapper?.removeAttribute('aria-orientation')
+    this.wrapper?.querySelectorAll('.c-drilldown-menu').forEach((menu) => {
+      menu.removeAttribute('role')
+    })
+
+    const items = this.el.querySelectorAll('.c-drilldown-menu > li')
+    items.forEach((item) => {
+      item.removeAttribute('role')
+    })
+
+    const backs = this.el.querySelectorAll('.c-drilldown-back')
+    const nexts = this.el.querySelectorAll('.c-drilldown-next')
+    backs.forEach((back) => {
+      back.removeAttribute('role')
+    })
+    nexts.forEach((next) => {
+      next.removeAttribute('role')
+      next.removeAttribute('aria-expanded')
+      if (!next.getAttribute('aria-controls')) {
+        const menu = next.parentElement?.querySelector('.c-drilldown-menu')
+        next.removeAttribute('aria-controls')
+        menu?.removeAttribute('id')
+      }
+    })
+    const elsBeenDisable = this.el.querySelectorAll('[data-c-hidden]')
+    elsBeenDisable.forEach((el) => {
+      el.removeAttribute(this.hiddenData)
+      el.removeAttribute('tabindex')
+    })
+
+    this.wrapper?.style.removeProperty(this.delayCssVar)
     super.destroy()
   }
 }

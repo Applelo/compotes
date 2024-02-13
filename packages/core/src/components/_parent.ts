@@ -135,6 +135,7 @@ export default abstract class Parent {
    */
   public destroy() {
     this.emitEvent('destroy')
+    this.el.classList.remove(`c-${this.name}--a11y`)
     this.destroyEvents()
   }
 

@@ -30,14 +30,14 @@ If you are using a `ul` as a dropdown, it will use, by default, the `menu` mode 
 
 ```html
 <!-- Menu dropdown -->
-<div class="c-dropdown">
+<nav class="c-dropdown" aria-label="My superb dropdown menu">
   <a class="c-dropdown-trigger" aria-controls="my-dropdown">Item 1 - Dropdown Menu</a>
   <ul class="c-dropdown-container" id="my-dropdown">
     <li><a href="#">Item 1</a></li>
     <li><a href="#">Item 2</a></li>
     <li><a href="#">Item 3</a></li>
   </ul>
-</div>
+</nav>
 ```
 
 ## Accessibility

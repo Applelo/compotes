@@ -282,6 +282,22 @@ export default class Dropdown extends Parent {
 
   public destroy() {
     this.mutationObserver?.disconnect()
+    if (this.triggerEl) {
+      if (this.triggerEl.tagName !== 'BUTTON')
+        this.triggerEl.removeAttribute('role')
+      this.triggerEl.removeAttribute('aria-controls')
+    }
+    if (this.type === 'menu' && this.menuEl) {
+      this.menuEl?.removeAttribute('role')
+      const lis = this.menuEl.querySelectorAll(':scope > li')
+      lis.forEach((li) => {
+        li.removeAttribute('role')
+      })
+      const actions = this.menuEl.querySelectorAll(':scope > li > button, :scope > li > a')
+      actions.forEach((action) => {
+        action.removeAttribute('role')
+      })
+    }
     super.destroy()
   }
 }
