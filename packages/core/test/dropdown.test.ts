@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { Browser } from 'playwright'
 import { chromium } from 'playwright'
+import { destroyComponent } from './helper/destroy'
 
 let browser: Browser
 
@@ -48,5 +49,13 @@ describe('dropdown', async () => {
     ])).map(item => item.text())
 
     events.forEach(e => expect(result).toContain(e))
+  })
+
+  it.concurrent('destroy', async () => {
+    const page = await browser.newPage()
+    await page.goto('http://localhost:3000/dropdown.html')
+    const { before, after } = await destroyComponent(page)
+    expect(before).not.toEqual(after)
+    expect(after).toMatchSnapshot()
   })
 })

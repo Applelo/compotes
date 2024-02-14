@@ -392,12 +392,10 @@ export default class Drilldown extends Parent {
     nexts.forEach((next) => {
       next.removeAttribute('role')
       next.removeAttribute('aria-expanded')
-      if (!next.getAttribute('aria-controls')) {
-        const menu = next.parentElement?.querySelector('.c-drilldown-menu')
-        next.removeAttribute('aria-controls')
-        if (menu && menu.id.startsWith('c-'))
-          menu.removeAttribute('id')
-      }
+      next.removeAttribute('aria-controls')
+      const menu = next.parentElement?.querySelector('.c-drilldown-menu')
+      if (menu && menu.id.startsWith('c-id-'))
+        menu.removeAttribute('id')
     })
     const elsBeenDisable = this.el.querySelectorAll('[data-c-hidden]')
     elsBeenDisable.forEach((el) => {

@@ -324,7 +324,7 @@ export default class Dropdown extends Parent {
       this.triggerEl.removeAttribute('aria-controls')
     }
 
-    if (this.menuEl && this.menuEl.id.startsWith('c-'))
+    if (this.menuEl && this.menuEl.id.startsWith('c-id-'))
       this.menuEl.removeAttribute('id')
 
     if (this.type === 'menu' && this.menuEl) {

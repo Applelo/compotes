@@ -1,20 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`collapse > destroy 1`] = `
+"<!DOCTYPE html><html lang="en"><head>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍯</text></svg>">
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Collapse</title>
+    <script type="module" crossorigin="" src="/assets/collapse-DFX_hf7s.js"></script>
+    <link rel="modulepreload" crossorigin="" href="/assets/_parent-CjRBGSFb.js">
+    <link rel="modulepreload" crossorigin="" href="/assets/animation-CH8HhKvA.js">
+    <link rel="stylesheet" crossorigin="" href="/assets/marquee-CjakcbCe.css">
   </head>
   <body>
     <div>
       <button class="c-collapse-trigger" aria-controls="accordion-1">
         Accordion 2
       </button>
-      <div
-      class="c-collapse"
-      id="accordion-1"
-      style="transition: height .2s;">
+      <div class="c-collapse" id="accordion-1" style="transition: height .2s;">
         <p>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia facere possimus impedit facilis culpa illo earum deserunt consequuntur minus. Ad et qui labore reprehenderit magnam exercitationem placeat magni nesciunt suscipit.
         </p>
@@ -24,6 +26,7 @@
       Destroy
     </button>
 
-    <script type="module" src="./collapse.ts"></script>
-  </body>
-</html>
+  
+
+</body></html>"
+`;

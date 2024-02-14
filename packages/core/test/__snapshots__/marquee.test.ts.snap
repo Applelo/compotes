@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`marquee > destroy 1`] = `
+"<!DOCTYPE html><html lang="en"><head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍯</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marquee</title>
+    <script type="module" crossorigin="" src="/assets/marquee-D13K01fB.js"></script>
+    <link rel="modulepreload" crossorigin="" href="/assets/_parent-CjRBGSFb.js">
+    <link rel="modulepreload" crossorigin="" href="/assets/index.esm-CjV0_wFH.js">
+    <link rel="stylesheet" crossorigin="" href="/assets/marquee-CjakcbCe.css">
+  </head>
+  <body>
+    <div class="c-marquee" style="width: 200px;">
+      <ul class="c-marquee-container">
+        <li>Marquee Left Direction</li>
+        <li><img width="25" height="25" src="https://vitejs.dev/logo.svg"></li>
+      </ul>
+    </div>
+    <button class="js-marquee-play">
+      Play
+    </button>
+    <button class="js-marquee-pause">
+      Pause
+    </button>
+    <button class="js-destroy">
+      Destroy
+    </button>
+  
+
+</body></html>"
+`;
