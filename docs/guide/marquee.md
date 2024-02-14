@@ -41,7 +41,7 @@ You can change some options from the component.
 import { Marquee } from 'compotes'
 
 const marquee = new Marquee('.c-marquee', {
-  init: true, // [!code focus:6]
+  init: true, // [!code focus:7]
   initEvents: true,
   fill: false,
   direction: 'right',

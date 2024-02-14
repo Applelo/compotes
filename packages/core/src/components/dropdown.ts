@@ -23,11 +23,12 @@ export interface DropdownOptions extends ParentOptions {
    * @default undefined
    */
   enforceType?: 'default' | 'menu'
-  // /**
-  //  * Use ResizeObserver to get and set the width on the trigger and the container
-  //  * @default false
-  //  */
-  // setWidth?: boolean
+  /**
+   * Equalize width on the trigger and the container. It will refresh on mutation observer (if enable).
+   * You can use `dropdown.equalizeWidth()` to equalize width manually.
+   * @default false
+   */
+  equalizeWidth?: boolean
   /**
    * Use MutationObserver to update component on changes
    * @default true
@@ -42,8 +43,8 @@ export default class Dropdown extends Parent {
   private opened: boolean = false
 
   private mutationObserver?: MutationObserver
-  // private resizeObserver?: ResizeObserver
-  // private widthCssVar = '--c-dropdown-width'
+  private widthClass = 'c-dropdown--setwidth'
+  private widthCssVar = '--c-dropdown-width'
 
   constructor(el: HTMLElement | string, options: DropdownOptions = {}) {
     super(el, options)
@@ -75,18 +76,15 @@ export default class Dropdown extends Parent {
       : new MutationObserver(() => {
         this.update()
       })
-    // this.resizeObserver = this.opts.setWidth === true
-    //   ? new ResizeObserver(() => {
-    //     this.setWidth()
-    //   })
-    //   : undefined
     this.mutationObserver?.observe(this.el, {
       childList: true,
+      characterData: this.opts.equalizeWidth === true,
       subtree: true,
     })
-    // this.resizeObserver?.observe(this.el)
+
     this.opened = this.triggerEl.getAttribute('aria-expanded') === 'true'
 
+    this.update()
     super.init()
   }
 
@@ -250,6 +248,8 @@ export default class Dropdown extends Parent {
   public update() {
     if (this.accessibilityStatus.attrs === true)
       this.initAccessibilityAttrs()
+    if (this.opts.equalizeWidth === true)
+      this.equalizeWidth()
   }
 
   /**
@@ -275,17 +275,22 @@ export default class Dropdown extends Parent {
       : 'default'
   }
 
-  // private setWidth() {
-  //   this.el.classList.remove('c-dropdown--setwidth')
-  //   this.el.style.removeProperty(this.widthCssVar)
-  //   if (!this.triggerEl || !this.menuEl)
-  //     return
-  //   const triggerWidth = this.triggerEl.clientWidth
-  //   const containerWidth = this.menuEl.clientWidth
-  //   const maxWidth = Math.max(triggerWidth, containerWidth)
-  //   this.el.style.setProperty(this.widthCssVar, `${Math.ceil(maxWidth)}px`)
-  //   this.el.classList.add('c-dropdown--setwidth')
-  // }
+  /**
+   * Get and set the same width on the trigger and the container
+   */
+  public equalizeWidth() {
+    setTimeout(() => {
+      if (!this.triggerEl || !this.menuEl)
+        return
+      this.el.classList.remove(this.widthClass)
+      this.el.style.removeProperty(this.widthCssVar)
+      const triggerWidth = this.triggerEl.clientWidth
+      const containerWidth = this.menuEl.clientWidth
+      const maxWidth = Math.max(triggerWidth, containerWidth)
+      this.el.style.setProperty(this.widthCssVar, `${Math.ceil(maxWidth)}px`)
+      this.el.classList.add(this.widthClass)
+    }, 1)
+  }
 
   /**
    * Close the dropdown
@@ -316,7 +321,6 @@ export default class Dropdown extends Parent {
   }
 
   public destroy() {
-    // this.resizeObserver?.disconnect()
     this.mutationObserver?.disconnect()
     if (this.triggerEl) {
       if (this.triggerEl.tagName !== 'BUTTON')
@@ -324,7 +328,7 @@ export default class Dropdown extends Parent {
       this.triggerEl.removeAttribute('aria-controls')
     }
 
-    if (this.menuEl && this.menuEl.id.startsWith('c-'))
+    if (this.menuEl && this.menuEl.id.startsWith('c-id-'))
       this.menuEl.removeAttribute('id')
 
     if (this.type === 'menu' && this.menuEl) {
@@ -338,6 +342,7 @@ export default class Dropdown extends Parent {
         action.removeAttribute('role')
       })
     }
+    this.el.classList.remove(this.widthClass)
     super.destroy()
   }
 }

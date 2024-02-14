@@ -101,10 +101,11 @@ You can change some options from the component.
 import { Drilldown } from 'compotes'
 
 const drilldown = new Collapse('#my-drilldown', {
-  init: true, // [!code focus:4]
+  init: true, // [!code focus:5]
   initAccessibilityAttrs: true,
   initEvents: true,
-  dynamicHeight: false
+  dynamicHeight: false,
+  mutationObserver: true,
 })
 ```
 
@@ -112,6 +113,7 @@ const drilldown = new Collapse('#my-drilldown', {
 - `initAccessibilityAttrs` (boolean): Init accessibility attributes on the component
 - `initEvents` (boolean): Init events on the component
 - `dynamicHeight` (boolean): By default, the height of the drilldown is the tallest menu found. You can set this option to `true` to update the height to the current menu.
+- `mutationObserver` (boolean): Use MutationObserver to update component on changes
 
 ## Methods
 

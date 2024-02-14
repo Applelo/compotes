@@ -16,4 +16,7 @@ if (el) {
   pause?.addEventListener('click', () => {
     marquee.pause()
   })
+
+  const destroyBtn = document.querySelector<HTMLButtonElement>('.js-destroy')
+  destroyBtn?.addEventListener('click', () => marquee.destroy())
 }
