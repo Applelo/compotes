@@ -76,6 +76,7 @@ describe('drilldown', async () => {
     await page.goto('http://localhost:3000/drilldown.html')
     const { before, after } = await destroyComponent(page)
     expect(before).not.toEqual(after)
-    expect(after).toMatchSnapshot()
+    // remove style to prevent issue between local and ci
+    expect(after.replace(/ style=".*;"/gm, '')).toMatchSnapshot()
   })
 })

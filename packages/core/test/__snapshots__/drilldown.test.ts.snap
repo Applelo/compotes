@@ -15,8 +15,8 @@ exports[`drilldown > destroy 1`] = `
   </head>
   <body>
 
-    <nav class="c-drilldown" style="height: 102px;">
-      <ul class="c-drilldown-menu" style="transform: translateX(0%);">
+    <nav class="c-drilldown">
+      <ul class="c-drilldown-menu">
         <li>
           <button class="c-drilldown-next">
             Go to section 1
