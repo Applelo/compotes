@@ -54,17 +54,21 @@ You can change some options from the component.
 import { Dropdown } from 'compotes'
 
 const drag = new Drag('.c-drag', {
-  init: true, // [!code focus:4]
+  init: true, // [!code focus:6]
   initEvents: true,
   enforceType: undefined,
   openOn: 'click',
+  equalizeWidth: undefined,
+  mutationObserver: true,
 })
 ```
 
 - `init` (boolean): Init the component on creation
 - `initEvents` (boolean): Init events on the component
-- `enforceType` ('default' or 'menu'): The type of the drilldown
-- `openOn` ('click' or 'hover'): Open the drilldown on click/hover from the trigger element
+- `enforceType` ('default' or 'menu'): The type of the dropdown
+- `openOn` ('click' or 'hover'): Open the dropdown on click/hover from the trigger element
+- `equalizeWidth` (boolean): Equalize width on the trigger and the container. It will refresh on mutation observer (if enable)
+- `mutationObserver` (boolean): Use MutationObserver to update component on changes
 
 ## Methods
 
@@ -85,9 +89,10 @@ dropdown.init()// [!code focus]
 - `initAccessibilityEvents()`: Init component accessibility events
 - `destroyEvents()`: Destroy the component events
 - `destroy()`: Destroy the component
-- `open()`: Open the drilldown
-- `toggle()`: Toggle the drilldown
-- `close()`: Close the drilldown
+- `open()`: Open the dropdown
+- `toggle()`: Toggle the dropdown
+- `close()`: Close the dropdown
+- `equalizeWidth()`: Equalize the width of the container and the trigger of the dropdown
 
 ## Data
 
