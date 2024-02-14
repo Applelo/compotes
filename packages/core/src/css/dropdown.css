@@ -7,10 +7,18 @@
 
 .c-dropdown-container {
   position: absolute;
-  display: none;
+  visibility: hidden;
+  height: 0;
 }
 
 .c-dropdown-trigger[aria-expanded="true"] + .c-dropdown-container {
   display: block;
+  visibility: visible;
+  height: auto;
+}
+
+.c-dropdown--setwidth .c-dropdown-container,
+.c-dropdown--setwidth .c-dropdown-trigger {
+  width: var(--c-dropdown-width);
 }
 

@@ -8,7 +8,7 @@
   onMounted(() => {
     const dropdown = new Dropdown('#dropdown', {
       openOn: 'hover',
-      setWidth: true
+      equalizeWidth: true
     })
     const dropdownMenu = new Dropdown('#dropdown-menu')
   })
@@ -27,7 +27,7 @@
 <div class="c-dropdown" id="dropdown" style="margin-top: 2rem;">
   <button class="c-dropdown-trigger" aria-controls="dropdown-container">Basic Dropdown</button>
   <div class="c-dropdown-container" id="dropdown-container">
-    Hello World
+    lorem ipseum int
   </div>
 </div>
 
