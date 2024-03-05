@@ -1,6 +1,6 @@
 import ErrorCompotes from '../utils/error'
 
-export interface ParentOptions {
+export interface ParentOptions<E extends string> {
   /**
    * Init the component on creation.
    * @default true
@@ -22,6 +22,11 @@ export interface ParentOptions {
    * @default true
    */
   initEvents?: boolean
+  /**
+   * An Object of with events listener
+   * @default undefined
+   */
+  on?: Record<E, (e: CustomEvent<Parent>) => void>
 }
 
 export interface ParentEvent {
@@ -31,13 +36,13 @@ export interface ParentEvent {
   el: Element | Window
 }
 
-export default abstract class Parent {
+export default abstract class Parent<E extends string = 'init' | 'destroy'> {
   protected name = ''
   public el: HTMLElement
-  public opts: ParentOptions
+  public opts: ParentOptions<E>
   protected events: ParentEvent[] = []
 
-  constructor(el: HTMLElement | string, options: ParentOptions = {}) {
+  constructor(el: HTMLElement | string, options: ParentOptions<E> = {}) {
     const checkEl = typeof el === 'string'
       ? document.querySelector<HTMLElement>(el)
       : el
@@ -46,6 +51,18 @@ export default abstract class Parent {
       throw this.error('The element/selector provided cannot be found.')
 
     this.el = checkEl
+
+    if (options.on) {
+      for (const key in options.on) {
+        if (Object.prototype.hasOwnProperty.call(options.on, key)) {
+          const element = options.on[key]
+          this.el.addEventListener(
+            `c.${this.name}.${key}`,
+            e => element(e as CustomEvent<Parent>),
+          )
+        }
+      }
+    }
 
     this.opts = options
   }
@@ -142,7 +159,7 @@ export default abstract class Parent {
   /**
    * Options of the component
    */
-  public get options(): ParentOptions {
+  public get options() {
     return this.opts
   }
 

@@ -1,15 +1,12 @@
 import Parent, { type ParentOptions } from './_parent'
 
+type Events = 'init' | 'start' | 'end' | 'destroy'
+
 declare global {
-  interface HTMLElementEventMap {
-    'c.drag.init': CustomEvent<Drag>
-    'c.drag.start': CustomEvent<Drag>
-    'c.drag.end': CustomEvent<Drag>
-    'c.drag.destroy': CustomEvent<Drag>
-  }
+  interface HTMLElementEventMap extends Record<`c.drag.${Events}`, CustomEvent<Drag>> {}
 }
 
-export interface DragOptions extends ParentOptions {}
+export interface DragOptions extends ParentOptions<Events> {}
 
 export default class Drag extends Parent {
   declare public opts: DragOptions

@@ -2,18 +2,13 @@ import type { ParentOptions } from './_parent'
 import Parent from './_parent'
 import { getTransitionDuration } from './../utils/animation'
 
+type Events = 'init' | 'destroy' | 'show' | 'shown' | 'hide' | 'hidden' | 'destroy'
+
 declare global {
-  interface HTMLElementEventMap {
-    'c.collapse.init': CustomEvent<Collapse>
-    'c.collapse.show': CustomEvent<Collapse>
-    'c.collapse.shown': CustomEvent<Collapse>
-    'c.collapse.hide': CustomEvent<Collapse>
-    'c.collapse.hidden': CustomEvent<Collapse>
-    'c.collapse.destroy': CustomEvent<Collapse>
-  }
+  interface HTMLElementEventMap extends Record<`c.collapse.${Events}`, CustomEvent<Collapse>> {}
 }
 
-export interface CollapseOptions extends ParentOptions {}
+export interface CollapseOptions extends ParentOptions<Events> {}
 
 export default class Collapse extends Parent {
   declare public opts: CollapseOptions

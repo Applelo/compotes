@@ -1,16 +1,13 @@
 import { focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
 import Parent, { type ParentOptions } from './_parent'
 
+type Events = 'init' | 'opened' | 'closed' | 'destroy'
+
 declare global {
-  interface HTMLElementEventMap {
-    'c.dropdown.init': CustomEvent<Dropdown>
-    'c.dropdown.destroy': CustomEvent<Dropdown>
-    'c.dropdown.opened': CustomEvent<Dropdown>
-    'c.dropdown.closed': CustomEvent<Dropdown>
-  }
+  interface HTMLElementEventMap extends Record<`c.dropdown.${Events}`, CustomEvent<Dropdown>> {}
 }
 
-export interface DropdownOptions extends ParentOptions {
+export interface DropdownOptions extends ParentOptions<Events> {
   /**
    * Define open mode, by default you need to `click` on the trigger element
    * but you can configure it to display the dropdown on `hover`.
