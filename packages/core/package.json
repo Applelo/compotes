@@ -66,10 +66,10 @@
     "tabbable": "^6.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.11.25",
     "fast-glob": "^3.3.2",
     "lightningcss": "^1.24.0",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.2",
     "vite": "^5.1.5",
     "vite-plugin-dts": "^3.7.3"
   }

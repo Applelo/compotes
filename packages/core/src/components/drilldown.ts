@@ -27,7 +27,7 @@ interface DrilldownItem {
   level: number
 }
 
-export default class Drilldown extends Parent {
+export default class Drilldown extends Parent<Events> {
   declare public opts: DrilldownOptions
   private currentEl: HTMLUListElement | null = null
   private wrapper: HTMLUListElement | null = null

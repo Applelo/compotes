@@ -3,9 +3,9 @@ import type { Ref, ShallowRef } from 'vue'
 import { onMounted, onUnmounted, onUpdated, shallowRef } from 'vue'
 
 export function useParent<T extends Parent>(
-  ComponentClass: new (el: HTMLElement, options: ParentOptions<'init' | 'destroy'>) => T,
+  ComponentClass: new (el: HTMLElement, options: ParentOptions<string>) => T,
   el: Ref<HTMLElement | null>,
-  options: ParentOptions<'init' | 'destroy'> = {},
+  options: ParentOptions<string> = {},
 ) {
   const component: ShallowRef<T | null> = shallowRef(null)
 

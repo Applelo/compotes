@@ -23,10 +23,10 @@ export interface ParentOptions<E extends string> {
    */
   initEvents?: boolean
   /**
-   * An Object of with events listener
+   * An object to instantiate events listeners
    * @default undefined
    */
-  on?: Record<E, (e: CustomEvent<Parent>) => void>
+  on?: Partial<Record<E, (e: CustomEvent<Parent>) => void | undefined>>
 }
 
 export interface ParentEvent {
@@ -51,19 +51,6 @@ export default abstract class Parent<E extends string = 'init' | 'destroy'> {
       throw this.error('The element/selector provided cannot be found.')
 
     this.el = checkEl
-
-    if (options.on) {
-      for (const key in options.on) {
-        if (Object.prototype.hasOwnProperty.call(options.on, key)) {
-          const element = options.on[key]
-          this.el.addEventListener(
-            `c.${this.name}.${key}`,
-            e => element(e as CustomEvent<Parent>),
-          )
-        }
-      }
-    }
-
     this.opts = options
   }
 
@@ -107,6 +94,20 @@ export default abstract class Parent<E extends string = 'init' | 'destroy'> {
    * Init the component
    */
   public init() {
+    if (this.opts.on) {
+      for (const key in this.opts.on) {
+        if (Object.prototype.hasOwnProperty.call(this.opts.on, key)) {
+          const element = this.opts.on[key]
+          if (!element)
+            continue
+          this.el.addEventListener(
+            `c.${this.name}.${key}`,
+            e => element(e as CustomEvent<Parent>),
+          )
+        }
+      }
+    }
+
     this.emitEvent('init')
     if (this.accessibilityStatus.styles)
       this.el.classList.add(`c-${this.name}--a11y`)

@@ -8,7 +8,7 @@ declare global {
 
 export interface DragOptions extends ParentOptions<Events> {}
 
-export default class Drag extends Parent {
+export default class Drag extends Parent<Events> {
   declare public opts: DragOptions
   private isDown = false
   private draggableClass = 'c-drag--draggable'

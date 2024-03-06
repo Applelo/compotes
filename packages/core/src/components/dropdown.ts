@@ -33,7 +33,7 @@ export interface DropdownOptions extends ParentOptions<Events> {
   mutationObserver?: boolean
 }
 
-export default class Dropdown extends Parent {
+export default class Dropdown extends Parent<Events> {
   declare public opts: DropdownOptions
   private triggerEl: HTMLButtonElement | HTMLLinkElement | null = null
   private menuEl: HTMLUListElement | null = null

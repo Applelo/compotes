@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { useCollapse } from '@compotes/vue'
 import { shallowRef } from 'vue'
+import 'compotes/css/collapse'
 
 const collapseEl = shallowRef<null | HTMLElement>(null)
-useCollapse(collapseEl)
+useCollapse(collapseEl, {
+  on: {
+    init: () => {
+      console.log('init')
+    },
+  },
+})
 </script>
 
 <template>

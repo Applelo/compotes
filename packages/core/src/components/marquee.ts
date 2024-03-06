@@ -36,7 +36,7 @@ export interface MarqueeOptions extends ParentOptions<Events> {
   mutationObserver?: boolean
 }
 
-export default class Marquee extends Parent {
+export default class Marquee extends Parent<Events> {
   declare public opts: MarqueeOptions
   private containerEl: HTMLElement | null = null
   private resizeObserver?: ResizeObserver

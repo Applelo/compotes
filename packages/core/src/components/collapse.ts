@@ -10,7 +10,7 @@ declare global {
 
 export interface CollapseOptions extends ParentOptions<Events> {}
 
-export default class Collapse extends Parent {
+export default class Collapse extends Parent<Events> {
   declare public opts: CollapseOptions
   private triggers: HTMLElement[] = []
   private expanded = false
