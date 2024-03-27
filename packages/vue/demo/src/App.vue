@@ -4,14 +4,7 @@ import { shallowRef } from 'vue'
 import 'compotes/css/collapse'
 
 const collapseEl = shallowRef<null | HTMLElement>(null)
-useCollapse(collapseEl, {
-  on: {
-    init: () => {
-      // eslint-disable-next-line no-console
-      console.log('init')
-    },
-  },
-})
+useCollapse(collapseEl)
 </script>
 
 <template>

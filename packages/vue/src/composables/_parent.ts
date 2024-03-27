@@ -1,13 +1,20 @@
 import type { Parent, ParentOptions } from 'compotes'
-import type { Ref, ShallowRef } from 'vue'
-import { onMounted, onUnmounted, onUpdated, shallowRef } from 'vue'
+import type { Ref } from 'vue'
+import { onMounted, onUnmounted, onUpdated, ref, shallowRef } from 'vue'
+
+interface ComposableOptions extends ParentOptions<string> {
+  /**
+   * Use shallowRef instead of ref
+   */
+  shallow?: boolean
+}
 
 export function useParent<T extends Parent>(
   ComponentClass: new (el: HTMLElement, options: ParentOptions<string>) => T,
   el: Ref<HTMLElement | null>,
-  options: ParentOptions<string> = {},
+  options: ComposableOptions = {},
 ) {
-  const component: ShallowRef<T | null> = shallowRef(null)
+  const component: Ref<T | null> = options.shallow ? shallowRef(null) : ref(null)
 
   const init = () => {
     if (!el.value)

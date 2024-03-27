@@ -13,8 +13,11 @@ export interface CollapseOptions extends ParentOptions<Events> {}
 export default class Collapse extends Parent<Events> {
   declare public opts: CollapseOptions
   private triggers: HTMLElement[] = []
-  private expanded = false
-  private collapsing = false
+  protected status = {
+    expanded: false,
+    collapsing: false,
+  }
+
   private timeout: number | undefined = undefined
   private showClass = 'c-collapse--show'
   private collapsingClass = 'c-collapse--collapsing'
@@ -27,7 +30,7 @@ export default class Collapse extends Parent<Events> {
 
   public init() {
     this.name = 'collapse'
-    this.expanded = this.el.classList.contains(this.showClass)
+    this.status.expanded = this.el.classList.contains(this.showClass)
     this.update()
     super.init()
   }
@@ -61,7 +64,7 @@ export default class Collapse extends Parent<Events> {
     this.triggers.forEach((trigger) => {
       trigger.setAttribute(
         'aria-expanded',
-        this.expanded ? 'true' : 'false',
+        this.status.expanded ? 'true' : 'false',
       )
     })
     this.emitEvent('update')
@@ -71,16 +74,16 @@ export default class Collapse extends Parent<Events> {
    * Toggle collapse
    */
   public toggle() {
-    this.expanded ? this.hide() : this.show()
+    this.status.expanded ? this.hide() : this.show()
   }
 
   /**
    * Show collapse
    */
   public show() {
-    this.expanded = true
+    this.status.expanded = true
     if (this.hasTransition) {
-      this.collapsing = true
+      this.status.collapsing = true
       this.el.classList.add(this.collapsingClass)
       const height = this.el.scrollHeight
       this.el.style.height = `${height}px`
@@ -97,13 +100,13 @@ export default class Collapse extends Parent<Events> {
    * Hide collapse
    */
   public hide() {
-    this.expanded = false
+    this.status.expanded = false
     if (this.hasTransition) {
       const height = this.el.scrollHeight
       this.el.style.height = `${height}px`
       // eslint-disable-next-line no-unused-expressions
       this.el.offsetHeight // reflow
-      this.collapsing = true
+      this.status.collapsing = true
       this.el.classList.add(this.collapsingClass)
       this.el.style.height = '0px'
       this.onCollapse()
@@ -118,14 +121,14 @@ export default class Collapse extends Parent<Events> {
 
   private onCollapse() {
     clearTimeout(this.timeout)
-    this.emitEvent(this.expanded ? 'show' : 'hide')
+    this.emitEvent(this.status.expanded ? 'show' : 'hide')
 
     this.timeout = window.setTimeout(() => {
       this.el.classList.remove(this.collapsingClass)
-      this.collapsing = false
+      this.status.collapsing = false
       this.el.style.height = ''
 
-      this.emitEvent(this.expanded ? 'shown' : 'hidden')
+      this.emitEvent(this.status.expanded ? 'shown' : 'hidden')
     }, getTransitionDuration(this.el))
   }
 
@@ -133,14 +136,14 @@ export default class Collapse extends Parent<Events> {
    * Return the status of the collapse
    */
   public get isExpanded() {
-    return this.expanded
+    return this.status.expanded
   }
 
   /**
    * Return if the collapse is collapsing
    */
   public get isCollapsing() {
-    return this.collapsing
+    return this.status.collapsing
   }
 
   private get hasTransition() {
