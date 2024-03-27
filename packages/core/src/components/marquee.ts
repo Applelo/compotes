@@ -1,17 +1,13 @@
 import { tabbable } from 'tabbable'
 import Parent, { type ParentOptions } from './_parent'
 
+type Events = 'init' | 'play' | 'pause' | 'loop' | 'destroy'
+
 declare global {
-  interface HTMLElementEventMap {
-    'c.marquee.init': CustomEvent<Marquee>
-    'c.marquee.destroy': CustomEvent<Marquee>
-    'c.marquee.play': CustomEvent<Marquee>
-    'c.marquee.pause': CustomEvent<Marquee>
-    'c.marquee.loop': CustomEvent<Marquee>
-  }
+  interface HTMLElementEventMap extends Record<`c.marquee.${Events}`, CustomEvent<Marquee>> {}
 }
 
-export interface MarqueeOptions extends ParentOptions {
+export interface MarqueeOptions extends ParentOptions<Events> {
   /**
    * Clone elements to fill the Marquee. Useful for infinite loop
    * @default false
@@ -40,7 +36,7 @@ export interface MarqueeOptions extends ParentOptions {
   mutationObserver?: boolean
 }
 
-export default class Marquee extends Parent {
+export default class Marquee extends Parent<Events> {
   declare public opts: MarqueeOptions
   private containerEl: HTMLElement | null = null
   private resizeObserver?: ResizeObserver

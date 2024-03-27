@@ -1,17 +1,17 @@
 {
-  "name": "compotes",
+  "name": "@compotes/vue",
   "type": "module",
   "version": "0.10.0",
   "packageManager": "pnpm@8.15.2",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
-  "homepage": "https://compotes.dev",
+  "homepage": "https://github.com/Applelo/blottie",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Applelo/compotes"
+    "url": "https://github.com/Applelo/blottie"
   },
-  "bugs": "https://github.com/Applelo/compotes/issues",
+  "bugs": "https://github.com/Applelo/blottie/issues",
   "keywords": [
     "components",
     "accessible",
@@ -32,19 +32,7 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/compotes.umd.cjs"
       }
-    },
-    "./css": "./dist/style.css",
-    "./css/style.css": "./dist/style.css",
-    "./css/collapse": "./dist/css/collapse.css",
-    "./css/collapse.css": "./dist/css/collapse.css",
-    "./css/drag": "./dist/css/drag.css",
-    "./css/drag.css": "./dist/css/drag.css",
-    "./css/drilldown": "./dist/css/drilldown.css",
-    "./css/drilldown.css": "./dist/css/drilldown.css",
-    "./css/dropdown": "./dist/css/dropdown.css",
-    "./css/dropdown.css": "./dist/css/dropdown.css",
-    "./css/marquee": "./dist/css/marquee.css",
-    "./css/marquee.css": "./dist/css/marquee.css"
+    }
   },
   "main": "./dist/compotes.umd.cjs",
   "module": "./dist/compotes.js",
@@ -57,20 +45,25 @@
   },
   "scripts": {
     "dev": "vite build --watch",
-    "build": "vite build",
-    "test:vitest": "vitest",
-    "test:types": "tsc --noEmit && vue-tsc --noEmit",
+    "build": "vite build && vue-tsc --emitDeclarationOnly",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm build"
   },
+  "peerDependencies": {
+    "vue": ">=3.0.0"
+  },
   "dependencies": {
-    "tabbable": "^6.2.0"
+    "compotes": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^20.11.30",
-    "fast-glob": "^3.3.2",
-    "lightningcss": "^1.24.1",
+    "@vitejs/plugin-vue": "^5.0.4",
     "typescript": "^5.4.3",
     "vite": "^5.2.6",
-    "vite-plugin-dts": "^3.8.0"
+    "vue": "^3.4.21",
+    "vue-tsc": "^2.0.7"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

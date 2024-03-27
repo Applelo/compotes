@@ -43,7 +43,7 @@ pnpm add -D compotes
 
 <br></details>
 
-<!--<details>
+<details>
 <summary>Vue 3</summary><br>
 
 ```bash
@@ -58,7 +58,7 @@ pnpm add -D @compotes/vue
 
 <br></details>
 
-<details>
+<!-- <details>
 <summary>Nuxt 3</summary><br>
 
 ```bash
@@ -71,9 +71,7 @@ yarn add -D @compotes/nuxt
 pnpm add -D @compotes/nuxt
 ```
 
-<br></details>-->
-
-> Vue 3/Nuxt 3 packages will arrive soon stay tuned!
+<br></details> -->
 
 ## 🙋‍♂️ Why ?
 

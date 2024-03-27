@@ -15,7 +15,6 @@ const marquee = new Marquee('.c-marquee')
 The structure consists to a list of element. All animation are CSS based.
 
 ```html
-
 <div class="c-marquee">
   <ul class="c-marquee-container">
     <li>This is the default marquee</li>

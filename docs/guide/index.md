@@ -12,6 +12,9 @@
 # pnpm
 pnpm add -D compotes
 
+# bun
+bun add -D compotes
+
 #npm
 npm i -D compotes
 
