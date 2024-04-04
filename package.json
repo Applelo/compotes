@@ -43,14 +43,14 @@
     "publish": "pnpm run -r publish"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "2.11.1",
+    "@antfu/eslint-config": "2.12.1",
     "eslint": "^8.57.0",
     "playwright": "^1.42.1",
     "typescript": "^5.4.3",
-    "vite": "^5.2.6",
-    "vitepress": "1.0.1",
+    "vite": "^5.2.8",
+    "vitepress": "1.0.2",
     "vitest": "^1.4.0",
     "vue": "^3.4.21",
-    "vue-tsc": "^2.0.7"
+    "vue-tsc": "^2.0.10"
   }
 }
