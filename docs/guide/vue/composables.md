@@ -86,7 +86,6 @@ const marquee = useMarquee(marqueeEl, { fill: true })
 
 All the component data are available after the mounted vue lifecycle hook.
 
-Currently, **data are not reactive**.
 Here an example to show the current status of the collapse component.
 
 ```vue
@@ -97,7 +96,7 @@ const marquee = useMarquee(marqueeEl, { fill: true })
 </script>
 
 <template>
-  <div>Toggled </div>
+  <div>{{ marquee.isPaused ? 'Paused' : 'Playing' }}</div>
   <div ref="marqueeEl" class="c-marquee">
     <ul class="c-marquee-container">
       <li>This is the default marquee</li>
@@ -106,3 +105,5 @@ const marquee = useMarquee(marqueeEl, { fill: true })
   </div>
 </template>
 ```
+
+## Events

@@ -90,6 +90,7 @@ export default class Collapse extends Parent<Events> {
       this.onCollapse()
     }
     else {
+      this.emitEvent('show')
       this.emitEvent('shown')
     }
     this.el.classList.add(this.showClass)
@@ -112,6 +113,7 @@ export default class Collapse extends Parent<Events> {
       this.onCollapse()
     }
     else {
+      this.emitEvent('hide')
       this.emitEvent('hidden')
     }
     this.el.classList.remove(this.showClass)
