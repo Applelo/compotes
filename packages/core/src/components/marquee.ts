@@ -37,6 +37,8 @@ export interface MarqueeOptions extends ParentOptions<Events> {
 }
 
 export default class Marquee extends Parent<Events> {
+  public name = 'marquee'
+
   declare public opts: MarqueeOptions
   private containerEl: HTMLElement | null = null
   private resizeObserver?: ResizeObserver
@@ -59,13 +61,14 @@ export default class Marquee extends Parent<Events> {
 
   constructor(el: HTMLElement | string, options: MarqueeOptions = {}) {
     super(el, options)
-    if (this.isInitializable)
-      this.init()
   }
 
-  public init() {
-    this.name = 'marquee'
-    super.init()
+  public init(el: HTMLElement | string, options: MarqueeOptions = {}) {
+    super.init(el, options)
+
+    if (!this.el)
+      return
+
     this.update()
     this.containerEl = this.el.querySelector('.c-marquee-container')
 
@@ -90,12 +93,14 @@ export default class Marquee extends Parent<Events> {
   }
 
   public initAccessibilityAttrs() {
-    this.el.setAttribute('tabindex', '0')
+    this.el?.setAttribute('tabindex', '0')
   }
 
   public initEvents() {
-    this.destroyEvents(['registerLoopEvent'])
+    if (!this.el)
+      return
 
+    this.destroyEvents(['registerLoopEvent'])
     this.registerEvent({
       id: 'registerLoopEvent',
       function: () => {
@@ -113,10 +118,15 @@ export default class Marquee extends Parent<Events> {
    * Init accessibility events.
    */
   public initAccessibilityEvents() {
+    if (!this.el)
+      return
+
     this.destroyEvents(['addKeyboardClass', 'removeKeyboardClass'])
     this.registerEvent({
       id: 'addKeyboardClass',
       function: () => {
+        if (!this.el)
+          return
         this.el.classList.add(this.keyboardClass)
       },
       event: 'keydown',
@@ -126,6 +136,9 @@ export default class Marquee extends Parent<Events> {
     this.registerEvent({
       id: 'removeKeyboardClass',
       function: (e: FocusEvent) => {
+        if (!this.el)
+          return
+
         const target = e.target as Element | null
         if (
           target && (
@@ -142,6 +155,8 @@ export default class Marquee extends Parent<Events> {
   }
 
   private get elSize() {
+    if (!this.el)
+      return 0
     return this.opts.direction === 'up' || this.opts.direction === 'down' ? this.el.clientHeight : this.el.clientWidth
   }
 
@@ -155,6 +170,9 @@ export default class Marquee extends Parent<Events> {
    * Update the marquee
    */
   public update(forceFillRegeneration = false) {
+    if (!this.el)
+      return
+
     if (!this.containerEl)
       return
     const currentDirection = this.opts.direction || 'right'
@@ -204,10 +222,11 @@ export default class Marquee extends Parent<Events> {
 
     // Directions
     this.el.classList.add(`c-marquee--direction-${currentDirection}`)
-    directions.forEach((direction) => {
+    for (let index = 0; index < directions.length; index++) {
+      const direction = directions[index]
       if (currentDirection !== direction)
         this.el.classList.remove(`c-marquee--direction-${direction}`)
-    })
+    }
 
     if (this.opts.fill) {
       this.el.style.setProperty(
@@ -228,17 +247,17 @@ export default class Marquee extends Parent<Events> {
   }
 
   public play() {
-    this.el.classList.remove(this.pauseClass)
+    this.el?.classList.remove(this.pauseClass)
     this.emitEvent('play')
   }
 
   public pause() {
-    this.el.classList.add(this.pauseClass)
+    this.el?.classList.add(this.pauseClass)
     this.emitEvent('pause')
   }
 
   public get isPaused() {
-    return this.el.classList.contains(this.pauseClass)
+    return this.el?.classList.contains(this.pauseClass) || true
   }
 
   private fill(fillMultiplier: number) {
@@ -269,6 +288,8 @@ export default class Marquee extends Parent<Events> {
   }
 
   public destroy() {
+    if (!this.el)
+      return
     this.mutationObserver?.disconnect()
     this.resizeObserver?.disconnect()
     this.clones.forEach(clone => clone.remove())

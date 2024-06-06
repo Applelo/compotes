@@ -38,20 +38,14 @@ export interface ParentEvent {
 
 export default abstract class Parent<E extends string = 'init' | 'destroy'> {
   protected name = ''
-  public el: HTMLElement
-  public opts: ParentOptions<E>
+
+  public el: HTMLElement | null = null
+  public opts: ParentOptions<E> = {}
   protected events: ParentEvent[] = []
 
   constructor(el: HTMLElement | string, options: ParentOptions<E> = {}) {
-    const checkEl = typeof el === 'string'
-      ? document.querySelector<HTMLElement>(el)
-      : el
-
-    if (!checkEl)
-      throw this.error('The element/selector provided cannot be found.')
-
-    this.el = checkEl
-    this.opts = options
+    if (this.isInitializable)
+      this.init(el, options)
   }
 
   protected get isInitializable() {
@@ -87,20 +81,30 @@ export default abstract class Parent<E extends string = 'init' | 'destroy'> {
         cancelable,
       },
     )
-    return this.el.dispatchEvent(event)
+    return this.el?.dispatchEvent(event)
   }
 
   /**
    * Init the component
    */
-  public init() {
+  public init(el: HTMLElement | string, options: ParentOptions<E> = {}) {
+    const checkEl = typeof el === 'string'
+      ? document.querySelector<HTMLElement>(el)
+      : el
+
+    if (!checkEl)
+      throw this.error('The element/selector provided cannot be found.')
+
+    this.el = checkEl
+    this.opts = options
+
     if (this.opts.on) {
       for (const key in this.opts.on) {
         if (Object.prototype.hasOwnProperty.call(this.opts.on, key)) {
           const element = this.opts.on[key]
           if (!element)
             continue
-          this.el.addEventListener(
+          this.el?.addEventListener(
             `c.${this.name}.${key}`,
             e => element(e as CustomEvent<Parent>),
           )
@@ -110,7 +114,7 @@ export default abstract class Parent<E extends string = 'init' | 'destroy'> {
 
     this.emitEvent('init')
     if (this.accessibilityStatus.styles)
-      this.el.classList.add(`c-${this.name}--a11y`)
+      this.el?.classList.add(`c-${this.name}--a11y`)
 
     if (this.accessibilityStatus.attrs)
       this.initAccessibilityAttrs()
@@ -153,7 +157,7 @@ export default abstract class Parent<E extends string = 'init' | 'destroy'> {
    */
   public destroy() {
     this.emitEvent('destroy')
-    this.el.classList.remove(`c-${this.name}--a11y`)
+    this.el?.classList.remove(`c-${this.name}--a11y`)
     this.destroyEvents()
   }
 

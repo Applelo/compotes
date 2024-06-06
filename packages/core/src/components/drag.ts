@@ -9,6 +9,8 @@ declare global {
 export interface DragOptions extends ParentOptions<Events> {}
 
 export default class Drag extends Parent<Events> {
+  public name = 'drag'
+
   declare public opts: DragOptions
   private isDown = false
   private draggableClass = 'c-drag--draggable'
@@ -23,16 +25,16 @@ export default class Drag extends Parent<Events> {
 
   constructor(el: HTMLElement | string, options: DragOptions = {}) {
     super(el, options)
-    if (this.isInitializable)
-      this.init()
   }
 
-  public init() {
-    this.name = 'drag'
-    super.init()
+  public init(el: HTMLElement | string, options: DragOptions = {}) {
+    super.init(el, options)
+
+    if (!this.el)
+      return
 
     this.resizeObserver = new ResizeObserver(() => {
-      this.el.classList.toggle(this.draggableClass, this.isDraggable)
+      this.el?.classList.toggle(this.draggableClass, this.isDraggable)
     })
 
     this.resizeObserver.observe(this.el)
@@ -43,15 +45,19 @@ export default class Drag extends Parent<Events> {
   public initEvents() {
     this.destroyEvents()
 
+    if (!this.el)
+      return
+
     const mouseEvents: (keyof HTMLElementEventMap)[] = ['mouseleave', 'mouseup']
-    mouseEvents.forEach((event) => {
+    for (let index = 0; index < mouseEvents.length; index++) {
+      const event = mouseEvents[index]
       this.registerEvent({
         id: 'handleDragEnd',
         function: this.handleDragEnd.bind(this),
         event,
         el: this.el,
       })
-    })
+    }
 
     this.registerEvent({
       id: 'handleDragMove',
@@ -84,7 +90,7 @@ export default class Drag extends Parent<Events> {
   }
 
   private handleDragStart(e: MouseEvent) {
-    if (!this.isDraggable)
+    if (!this.isDraggable || !this.el)
       return
     this.isDown = true
     this.el.classList.add(this.draggingClass)
@@ -96,13 +102,15 @@ export default class Drag extends Parent<Events> {
   }
 
   private handleDragEnd() {
+    if (!this.el)
+      return
     this.isDown = false
     this.el.classList.remove(this.draggingClass)
     this.emitEvent('end')
   }
 
   private handleDragMove(e: MouseEvent) {
-    if (!this.isDown)
+    if (!this.isDown || !this.el)
       return
     e.preventDefault()
 
@@ -123,6 +131,8 @@ export default class Drag extends Parent<Events> {
    * Tell if the element is draggable or not
    */
   public get isDraggable() {
+    if (!this.el)
+      return false
     return this.el.clientHeight !== this.el.scrollHeight
       || this.el.clientWidth !== this.el.scrollWidth
   }
@@ -136,8 +146,8 @@ export default class Drag extends Parent<Events> {
 
   public destroy() {
     this.resizeObserver?.disconnect()
-    this.el.classList.remove(this.draggingClass)
-    this.el.classList.remove(this.draggableClass)
+    this.el?.classList.remove(this.draggingClass)
+    this.el?.classList.remove(this.draggableClass)
     super.destroy()
   }
 }

@@ -11,6 +11,8 @@ declare global {
 export interface CollapseOptions extends ParentOptions<Events> {}
 
 export default class Collapse extends Parent<Events> {
+  public name = 'collapse'
+
   declare public opts: CollapseOptions
   private triggers: HTMLElement[] = []
   protected status = {
@@ -24,15 +26,13 @@ export default class Collapse extends Parent<Events> {
 
   constructor(el: HTMLElement | string, options: CollapseOptions = {}) {
     super(el, options)
-    if (this.isInitializable)
-      this.init()
   }
 
-  public init() {
-    this.name = 'collapse'
-    this.status.expanded = this.el.classList.contains(this.showClass)
+  public init(el: HTMLElement | string, options: CollapseOptions = {}) {
+    super.init(el, options)
+
+    this.status.expanded = this.el?.classList.contains(this.showClass) || false
     this.update()
-    super.init()
   }
 
   public initAccessibilityAttrs() {
@@ -59,7 +59,7 @@ export default class Collapse extends Parent<Events> {
    */
   public update() {
     this.triggers = Array.from(
-      document.querySelectorAll<HTMLElement>(`.c-collapse-trigger[aria-controls="${this.el.id}"]`),
+      document.querySelectorAll<HTMLElement>(`.c-collapse-trigger[aria-controls="${this.el?.id}"]`),
     )
     this.triggers.forEach((trigger) => {
       trigger.setAttribute(
@@ -81,10 +81,13 @@ export default class Collapse extends Parent<Events> {
    * Show collapse
    */
   public show() {
+    if (!this.el)
+      return
+
     this.status.expanded = true
     if (this.hasTransition) {
       this.status.collapsing = true
-      this.el.classList.add(this.collapsingClass)
+      this.el?.classList.add(this.collapsingClass)
       const height = this.el.scrollHeight
       this.el.style.height = `${height}px`
       this.onCollapse()
@@ -101,6 +104,9 @@ export default class Collapse extends Parent<Events> {
    * Hide collapse
    */
   public hide() {
+    if (!this.el)
+      return
+
     this.status.expanded = false
     if (this.hasTransition) {
       const height = this.el.scrollHeight
@@ -122,10 +128,16 @@ export default class Collapse extends Parent<Events> {
   }
 
   private onCollapse() {
+    if (!this.el)
+      return
+
     clearTimeout(this.timeout)
     this.emitEvent(this.status.expanded ? 'show' : 'hide')
 
     this.timeout = window.setTimeout(() => {
+      if (!this.el)
+        return
+
       this.el.classList.remove(this.collapsingClass)
       this.status.collapsing = false
       this.el.style.height = ''
@@ -149,11 +161,13 @@ export default class Collapse extends Parent<Events> {
   }
 
   private get hasTransition() {
+    if (!this.el)
+      return false
     return getTransitionDuration(this.el) !== 0
   }
 
   public destroy(): void {
-    this.el.classList.remove(this.collapsingClass)
+    this.el?.classList.remove(this.collapsingClass)
     this.triggers.forEach((trigger) => {
       trigger.removeAttribute('aria-expanded')
     })

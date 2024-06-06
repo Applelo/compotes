@@ -34,6 +34,8 @@ export interface DropdownOptions extends ParentOptions<Events> {
 }
 
 export default class Dropdown extends Parent<Events> {
+  public name = 'dropdown'
+
   declare public opts: DropdownOptions
   private triggerEl: HTMLButtonElement | HTMLLinkElement | null = null
   private menuEl: HTMLUListElement | null = null
@@ -45,12 +47,13 @@ export default class Dropdown extends Parent<Events> {
 
   constructor(el: HTMLElement | string, options: DropdownOptions = {}) {
     super(el, options)
-    if (this.isInitializable)
-      this.init()
   }
 
-  public init() {
-    this.name = 'dropdown'
+  public init(el: HTMLElement | string, options: DropdownOptions = {}) {
+    super.init(el, options)
+
+    if (!this.el)
+      return
 
     this.triggerEl = this.el.querySelector('.c-dropdown-trigger')
     if (!this.triggerEl) {
@@ -82,7 +85,6 @@ export default class Dropdown extends Parent<Events> {
     this.opened = this.triggerEl.getAttribute('aria-expanded') === 'true'
 
     this.update()
-    super.init()
   }
 
   public initAccessibilityAttrs() {
@@ -188,6 +190,9 @@ export default class Dropdown extends Parent<Events> {
   public initAccessibilityEvents() {
     this.destroyEvents(['key', 'focusin'])
 
+    if (!this.el)
+      return
+
     this.registerEvent({
       id: 'key',
       event: 'keydown',
@@ -277,7 +282,7 @@ export default class Dropdown extends Parent<Events> {
    */
   public equalizeWidth() {
     setTimeout(() => {
-      if (!this.triggerEl || !this.menuEl)
+      if (!this.el || !this.triggerEl || !this.menuEl)
         return
       this.el.classList.remove(this.widthClass)
       this.el.style.removeProperty(this.widthCssVar)
@@ -339,7 +344,7 @@ export default class Dropdown extends Parent<Events> {
         action.removeAttribute('role')
       })
     }
-    this.el.classList.remove(this.widthClass)
+    this.el?.classList.remove(this.widthClass)
     super.destroy()
   }
 }

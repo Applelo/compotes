@@ -28,6 +28,8 @@ interface DrilldownItem {
 }
 
 export default class Drilldown extends Parent<Events> {
+  public name = 'drilldown'
+
   declare public opts: DrilldownOptions
   private currentEl: HTMLUListElement | null = null
   private wrapper: HTMLUListElement | null = null
@@ -42,13 +44,15 @@ export default class Drilldown extends Parent<Events> {
 
   constructor(el: HTMLElement | string, options: DrilldownOptions = {}) {
     super(el, options)
-    if (this.isInitializable)
-      this.init()
   }
 
-  public init() {
-    this.name = 'drilldown'
-    this.currentEl = this.el.querySelector('.c-drilldown-menu')
+  public init(el: HTMLElement | string, options: DrilldownOptions = {}) {
+    super.init(el, options)
+
+    if (!this.el)
+      return
+
+    this.currentEl = this.el.querySelector('.c-drilldown-menu') || null
     if (!this.currentEl) {
       throw this.error(
         'The component needs to have an ul element : <nav class="c-drilldown"><ul class="c-drilldown-menu"></ul></nav>',
@@ -73,11 +77,13 @@ export default class Drilldown extends Parent<Events> {
       subtree: true,
     })
 
-    super.init()
     this.update(true)
   }
 
   public initAccessibilityAttrs() {
+    if (!this.el)
+      return
+
     this.wrapper?.setAttribute('role', 'menubar')
     this.wrapper?.setAttribute('aria-multiselectable', 'false')
     this.wrapper?.setAttribute('aria-orientation', 'vertical')
@@ -108,6 +114,9 @@ export default class Drilldown extends Parent<Events> {
   }
 
   public initEvents() {
+    if (!this.el)
+      return
+
     const backs = this.el.querySelectorAll('.c-drilldown-back')
     const nexts = this.el.querySelectorAll('.c-drilldown-next')
     this.destroyEvents(['back', 'next'])
@@ -137,12 +146,18 @@ export default class Drilldown extends Parent<Events> {
    * Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/ controls
    */
   public initAccessibilityEvents() {
+    if (!this.el)
+      return
+
     this.destroyEvents(['key'])
     this.registerEvent({
       id: 'key',
       event: 'keydown',
       el: this.el,
       function: (e: KeyboardEvent) => {
+        if (!this.el)
+          return
+
         switch (e.key) {
           case 'ArrowUp':
           case 'Up':
@@ -241,6 +256,9 @@ export default class Drilldown extends Parent<Events> {
   }
 
   private updateHeight() {
+    if (!this.el)
+      return
+
     let height = 0
 
     if (this.opts.dynamicHeight === true && this.currentEl) {
@@ -281,6 +299,9 @@ export default class Drilldown extends Parent<Events> {
   }
 
   private disableFocusElements() {
+    if (!this.el)
+      return
+
     const elsBeenDisable = this.el.querySelectorAll('[data-c-hidden]')
     elsBeenDisable.forEach((el) => {
       el.removeAttribute(this.hiddenData)
@@ -307,6 +328,9 @@ export default class Drilldown extends Parent<Events> {
    * @param {(HTMLButtonElement | Event)} button
    */
   private next(button: HTMLButtonElement | MouseEvent) {
+    if (!this.el)
+      return
+
     const nextButton = this.getButton(button, 'next')
 
     if (!nextButton)
@@ -325,6 +349,9 @@ export default class Drilldown extends Parent<Events> {
    * Back to one level
    */
   public back() {
+    if (!this.el)
+      return
+
     if (!this.wrapper || this.level === 0)
       return
 
@@ -349,6 +376,9 @@ export default class Drilldown extends Parent<Events> {
    * Reset the drilldown to the root level
    */
   public reset() {
+    if (!this.el)
+      return
+
     if (!this.wrapper || this.level === 0)
       return
 
@@ -365,6 +395,9 @@ export default class Drilldown extends Parent<Events> {
   }
 
   public destroy() {
+    if (!this.el)
+      return
+
     this.mutationObserver?.disconnect()
     this.resizeObserver?.disconnect()
     this.wrapper?.removeAttribute('role')
