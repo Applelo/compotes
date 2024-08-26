@@ -185,8 +185,9 @@ export default class Drilldown extends Parent<Events> {
             if (
               activeElement
               && activeElement.classList.contains('c-drilldown-next')
-            )
+            ) {
               this.next(activeElement)
+            }
             break
           }
           case 'Home':

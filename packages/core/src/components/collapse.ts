@@ -74,7 +74,12 @@ export default class Collapse extends Parent<Events> {
    * Toggle collapse
    */
   public toggle() {
-    this.status.expanded ? this.hide() : this.show()
+    if (this.status.expanded) {
+      this.hide()
+    }
+    else {
+      this.show()
+    }
   }
 
   /**
@@ -111,7 +116,8 @@ export default class Collapse extends Parent<Events> {
     if (this.hasTransition) {
       const height = this.el.scrollHeight
       this.el.style.height = `${height}px`
-      // eslint-disable-next-line no-unused-expressions
+
+      // eslint-disable-next-line ts/no-unused-expressions
       this.el.offsetHeight // reflow
       this.status.collapsing = true
       this.el.classList.add(this.collapsingClass)

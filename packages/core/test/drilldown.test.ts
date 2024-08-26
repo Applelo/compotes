@@ -77,6 +77,6 @@ describe('drilldown', async () => {
     const { before, after } = await destroyComponent(page)
     expect(before).not.toEqual(after)
     // remove style to prevent issue between local and ci
-    expect(after.replace(/ style=".*;"/gm, '')).toMatchSnapshot()
+    expect(after.replace(/ style=".*;"/g, '')).toMatchSnapshot()
   })
 })

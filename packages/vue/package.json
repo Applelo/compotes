@@ -2,7 +2,7 @@
   "name": "@compotes/vue",
   "type": "module",
   "version": "0.10.0",
-  "packageManager": "pnpm@8.15.2",
+  "packageManager": "pnpm@9.9.0",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
@@ -57,11 +57,11 @@
     "compotes": "workspace:*"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.4",
-    "typescript": "^5.4.3",
-    "vite": "^5.2.8",
-    "vue": "^3.4.21",
-    "vue-tsc": "^2.0.10"
+    "@vitejs/plugin-vue": "^5.1.2",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2",
+    "vue": "^3.4.38",
+    "vue-tsc": "^2.0.29"
   },
   "publishConfig": {
     "access": "public"

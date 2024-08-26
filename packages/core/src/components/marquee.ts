@@ -145,8 +145,9 @@ export default class Marquee extends Parent<Events> {
             target.classList.contains('.c-marquee')
             || target.closest('.c-marquee')
           )
-        )
+        ) {
           return
+        }
         this.el.classList.remove(this.keyboardClass)
       },
       event: 'focusout',
