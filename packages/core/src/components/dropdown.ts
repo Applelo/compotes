@@ -1,7 +1,12 @@
 import { focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
 import Parent, { type ParentOptions } from './_parent'
 
-type Events = 'init' | 'opened' | 'closed' | 'destroy'
+enum Events {
+  Init = 'init',
+  Opened = 'opened',
+  Closed = 'closed',
+  Destroy = 'destroy',
+}
 
 declare global {
   interface HTMLElementEventMap extends Record<`c.dropdown.${Events}`, CustomEvent<Dropdown>> {}
@@ -34,19 +39,32 @@ export interface DropdownOptions extends ParentOptions<Events> {
 }
 
 export default class Dropdown extends Parent<Events> {
-  public name = 'dropdown'
+  public readonly name = 'dropdown'
+  declare protected opts: DropdownOptions
 
-  declare public opts: DropdownOptions
+  // Constant
+  private static readonly CLASS_ROOT = 'c-dropdown'
+  private static readonly CLASS_WIDTH = 'c-dropdown--setwidth'
+  private static readonly CLASS_TRIGGER = 'c-dropdown-trigger'
+  private static readonly CLASS_CONTAINER = 'c-dropdown-container'
+
+  private static readonly SELECTOR_ROOT = `.${Dropdown.CLASS_ROOT}`
+  private static readonly SELECTOR_TRIGGER = `.${Dropdown.CLASS_TRIGGER}`
+  private static readonly SELECTOR_CONTAINER = `.${Dropdown.CLASS_CONTAINER}`
+  private static readonly SELECTOR_CONTAINER_ITEMS = ':scope > li'
+  private static readonly SELECTOR_CONTAINER_ACTIONS = ':scope > li > button, :scope > li > a'
+
+  private static readonly CSSVAR_WIDTH = '--c-dropdown-width'
+
   private triggerEl: HTMLButtonElement | HTMLLinkElement | null = null
   private menuEl: HTMLUListElement | null = null
   private opened: boolean = false
-
   private mutationObserver?: MutationObserver
-  private widthClass = 'c-dropdown--setwidth'
-  private widthCssVar = '--c-dropdown-width'
 
   constructor(el: HTMLElement | string, options: DropdownOptions = {}) {
-    super(el, options)
+    super()
+    if (this.isInitializable)
+      this.init(el, options)
   }
 
   public init(el: HTMLElement | string, options: DropdownOptions = {}) {
@@ -54,22 +72,6 @@ export default class Dropdown extends Parent<Events> {
 
     if (!this.el)
       return
-
-    this.triggerEl = this.el.querySelector('.c-dropdown-trigger')
-    if (!this.triggerEl) {
-      throw this.error(
-        'The component needs to have a trigger element with the class `c-dropdown-trigger` as a direct child',
-        { cause: this.el },
-      )
-    }
-
-    this.menuEl = this.el.querySelector('.c-dropdown-container')
-    if (!this.menuEl) {
-      throw this.error(
-        'The component needs to have a container element with the class `c-dropdown-trigger` as a direct child',
-        { cause: this.el },
-      )
-    }
 
     this.mutationObserver = this.opts.mutationObserver === false
       ? undefined
@@ -82,9 +84,27 @@ export default class Dropdown extends Parent<Events> {
       subtree: true,
     })
 
-    this.opened = this.triggerEl.getAttribute('aria-expanded') === 'true'
+    this.opened = this.triggerEl?.getAttribute('aria-expanded') === 'true'
 
     this.update()
+  }
+
+  protected initElements(): void {
+    this.triggerEl = this.el?.querySelector(Dropdown.SELECTOR_TRIGGER) || null
+    if (!this.triggerEl) {
+      throw this.error(
+        'The component needs to have a trigger element with the class `c-dropdown-trigger` as a direct child',
+        { cause: this.el },
+      )
+    }
+
+    this.menuEl = this.el?.querySelector(Dropdown.SELECTOR_CONTAINER) || null
+    if (!this.menuEl) {
+      throw this.error(
+        'The component needs to have a container element with the class `c-dropdown-trigger` as a direct child',
+        { cause: this.el },
+      )
+    }
   }
 
   public initAccessibilityAttrs() {
@@ -102,20 +122,19 @@ export default class Dropdown extends Parent<Events> {
     if (this.type === 'default')
       return
     this.menuEl.setAttribute('role', 'menu')
-    const lis = this.menuEl.querySelectorAll(':scope > li')
+    const lis = this.menuEl.querySelectorAll(Dropdown.SELECTOR_CONTAINER_ITEMS)
     lis.forEach((li) => {
       li.setAttribute('role', 'none')
     })
-    const actions = this.menuEl.querySelectorAll(':scope > li > button, :scope > li > a')
+    const actions = this.menuEl.querySelectorAll(Dropdown.SELECTOR_CONTAINER_ACTIONS)
     actions.forEach((action) => {
       action.setAttribute('role', 'menuitem')
     })
   }
 
-  public initEvents() {
+  protected initEvents() {
     if (!this.triggerEl || !this.menuEl)
       return
-    this.destroyEvents(['click', 'pointerdown'])
     this.registerEvent({
       id: 'click',
       el: this.triggerEl,
@@ -130,19 +149,13 @@ export default class Dropdown extends Parent<Events> {
         const target = e.target as Element | null
         if (!target)
           return
-        const dropdown = target.closest('.c-dropdown')
+        const dropdown = target.closest(Dropdown.SELECTOR_ROOT)
         if (!dropdown)
           this.close()
       },
     })
 
     if (this.opts.openOn === 'hover') {
-      this.destroyEvents([
-        'triggerEnter',
-        'triggerLeave',
-        'menuEnter',
-        'menuLeave',
-      ])
       this.registerEvent({
         id: 'triggerEnter',
         el: this.triggerEl,
@@ -180,16 +193,14 @@ export default class Dropdown extends Parent<Events> {
         },
       })
     }
-    if (this.accessibilityStatus.events)
-      this.initAccessibilityEvents()
+
+    this.initAccessibilityEvents()
   }
 
   /**
    * Init accessibility events.
    */
-  public initAccessibilityEvents() {
-    this.destroyEvents(['key', 'focusin'])
-
+  private initAccessibilityEvents() {
     if (!this.el)
       return
 
@@ -237,7 +248,7 @@ export default class Dropdown extends Parent<Events> {
       el: window,
       function: (e: Event) => {
         const target = e.target as Element | null
-        if (target?.closest('.c-dropdown') === this.el)
+        if (target?.closest(Dropdown.SELECTOR_ROOT) === this.el)
           return
         this.close()
       },
@@ -248,8 +259,8 @@ export default class Dropdown extends Parent<Events> {
    * Update the dropdown component
    */
   public update() {
-    if (this.accessibilityStatus.attrs === true)
-      this.initAccessibilityAttrs()
+    this.initAccessibilityAttrs()
+
     if (this.opts.equalizeWidth === true)
       this.equalizeWidth()
   }
@@ -262,7 +273,7 @@ export default class Dropdown extends Parent<Events> {
       return
     this.triggerEl.setAttribute('aria-expanded', 'true')
     this.opened = true
-    this.emitEvent('opened')
+    this.emitEvent(Events.Opened)
   }
 
   /**
@@ -284,13 +295,13 @@ export default class Dropdown extends Parent<Events> {
     setTimeout(() => {
       if (!this.el || !this.triggerEl || !this.menuEl)
         return
-      this.el.classList.remove(this.widthClass)
-      this.el.style.removeProperty(this.widthCssVar)
+      this.el.classList.remove(Dropdown.CLASS_WIDTH)
+      this.el.style.removeProperty(Dropdown.CSSVAR_WIDTH)
       const triggerWidth = this.triggerEl.clientWidth
       const containerWidth = this.menuEl.clientWidth
       const maxWidth = Math.max(triggerWidth, containerWidth)
-      this.el.style.setProperty(this.widthCssVar, `${Math.ceil(maxWidth)}px`)
-      this.el.classList.add(this.widthClass)
+      this.el.style.setProperty(Dropdown.CSSVAR_WIDTH, `${Math.ceil(maxWidth)}px`)
+      this.el.classList.add(Dropdown.CLASS_WIDTH)
     }, 1)
   }
 
@@ -302,7 +313,7 @@ export default class Dropdown extends Parent<Events> {
       return
     this.triggerEl.setAttribute('aria-expanded', 'false')
     this.opened = false
-    this.emitEvent('closed')
+    this.emitEvent(Events.Closed)
   }
 
   /**
@@ -335,16 +346,17 @@ export default class Dropdown extends Parent<Events> {
 
     if (this.type === 'menu' && this.menuEl) {
       this.menuEl?.removeAttribute('role')
-      const lis = this.menuEl.querySelectorAll(':scope > li')
+      const lis = this.menuEl.querySelectorAll(Dropdown.SELECTOR_CONTAINER_ITEMS)
       lis.forEach((li) => {
         li.removeAttribute('role')
       })
-      const actions = this.menuEl.querySelectorAll(':scope > li > button, :scope > li > a')
+      const actions = this.menuEl.querySelectorAll(Dropdown.SELECTOR_CONTAINER_ACTIONS)
       actions.forEach((action) => {
         action.removeAttribute('role')
       })
     }
-    this.el?.classList.remove(this.widthClass)
+    this.el?.classList.remove(Dropdown.CLASS_WIDTH)
+    this.el?.style.removeProperty(Dropdown.CSSVAR_WIDTH)
     super.destroy()
   }
 }

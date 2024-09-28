@@ -102,16 +102,12 @@ import { Drilldown } from 'compotes'
 
 const drilldown = new Collapse('#my-drilldown', {
   init: true, // [!code focus:5]
-  initAccessibilityAttrs: true,
-  initEvents: true,
   dynamicHeight: false,
   mutationObserver: true,
 })
 ```
 
 - `init` (boolean): Init the component on creation
-- `initAccessibilityAttrs` (boolean): Init accessibility attributes on the component
-- `initEvents` (boolean): Init events on the component
 - `dynamicHeight` (boolean): By default, the height of the drilldown is the tallest menu found. You can set this option to `true` to update the height to the current menu.
 - `mutationObserver` (boolean): Use MutationObserver to update component on changes
 
@@ -127,13 +123,9 @@ drilldown.reset()// [!code focus]
 ```
 
 - `init()`: Init the component
-- `initAccessibilityAttrs()`: Init accessibility attributes
-- `initEvents()`: Init component events
-- `initAccessibilityEvents()`: Init component accessibility events
 - `update()`: Update drilldown trigger status
 - `reset()`: Reset the drilldown to the root menu
 - `back()`: Back to the previous menu
-- `destroyEvents()`: Destroy the component events
 - `destroy()`: Destroy the component
 
 ## Data

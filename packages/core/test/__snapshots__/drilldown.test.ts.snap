@@ -1,19 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`drilldown > destroy 1`] = `
-"<!DOCTYPE html><html lang="en"><head>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍯</text></svg>">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drilldown</title>
-    <script type="module" crossorigin="" src="/assets/drilldown-BoIVpoDc.js"></script>
-    <link rel="modulepreload" crossorigin="" href="/assets/_parent-PLeNLLls.js">
-    <link rel="modulepreload" crossorigin="" href="/assets/index.esm-CjV0_wFH.js">
-    <link rel="modulepreload" crossorigin="" href="/assets/accessibility-DQSUv1PD.js">
-    <link rel="modulepreload" crossorigin="" href="/assets/animation-CH8HhKvA.js">
-    <link rel="stylesheet" crossorigin="" href="/assets/marquee-ybAlwBfl.css">
-  </head>
-  <body>
+"
 
     <nav class="c-drilldown">
       <ul class="c-drilldown-menu">
@@ -101,5 +89,5 @@ exports[`drilldown > destroy 1`] = `
 
   
 
-</body></html>"
+"
 `;

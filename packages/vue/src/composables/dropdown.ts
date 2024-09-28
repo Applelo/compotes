@@ -1,5 +1,5 @@
-import type { DropdownOptions } from 'compotes'
 import { Dropdown } from 'compotes'
+import type { DropdownOptions } from 'compotes'
 import type { Ref } from 'vue'
 import { useParent } from './_parent'
 

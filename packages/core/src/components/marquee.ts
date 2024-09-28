@@ -1,11 +1,19 @@
 import { tabbable } from 'tabbable'
 import Parent, { type ParentOptions } from './_parent'
 
-type Events = 'init' | 'play' | 'pause' | 'loop' | 'destroy'
+enum Events {
+  Init = 'init',
+  Play = 'play',
+  Pause = 'pause',
+  Loop = 'loop',
+  Destroy = 'destroy',
+}
 
 declare global {
   interface HTMLElementEventMap extends Record<`c.marquee.${Events}`, CustomEvent<Marquee>> {}
 }
+
+type MarqueeDirection = 'left' | 'right' | 'up' | 'down'
 
 export interface MarqueeOptions extends ParentOptions<Events> {
   /**
@@ -17,7 +25,7 @@ export interface MarqueeOptions extends ParentOptions<Events> {
    * Direction of the marquee
    * @default 'right'
    */
-  direction?: 'left' | 'right' | 'up' | 'down'
+  direction?: MarqueeDirection
   /**
    * Behavior of the marquee animation
    * @default 'scroll'
@@ -37,30 +45,41 @@ export interface MarqueeOptions extends ParentOptions<Events> {
 }
 
 export default class Marquee extends Parent<Events> {
-  public name = 'marquee'
+  public readonly name = 'marquee'
+  declare protected opts: MarqueeOptions
 
-  declare public opts: MarqueeOptions
+  // Constant
+  private static readonly CLASS_ROOT = 'c-marquee'
+  private static readonly CLASS_KEYBOARD = 'c-marquee--keyboard'
+  private static readonly CLASS_PAUSE = 'c-collapse--pause'
+  private static readonly CLASS_BEHAVIOR_ALTERNATE = 'c-marquee--behavior-alternate'
+  private static readonly CLASS_BEHAVIOR_SCROLL = 'c-marquee--behavior-scroll'
+  private static readonly CLASS_DIRECTION = 'c-marquee--direction'
+  private static readonly CLASS_DIRECTION_LEFT = `${Marquee.CLASS_DIRECTION}-left`
+  private static readonly CLASS_DIRECTION_RIGHT = `${Marquee.CLASS_DIRECTION}-right`
+  private static readonly CLASS_DIRECTION_TOP = `${Marquee.CLASS_DIRECTION}-top`
+  private static readonly CLASS_DIRECTION_BOTTOM = `${Marquee.CLASS_DIRECTION}-bottom`
+  private static readonly CLASS_FILL = 'c-marquee--fill'
+  private static readonly CLASS_CLONE = 'c-marquee-clone'
+  private static readonly CLASS_CONTAINER = 'c-marquee-container'
+
+  private static readonly SELECTOR_ROOT = `.${Marquee.CLASS_ROOT}`
+  private static readonly SELECTOR_CONTAINER = `.${Marquee.CLASS_CONTAINER}`
+
+  private static readonly CSSVAR_START = '--c-marquee-start'
+  private static readonly CSSVAR_END = '--c-marquee-end'
+  private static readonly CSSVAR_DURATION = '--c-marquee-duration'
+
   private containerEl: HTMLElement | null = null
   private resizeObserver?: ResizeObserver
   private mutationObserver?: MutationObserver
   private clones: Element[] = []
   private fillMultiplier = 1
 
-  private keyboardClass = 'c-marquee--keyboard'
-  private pauseClass = 'c-marquee--pause'
-  private behaviorAlternateClass = 'c-marquee--behavior-alternate'
-  private behaviorScrollClass = 'c-marquee--behavior-scroll'
-  private directionLeftClass = 'c-marquee--direction-left'
-  private directionRightClass = 'c-marquee--direction-right'
-  private directionTopClass = 'c-marquee--direction-top'
-  private directionBottomClass = 'c-marquee--direction-bottom'
-  private fillClass = 'c-marquee--fill'
-  private startCssVar = '--c-marquee-start'
-  private endCssVar = '--c-marquee-end'
-  private durationCssVar = '--c-marquee-duration'
-
   constructor(el: HTMLElement | string, options: MarqueeOptions = {}) {
-    super(el, options)
+    super()
+    if (this.isInitializable)
+      this.init(el, options)
   }
 
   public init(el: HTMLElement | string, options: MarqueeOptions = {}) {
@@ -70,13 +89,12 @@ export default class Marquee extends Parent<Events> {
       return
 
     this.update()
-    this.containerEl = this.el.querySelector('.c-marquee-container')
 
     this.mutationObserver = this.opts.mutationObserver === false
       ? undefined
       : new MutationObserver(([el]) => {
         const addedEls = Array.from(el.addedNodes) as HTMLElement[]
-        const isFilling = addedEls.findIndex(item => item.classList.contains('c-marquee-clone')) === -1
+        const isFilling = addedEls.findIndex(item => item.classList.contains(Marquee.CLASS_CLONE)) === -1
         if (!isFilling)
           this.update(this.opts.fill)
       })
@@ -92,15 +110,18 @@ export default class Marquee extends Parent<Events> {
     })
   }
 
+  protected initElements(): void {
+    this.containerEl = this.el?.querySelector(Marquee.SELECTOR_CONTAINER) || null
+  }
+
   public initAccessibilityAttrs() {
     this.el?.setAttribute('tabindex', '0')
   }
 
-  public initEvents() {
+  protected initEvents() {
     if (!this.el)
       return
 
-    this.destroyEvents(['registerLoopEvent'])
     this.registerEvent({
       id: 'registerLoopEvent',
       function: () => {
@@ -110,24 +131,22 @@ export default class Marquee extends Parent<Events> {
       el: this.el,
     })
 
-    if (this.accessibilityStatus.events)
-      this.initAccessibilityEvents()
+    this.initAccessibilityEvents()
   }
 
   /**
    * Init accessibility events.
    */
-  public initAccessibilityEvents() {
+  private initAccessibilityEvents() {
     if (!this.el)
       return
 
-    this.destroyEvents(['addKeyboardClass', 'removeKeyboardClass'])
     this.registerEvent({
       id: 'addKeyboardClass',
       function: () => {
         if (!this.el)
           return
-        this.el.classList.add(this.keyboardClass)
+        this.el.classList.add(Marquee.CLASS_KEYBOARD)
       },
       event: 'keydown',
       el: this.el,
@@ -142,13 +161,13 @@ export default class Marquee extends Parent<Events> {
         const target = e.target as Element | null
         if (
           target && (
-            target.classList.contains('.c-marquee')
-            || target.closest('.c-marquee')
+            target.classList.contains(Marquee.CLASS_ROOT)
+            || target.closest(Marquee.SELECTOR_ROOT)
           )
         ) {
           return
         }
-        this.el.classList.remove(this.keyboardClass)
+        this.el.classList.remove(Marquee.CLASS_KEYBOARD)
       },
       event: 'focusout',
       el: this.el,
@@ -177,7 +196,7 @@ export default class Marquee extends Parent<Events> {
     if (!this.containerEl)
       return
     const currentDirection = this.opts.direction || 'right'
-    const directions = ['left', 'right', 'top', 'bottom']
+    const directions: MarqueeDirection[] = ['left', 'right', 'up', 'down']
     const currentFillMultiplier = this.opts.fill ? Math.ceil(this.elSize / this.containerSize) : 1
 
     // Duration
@@ -193,13 +212,13 @@ export default class Marquee extends Parent<Events> {
     }
 
     this.el.style.setProperty(
-      this.durationCssVar,
+      Marquee.CSSVAR_DURATION,
       duration,
     )
 
     // Fill
     this.el.classList.toggle(
-      this.fillClass,
+      Marquee.CLASS_FILL,
       this.opts?.fill === true,
     )
 
@@ -213,52 +232,52 @@ export default class Marquee extends Parent<Events> {
 
     // Behavior
     this.el.classList.toggle(
-      this.behaviorAlternateClass,
+      Marquee.CLASS_BEHAVIOR_ALTERNATE,
       this.opts?.behavior === 'alternate',
     )
     this.el.classList.toggle(
-      this.behaviorScrollClass,
+      Marquee.CLASS_BEHAVIOR_SCROLL,
       this.opts?.behavior !== 'alternate',
     )
 
     // Directions
-    this.el.classList.add(`c-marquee--direction-${currentDirection}`)
+    this.el.classList.add(`${Marquee.CLASS_DIRECTION}-${currentDirection}`)
     for (let index = 0; index < directions.length; index++) {
       const direction = directions[index]
       if (currentDirection !== direction)
-        this.el.classList.remove(`c-marquee--direction-${direction}`)
+        this.el.classList.remove(`${Marquee.CLASS_DIRECTION}-${direction}`)
     }
 
     if (this.opts.fill) {
       this.el.style.setProperty(
-        this.startCssVar,
+        Marquee.CSSVAR_START,
         `0`,
       )
       this.el.style.setProperty(
-        this.endCssVar,
+        Marquee.CSSVAR_END,
         `-${Math.ceil(this.containerSize)}px`,
       )
     }
     else {
       this.el.style.setProperty(
-        this.endCssVar,
+        Marquee.CSSVAR_END,
         `${Math.ceil(this.elSize)}px`,
       )
     }
   }
 
   public play() {
-    this.el?.classList.remove(this.pauseClass)
+    this.el?.classList.remove(Marquee.CLASS_PAUSE)
     this.emitEvent('play')
   }
 
   public pause() {
-    this.el?.classList.add(this.pauseClass)
+    this.el?.classList.add(Marquee.CLASS_PAUSE)
     this.emitEvent('pause')
   }
 
   public get isPaused() {
-    return this.el?.classList.contains(this.pauseClass) || true
+    return this.el?.classList.contains(Marquee.CLASS_PAUSE) || true
   }
 
   private fill(fillMultiplier: number) {
@@ -272,18 +291,14 @@ export default class Marquee extends Parent<Events> {
     for (let index = 0; index < fillMultiplier; index++) {
       items.forEach((item) => {
         const clone = item.cloneNode(true) as Element
-        clone.classList.add('c-marquee-clone')
-
-        if (this.accessibilityStatus.attrs)
-          clone.setAttribute('aria-hidden', 'true')
+        clone.classList.add(Marquee.CLASS_CLONE)
+        clone.setAttribute('aria-hidden', 'true')
 
         this.clones.push(clone)
         this.containerEl?.append(clone)
 
-        if (this.accessibilityStatus.attrs) {
-          const tabbables = tabbable(clone)
-          tabbables.forEach(item => item.setAttribute('tabindex', '-1'))
-        }
+        const tabbables = tabbable(clone)
+        tabbables.forEach(item => item.setAttribute('tabindex', '-1'))
       })
     }
   }
@@ -295,18 +310,23 @@ export default class Marquee extends Parent<Events> {
     this.resizeObserver?.disconnect()
     this.clones.forEach(clone => clone.remove())
     this.el.removeAttribute('tabindex')
-    this.el.classList.remove(this.pauseClass)
-    this.el.classList.remove(this.keyboardClass)
-    this.el.classList.remove(this.behaviorAlternateClass)
-    this.el.classList.remove(this.behaviorScrollClass)
-    this.el.classList.remove(this.directionLeftClass)
-    this.el.classList.remove(this.directionRightClass)
-    this.el.classList.remove(this.directionTopClass)
-    this.el.classList.remove(this.directionBottomClass)
-    this.el.classList.remove(this.fillClass)
-    this.el.style.removeProperty(this.startCssVar)
-    this.el.style.removeProperty(this.endCssVar)
-    this.el.style.removeProperty(this.durationCssVar)
+
+    this.el.classList.remove(
+      Marquee.CLASS_PAUSE,
+      Marquee.CLASS_KEYBOARD,
+      Marquee.CLASS_BEHAVIOR_ALTERNATE,
+      Marquee.CLASS_BEHAVIOR_SCROLL,
+      Marquee.CLASS_DIRECTION_BOTTOM,
+      Marquee.CLASS_DIRECTION_LEFT,
+      Marquee.CLASS_DIRECTION_RIGHT,
+      Marquee.CLASS_DIRECTION_TOP,
+      Marquee.CLASS_FILL,
+    )
+
+    this.el.style.removeProperty(Marquee.CSSVAR_START)
+    this.el.style.removeProperty(Marquee.CSSVAR_END)
+    this.el.style.removeProperty(Marquee.CSSVAR_DURATION)
+
     super.destroy()
   }
 }

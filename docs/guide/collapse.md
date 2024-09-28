@@ -58,14 +58,10 @@ import { Collapse } from 'compotes'
 
 const collapse = new Collapse('#my-collapse', {
   init: true, // [!code focus:3]
-  initAccessibilityAttrs: true,
-  initEvents: true
 })
 ```
 
 - `init` (boolean): Init the component on creation
-- `initAccessibilityAttrs` (boolean): Init accessibility attributes on the component
-- `initEvents` (boolean): Init events on the component
 
 ## Methods
 
@@ -79,13 +75,10 @@ collapse.show()// [!code focus]
 ```
 
 - `init()`: Init the component
-- `initAccessibilityAttrs()`: Init accessibility attributes
-- `initEvents()`: Init component events
 - `update()`: Update collapse trigger status
 - `hide()`: Hide element
 - `show()`: Show element
 - `toggle()`: Toggle element
-- `destroyEvents()`: Destroy the component events
 - `destroy()`: Destroy the component
 
 ## Data

@@ -1,5 +1,5 @@
-import '@css/drag.css'
 import { Drag } from '@src/index'
+import '@css/drag.css'
 
 const el = document.querySelector<HTMLElement>('.c-drag')
 if (el) {

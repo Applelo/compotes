@@ -30,12 +30,10 @@ import { Drag } from 'compotes'
 
 const drag = new Drag('.c-drag', {
   init: true, // [!code focus:2]
-  initEvents: true
 })
 ```
 
 - `init` (boolean): Init the component on creation
-- `initEvents` (boolean): Init events on the component
 
 ## Methods
 
@@ -51,8 +49,6 @@ drag.init()// [!code focus]
 ```
 
 - `init()`: Init the component
-- `initEvents()`: Init component events
-- `destroyEvents()`: Destroy the component events
 - `destroy()`: Destroy the component
 
 ## Data

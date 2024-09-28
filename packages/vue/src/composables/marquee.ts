@@ -1,5 +1,5 @@
-import type { MarqueeOptions } from 'compotes'
 import { Marquee } from 'compotes'
+import type { MarqueeOptions } from 'compotes'
 import type { Ref } from 'vue'
 import { useParent } from './_parent'
 

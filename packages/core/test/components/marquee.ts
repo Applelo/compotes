@@ -1,5 +1,5 @@
-import '@css/marquee.css'
 import { Marquee } from '@src/index'
+import '@css/marquee.css'
 
 const el = document.querySelector<HTMLElement>('.c-marquee')
 const play = document.querySelector('.js-marquee-play')

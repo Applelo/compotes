@@ -2,13 +2,21 @@
 import Parent from '@src/components/_parent'
 
 class Child extends Parent {
-  public init() {
-    this.name = 'child'
-    super.init()
+  public readonly name = 'child'
+
+  constructor(el: HTMLElement | string, options = {}) {
+    super()
+    if (this.isInitializable)
+      this.init(el, options)
   }
 
-  protected initAccessibilityAttrs(): void {}
-  protected initEvents(): void {}
+  public init(el?: HTMLElement | string, options = {}) {
+    super.init(el, options)
+  }
+
+  protected initEvents(): void {
+
+  }
 }
 
 const el = document.querySelector<HTMLElement>('.c-parent')

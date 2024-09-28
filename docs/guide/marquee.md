@@ -41,7 +41,6 @@ import { Marquee } from 'compotes'
 
 const marquee = new Marquee('.c-marquee', {
   init: true, // [!code focus:7]
-  initEvents: true,
   fill: false,
   direction: 'right',
   behavior: 'scroll',
@@ -51,7 +50,6 @@ const marquee = new Marquee('.c-marquee', {
 ```
 
 - `init` (boolean): Init the component on creation
-- `initEvents` (boolean): Init events on the component
 - `fill` (boolean): Fill the marquee to make a loop
 - `direction` ('left' | 'right' | 'up' | 'down'): Direction of marquee animation
 - `behavior` ('scroll' | 'alternate'): The behavior the marquee animation
@@ -72,8 +70,6 @@ marquee.init()// [!code focus]
 ```
 
 - `init()`: Init the component
-- `initEvents()`: Init component events
-- `destroyEvents()`: Destroy the component events
 - `destroy()`: Destroy the component
 - `update()`: Update the marquee component
 - `play()`: Play the marquee component

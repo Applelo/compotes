@@ -1,5 +1,5 @@
-import type { DrilldownOptions } from 'compotes'
 import { Drilldown } from 'compotes'
+import type { DrilldownOptions } from 'compotes'
 import type { Ref } from 'vue'
 import { useParent } from './_parent'
 

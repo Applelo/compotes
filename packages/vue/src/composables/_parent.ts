@@ -1,6 +1,6 @@
+import { onMounted, onUnmounted, onUpdated, ref, shallowRef } from 'vue'
 import type { Parent, ParentOptions } from 'compotes'
 import type { Ref } from 'vue'
-import { onMounted, onUnmounted, onUpdated, ref, shallowRef } from 'vue'
 
 interface ComposableOptions extends ParentOptions<string> {
   /**

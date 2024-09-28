@@ -2,7 +2,7 @@
   "name": "compotes",
   "type": "module",
   "version": "0.10.0",
-  "packageManager": "pnpm@9.9.0",
+  "packageManager": "pnpm@9.11.0",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
@@ -66,11 +66,11 @@
     "tabbable": "^6.2.0"
   },
   "devDependencies": {
-    "@types/node": "^22.5.1",
+    "@types/node": "^22.7.4",
     "fast-glob": "^3.3.2",
-    "lightningcss": "^1.26.0",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.2",
-    "vite-plugin-dts": "^4.0.3"
+    "lightningcss": "^1.27.0",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vite-plugin-dts": "^4.2.2"
   }
 }

@@ -1,6 +1,11 @@
 import Parent, { type ParentOptions } from './_parent'
 
-type Events = 'init' | 'start' | 'end' | 'destroy'
+enum Events {
+  Init = 'init',
+  Start = 'start',
+  End = 'end',
+  Destroy = 'destroy',
+}
 
 declare global {
   interface HTMLElementEventMap extends Record<`c.drag.${Events}`, CustomEvent<Drag>> {}
@@ -9,12 +14,14 @@ declare global {
 export interface DragOptions extends ParentOptions<Events> {}
 
 export default class Drag extends Parent<Events> {
-  public name = 'drag'
+  public readonly name = 'drag'
+  declare protected opts: DragOptions
 
-  declare public opts: DragOptions
+  // Constant
+  private static readonly CLASS_DRAGGABLE = 'c-drag--draggable'
+  private static readonly CLASS_DRAGGING = 'c-drag--dragging'
+
   private isDown = false
-  private draggableClass = 'c-drag--draggable'
-  private draggingClass = 'c-drag--dragging'
   private startX = 0
   private startY = 0
   private scrollLeft = 0
@@ -24,7 +31,9 @@ export default class Drag extends Parent<Events> {
   private resizeObserver?: ResizeObserver
 
   constructor(el: HTMLElement | string, options: DragOptions = {}) {
-    super(el, options)
+    super()
+    if (this.isInitializable)
+      this.init(el, options)
   }
 
   public init(el: HTMLElement | string, options: DragOptions = {}) {
@@ -34,17 +43,13 @@ export default class Drag extends Parent<Events> {
       return
 
     this.resizeObserver = new ResizeObserver(() => {
-      this.el?.classList.toggle(this.draggableClass, this.isDraggable)
+      this.el?.classList.toggle(Drag.CLASS_DRAGGABLE, this.isDraggable)
     })
 
     this.resizeObserver.observe(this.el)
   }
 
-  public initAccessibilityAttrs() {}
-
-  public initEvents() {
-    this.destroyEvents()
-
+  protected initEvents() {
     if (!this.el)
       return
 
@@ -93,7 +98,7 @@ export default class Drag extends Parent<Events> {
     if (!this.isDraggable || !this.el)
       return
     this.isDown = true
-    this.el.classList.add(this.draggingClass)
+    this.el.classList.add(Drag.CLASS_DRAGGING)
     this.startX = e.pageX - this.el.offsetLeft
     this.startY = e.pageY - this.el.offsetTop
     this.scrollLeft = this.el.scrollLeft
@@ -105,7 +110,7 @@ export default class Drag extends Parent<Events> {
     if (!this.el)
       return
     this.isDown = false
-    this.el.classList.remove(this.draggingClass)
+    this.el.classList.remove(Drag.CLASS_DRAGGING)
     this.emitEvent('end')
   }
 
@@ -146,8 +151,8 @@ export default class Drag extends Parent<Events> {
 
   public destroy() {
     this.resizeObserver?.disconnect()
-    this.el?.classList.remove(this.draggingClass)
-    this.el?.classList.remove(this.draggableClass)
+    this.el?.classList.remove(Drag.CLASS_DRAGGING)
+    this.el?.classList.remove(Drag.CLASS_DRAGGABLE)
     super.destroy()
   }
 }

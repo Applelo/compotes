@@ -1,29 +1,12 @@
 /// <reference types="vitest" />
 
-import { basename, resolve } from 'node:path'
 import { Buffer } from 'node:buffer'
 import { promises as fs } from 'node:fs'
+import { basename, resolve } from 'node:path'
+import fg from 'fast-glob'
+import { transform } from 'lightningcss'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import { transform } from 'lightningcss'
-import fg from 'fast-glob'
-
-async function minifyStyle(path: string) {
-  const filename = basename(path)
-  const css = await fs.readFile(resolve(__dirname, path))
-  const { code } = transform({
-    filename,
-    code: Buffer.from(css),
-    minify: true,
-    sourceMap: false,
-  })
-  this.emitFile({
-    needsCodeReference: false,
-    source: code,
-    fileName: `css/${filename}`,
-    type: 'asset',
-  })
-}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -58,6 +41,23 @@ export default defineConfig({
     enforce: 'post',
     async buildEnd() {
       const styles = await fg.glob(['src/css/*.css'])
+      const minifyStyle = async (path: string) => {
+        const filename = basename(path)
+        const css = await fs.readFile(resolve(__dirname, path))
+        const { code } = transform({
+          filename,
+          code: Buffer.from(css),
+          minify: true,
+          sourceMap: false,
+        })
+        this.emitFile({
+          needsCodeReference: false,
+          source: code,
+          fileName: `css/${filename}`,
+          type: 'asset',
+        })
+      }
+
       const promises: Promise<void>[] = []
       styles.forEach(path => promises.push(minifyStyle(path)))
       await Promise.all(promises)
