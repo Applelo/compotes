@@ -23,6 +23,7 @@ export default class Collapse extends Parent<Events> {
   // Constant
   private static readonly CLASS_SHOW = 'c-collapse--show'
   private static readonly CLASS_COLLAPSING = 'c-collapse--collapsing'
+  private static readonly CLASS_TRIGGER = 'c-collapse-trigger'
 
   private triggers: HTMLElement[] = []
   protected status = {
@@ -71,7 +72,9 @@ export default class Collapse extends Parent<Events> {
 
   private setTriggers() {
     this.triggers = Array.from(
-      document.querySelectorAll<HTMLElement>(`.c-collapse-trigger[aria-controls="${this.el?.id}"]`),
+      document.querySelectorAll<HTMLElement>(
+        `.${Collapse.CLASS_TRIGGER}[aria-controls="${this.el?.id}"]`,
+      ),
     )
   }
 

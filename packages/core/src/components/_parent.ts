@@ -26,7 +26,7 @@ interface ParentEvent {
 }
 
 export default abstract class Parent<E extends string = Events> {
-  protected abstract name: string
+  protected abstract readonly name: string
 
   public el: HTMLElement | null = null
   protected opts: ParentOptions<E> = {}

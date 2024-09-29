@@ -1,6 +1,6 @@
-import { Collapse } from 'compotes'
 import type { CollapseOptions } from 'compotes'
 import type { Ref } from 'vue'
+import { Collapse } from 'compotes'
 import { useParent } from './_parent'
 
 export function useCollapse(

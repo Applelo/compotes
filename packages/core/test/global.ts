@@ -1,6 +1,6 @@
+import type { InlineConfig } from 'vite'
 import { resolve } from 'node:path'
 import { build, preview } from 'vite'
-import type { InlineConfig } from 'vite'
 
 const config: InlineConfig = {
   configFile: false,

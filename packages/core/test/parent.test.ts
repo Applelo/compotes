@@ -1,6 +1,6 @@
+import type { Browser } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { Browser } from 'playwright'
 
 let browser: Browser
 

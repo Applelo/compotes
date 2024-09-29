@@ -1,6 +1,6 @@
-import { Dropdown } from 'compotes'
 import type { DropdownOptions } from 'compotes'
 import type { Ref } from 'vue'
+import { Dropdown } from 'compotes'
 import { useParent } from './_parent'
 
 export function useDropdown(
