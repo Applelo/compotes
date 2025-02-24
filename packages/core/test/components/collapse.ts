@@ -1,5 +1,5 @@
-import '@css/drag.css'
 import { Collapse } from '@src/index'
+import '@css/drag.css'
 
 const el = document.querySelector<HTMLElement>('.c-collapse')
 if (el) {

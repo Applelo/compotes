@@ -6,11 +6,11 @@ exports[`dropdown > destroy 1`] = `
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dropdown</title>
-    <script type="module" crossorigin="" src="/assets/dropdown-B0DMcfyw.js"></script>
-    <link rel="modulepreload" crossorigin="" href="/assets/_parent-CjRBGSFb.js">
+    <script type="module" crossorigin="" src="/assets/dropdown-Dk8m4rwe.js"></script>
+    <link rel="modulepreload" crossorigin="" href="/assets/_parent-Dk8zhMEj.js">
     <link rel="modulepreload" crossorigin="" href="/assets/index.esm-CjV0_wFH.js">
     <link rel="modulepreload" crossorigin="" href="/assets/accessibility-DQSUv1PD.js">
-    <link rel="stylesheet" crossorigin="" href="/assets/marquee-ybAlwBfl.css">
+    <link rel="stylesheet" crossorigin="" href="/assets/marquee-CMSK5Pe4.css">
   </head>
   <body>
     <div class="c-dropdown" style="margin-top: 2rem;">

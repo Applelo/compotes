@@ -1,5 +1,6 @@
+import type { ParentOptions } from './_parent'
 import { tabbable } from 'tabbable'
-import Parent, { type ParentOptions } from './_parent'
+import Parent from './_parent'
 
 declare global {
   interface HTMLElementEventMap {
@@ -47,6 +48,7 @@ export default class Marquee extends Parent {
   private mutationObserver?: MutationObserver
   private clones: Element[] = []
   private fillMultiplier = 1
+  private resizeObserverTimeout: number = 0
 
   private keyboardClass = 'c-marquee--keyboard'
   private pauseClass = 'c-marquee--pause'
@@ -82,8 +84,10 @@ export default class Marquee extends Parent {
           this.update(this.opts.fill)
       })
     this.resizeObserver = new ResizeObserver(() => {
-      // fix wrong calculation from Firefox
-      setTimeout(() => this.update(), 1)
+      window.clearTimeout(this.resizeObserverTimeout)
+      this.resizeObserverTimeout = window.setTimeout(() => {
+        this.update()
+      }, 100)
     })
 
     this.resizeObserver.observe(this.el)
@@ -136,8 +140,9 @@ export default class Marquee extends Parent {
             target.classList.contains('.c-marquee')
             || target.closest('.c-marquee')
           )
-        )
+        ) {
           return
+        }
         this.el.classList.remove(this.keyboardClass)
       },
       event: 'focusout',

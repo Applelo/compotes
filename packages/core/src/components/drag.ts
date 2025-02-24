@@ -1,4 +1,5 @@
-import Parent, { type ParentOptions } from './_parent'
+import type { ParentOptions } from './_parent'
+import Parent from './_parent'
 
 declare global {
   interface HTMLElementEventMap {

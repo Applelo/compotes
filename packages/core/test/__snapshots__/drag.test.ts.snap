@@ -6,9 +6,9 @@ exports[`drag > destroy 1`] = `
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drag</title>
-    <script type="module" crossorigin="" src="/assets/drag-v3RSYZlk.js"></script>
-    <link rel="modulepreload" crossorigin="" href="/assets/_parent-CjRBGSFb.js">
-    <link rel="stylesheet" crossorigin="" href="/assets/marquee-ybAlwBfl.css">
+    <script type="module" crossorigin="" src="/assets/drag-Bmh5p5IV.js"></script>
+    <link rel="modulepreload" crossorigin="" href="/assets/_parent-Dk8zhMEj.js">
+    <link rel="stylesheet" crossorigin="" href="/assets/marquee-CMSK5Pe4.css">
   </head>
   <body>
     <div class="c-drag" style="width: 200px; height: 200px;">

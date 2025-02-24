@@ -1,6 +1,6 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { destroyComponent } from './helper/destroy'
 
 let browser: Browser

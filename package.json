@@ -1,7 +1,7 @@
 {
   "name": "@compotes/root",
   "type": "module",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "private": "true",
   "packageManager": "pnpm@8.15.2",
   "description": "Components library focused on accessibility/customization",
@@ -43,14 +43,14 @@
     "publish": "pnpm run -r publish"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "2.6.4",
-    "eslint": "^8.56.0",
-    "playwright": "^1.41.2",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.2",
-    "vitepress": "1.0.0-rc.42",
-    "vitest": "^1.2.2",
-    "vue": "^3.4.19",
-    "vue-tsc": "^1.8.27"
+    "@antfu/eslint-config": "4.3.0",
+    "eslint": "^9.21.0",
+    "playwright": "^1.50.1",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.1",
+    "vitepress": "1.6.3",
+    "vitest": "^3.0.6",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.2.4"
   }
 }

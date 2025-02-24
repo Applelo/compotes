@@ -1,5 +1,5 @@
-import '@css/dropdown.css'
 import { Dropdown } from '@src/index'
+import '@css/dropdown.css'
 
 const el = document.querySelector<HTMLElement>('.c-dropdown')
 if (el) {

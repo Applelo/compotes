@@ -1,12 +1,12 @@
 /// <reference types="vitest" />
 
-import { basename, resolve } from 'node:path'
 import { Buffer } from 'node:buffer'
 import { promises as fs } from 'node:fs'
+import { basename, resolve } from 'node:path'
+import fg from 'fast-glob'
+import { transform } from 'lightningcss'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import { transform } from 'lightningcss'
-import fg from 'fast-glob'
 
 // https://vitejs.dev/config/
 export default defineConfig({

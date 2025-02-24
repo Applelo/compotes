@@ -1,7 +1,8 @@
+import type { ParentOptions } from './_parent'
 import { tabbable } from 'tabbable'
 import { focusChar, focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
-import Parent, { type ParentOptions } from './_parent'
 import { getTransitionDuration } from './../utils/animation'
+import Parent from './_parent'
 
 declare global {
   interface HTMLElementEventMap {
@@ -40,6 +41,7 @@ export default class Drilldown extends Parent {
   private level = 0
 
   private resizeObserver?: ResizeObserver
+  private resizeObserverTimeout = 0
   private mutationObserver?: MutationObserver
 
   private delayCssVar = '--c-drilldown-delay'
@@ -69,7 +71,10 @@ export default class Drilldown extends Parent {
         this.update(true)
       })
     this.resizeObserver = new ResizeObserver(() => {
-      this.updateHeight()
+      clearTimeout(this.resizeObserverTimeout)
+      this.resizeObserverTimeout = window.setTimeout(() => {
+        this.updateHeight()
+      }, 100)
     })
 
     this.resizeObserver.observe(this.el)
@@ -175,8 +180,9 @@ export default class Drilldown extends Parent {
             if (
               activeElement
               && activeElement.classList.contains('c-drilldown-next')
-            )
+            ) {
               this.next(activeElement)
+            }
             break
           }
           case 'Home':

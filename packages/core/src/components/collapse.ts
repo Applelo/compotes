@@ -1,6 +1,6 @@
 import type { ParentOptions } from './_parent'
-import Parent from './_parent'
 import { getTransitionDuration } from './../utils/animation'
+import Parent from './_parent'
 
 declare global {
   interface HTMLElementEventMap {
@@ -106,7 +106,8 @@ export default class Collapse extends Parent {
     if (this.hasTransition) {
       const height = this.el.scrollHeight
       this.el.style.height = `${height}px`
-      // eslint-disable-next-line no-unused-expressions
+
+      // eslint-disable-next-line ts/no-unused-expressions
       this.el.offsetHeight // reflow
       this.collapsing = true
       this.el.classList.add(this.collapsingClass)

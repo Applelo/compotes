@@ -1,5 +1,5 @@
-import '@css/drag.css'
 import { Drilldown } from '@src/index'
+import '@css/drag.css'
 
 const el = document.querySelector<HTMLElement>('.c-drilldown')
 const reset = document.querySelector<HTMLElement>('.js-drilldown-reset')
