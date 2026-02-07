@@ -2,7 +2,7 @@
   "name": "compotes",
   "type": "module",
   "version": "0.10.0",
-  "packageManager": "pnpm@9.11.0",
+  "packageManager": "pnpm@10.29.1+sha512.48dae233635a645768a3028d19545cacc1688639eeb1f3734e42d6d6b971afbf22aa1ac9af52a173d9c3a20c15857cfa400f19994d79a2f626fcc73fccda9bbc",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
@@ -53,7 +53,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "scripts": {
     "dev": "vite build --watch",
@@ -63,14 +63,14 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "tabbable": "^6.2.0"
+    "tabbable": "^6.4.0"
   },
   "devDependencies": {
-    "@types/node": "^22.7.4",
-    "fast-glob": "^3.3.2",
-    "lightningcss": "^1.27.0",
-    "typescript": "^5.6.2",
-    "vite": "^5.4.8",
-    "vite-plugin-dts": "^4.2.2"
+    "@types/node": "^25.2.1",
+    "fast-glob": "^3.3.3",
+    "lightningcss": "^1.31.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vite-plugin-dts": "^4.5.4"
   }
 }

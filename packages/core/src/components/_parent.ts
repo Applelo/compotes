@@ -15,7 +15,7 @@ export interface ParentOptions<E extends string> {
    * An object to instantiate events listeners
    * @default undefined
    */
-  on?: Partial<Record<E, (e: CustomEvent<Parent>) => void | undefined>>
+  on?: Partial<Record<E, (e: CustomEvent<Parent<E>>) => void | undefined>>
 }
 
 interface ParentEvent {
@@ -36,6 +36,8 @@ export default abstract class Parent<E extends string = Events> {
    * Init the component
    */
   public init(el?: HTMLElement | string, options: ParentOptions<E> = {}) {
+    if (!el)
+      return
     const checkEl = typeof el === 'string'
       ? document.querySelector<HTMLElement>(el)
       : el
@@ -54,7 +56,7 @@ export default abstract class Parent<E extends string = Events> {
             continue
           this.el?.addEventListener(
             `c.${this.name}.${key}`,
-            e => element(e as CustomEvent<Parent>),
+            e => element(e as CustomEvent<Parent<E>>),
           )
         }
       }
