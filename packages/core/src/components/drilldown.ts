@@ -1,7 +1,8 @@
+import type { ParentOptions } from './_parent'
 import { tabbable } from 'tabbable'
 import { focusChar, focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
 import { getTransitionDuration } from './../utils/animation'
-import Parent, { type ParentOptions } from './_parent'
+import Parent from './_parent'
 
 enum Events {
   Init = 'init',
@@ -87,8 +88,8 @@ export default class Drilldown extends Parent<Events> {
     this.mutationObserver = this.opts.mutationObserver === false
       ? undefined
       : new MutationObserver(() => {
-        this.update(true)
-      })
+          this.update(true)
+        })
     this.resizeObserver = new ResizeObserver(() => {
       this.updateHeight()
     })

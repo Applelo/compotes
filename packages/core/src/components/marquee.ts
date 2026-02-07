@@ -1,5 +1,6 @@
+import type { ParentOptions } from './_parent'
 import { tabbable } from 'tabbable'
-import Parent, { type ParentOptions } from './_parent'
+import Parent from './_parent'
 
 enum Events {
   Init = 'init',
@@ -93,11 +94,11 @@ export default class Marquee extends Parent<Events> {
     this.mutationObserver = this.opts.mutationObserver === false
       ? undefined
       : new MutationObserver(([el]) => {
-        const addedEls = Array.from(el.addedNodes) as HTMLElement[]
-        const isFilling = addedEls.findIndex(item => item.classList.contains(Marquee.CLASS_CLONE)) === -1
-        if (!isFilling)
-          this.update(this.opts.fill)
-      })
+          const addedEls = Array.from(el.addedNodes) as HTMLElement[]
+          const isFilling = addedEls.findIndex(item => item.classList.contains(Marquee.CLASS_CLONE)) === -1
+          if (!isFilling)
+            this.update(this.opts.fill)
+        })
     this.resizeObserver = new ResizeObserver(() => {
       // fix wrong calculation from Firefox
       setTimeout(() => this.update(), 1)

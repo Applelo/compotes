@@ -7,6 +7,7 @@ First, [use a ref to get your HTMLElement ](https://vuejs.org/guide/essentials/t
 ```vue
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
+
 const marqueeEl = ref<HTMLElement | null>(null)
 const marquee = useMarquee(marqueeEl)
 </script>
@@ -21,6 +22,7 @@ As the second argument, you can pass the options of the component.
 ```vue
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
+
 const marqueeEl = ref<HTMLElement | null>(null)
 const marquee = useMarquee(marqueeEl, { fill: true })
 </script>
@@ -31,6 +33,7 @@ For the template, you need to respect the structure of the component you referen
 ```vue
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
+
 const marqueeEl = ref<HTMLElement | null>(null)
 const marquee = useMarquee(marqueeEl, { fill: true })
 </script>
@@ -62,6 +65,7 @@ Here an example with the marquee component with a simple play/pause implementati
 ```vue
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
+
 const marqueeEl = ref<HTMLElement | null>(null)
 const marquee = useMarquee(marqueeEl, { fill: true })
 </script>
@@ -91,6 +95,7 @@ Here an example to show the current status of the collapse component.
 ```vue
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
+
 const marqueeEl = ref<HTMLElement | null>(null)
 const marquee = useMarquee(marqueeEl, { fill: true })
 </script>

@@ -1,5 +1,6 @@
+import type { ParentOptions } from './_parent'
 import { focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
-import Parent, { type ParentOptions } from './_parent'
+import Parent from './_parent'
 
 enum Events {
   Init = 'init',
@@ -76,8 +77,8 @@ export default class Dropdown extends Parent<Events> {
     this.mutationObserver = this.opts.mutationObserver === false
       ? undefined
       : new MutationObserver(() => {
-        this.update()
-      })
+          this.update()
+        })
     this.mutationObserver?.observe(this.el, {
       childList: true,
       characterData: this.opts.equalizeWidth === true,
