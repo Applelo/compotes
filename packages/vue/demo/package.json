@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "dev-demo": "vite",
+    "build-demo": "vue-tsc && vite build",
+    "preview-demo": "vite preview"
   },
   "dependencies": {
     "vue": "^3.5.27"

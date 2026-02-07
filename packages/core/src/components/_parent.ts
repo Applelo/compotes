@@ -35,7 +35,7 @@ export default abstract class Parent<E extends string = Events> {
   /**
    * Init the component
    */
-  public init(el?: HTMLElement | string, options: ParentOptions<E> = {}) {
+  public init(el?: HTMLElement | string, options?: ParentOptions<E>) {
     if (!el)
       return
     const checkEl = typeof el === 'string'
@@ -46,7 +46,7 @@ export default abstract class Parent<E extends string = Events> {
       throw this.error('The element/selector provided cannot be found.')
 
     this.el = checkEl
-    this.opts = options
+    this.opts = options ?? this.opts ?? {}
 
     if (this.opts.on) {
       for (const key in this.opts.on) {

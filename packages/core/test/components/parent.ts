@@ -7,12 +7,13 @@ class Child extends Parent<Events> {
 
   constructor(el: HTMLElement | string, options: ParentOptions<Events> = {}) {
     super()
+    this.opts = options
     console.log(this.isInitializable)
     if (this.isInitializable)
       this.init(el, options)
   }
 
-  public init(el?: HTMLElement | string, options: ParentOptions<Events> = {}) {
+  public init(el?: HTMLElement | string, options?: ParentOptions<Events>) {
     super.init(el, options)
   }
 

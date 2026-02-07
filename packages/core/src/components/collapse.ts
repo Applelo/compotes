@@ -35,11 +35,12 @@ export default class Collapse extends Parent<Events> {
 
   constructor(el: HTMLElement | string, options: CollapseOptions = {}) {
     super()
+    this.opts = options
     if (this.isInitializable)
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options: CollapseOptions = {}) {
+  public init(el: HTMLElement | string, options?: CollapseOptions) {
     super.init(el, options)
     this.initAccessibilityAttrs()
 

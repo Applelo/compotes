@@ -64,11 +64,12 @@ export default class Drilldown extends Parent<Events> {
 
   constructor(el: HTMLElement | string, options: DrilldownOptions = {}) {
     super()
+    this.opts = options
     if (this.isInitializable)
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options: DrilldownOptions = {}) {
+  public init(el: HTMLElement | string, options?: DrilldownOptions) {
     super.init(el, options)
     this.initAccessibilityAttrs()
 

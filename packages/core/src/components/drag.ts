@@ -33,11 +33,12 @@ export default class Drag extends Parent<Events> {
 
   constructor(el: HTMLElement | string, options: DragOptions = {}) {
     super()
+    this.opts = options
     if (this.isInitializable)
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options: DragOptions = {}) {
+  public init(el: HTMLElement | string, options?: DragOptions) {
     super.init(el, options)
 
     if (!this.el)

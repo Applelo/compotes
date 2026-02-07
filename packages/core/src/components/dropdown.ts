@@ -64,11 +64,12 @@ export default class Dropdown extends Parent<Events> {
 
   constructor(el: HTMLElement | string, options: DropdownOptions = {}) {
     super()
+    this.opts = options
     if (this.isInitializable)
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options: DropdownOptions = {}) {
+  public init(el: HTMLElement | string, options?: DropdownOptions) {
     super.init(el, options)
 
     if (!this.el)
