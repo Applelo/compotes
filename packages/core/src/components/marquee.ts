@@ -84,7 +84,7 @@ export default class Marquee extends Parent<Events> {
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options?: MarqueeOptions) {
+  public init(el: HTMLElement | string, options?: MarqueeOptions): void {
     super.init(el, options)
 
     if (!this.el)
@@ -116,11 +116,11 @@ export default class Marquee extends Parent<Events> {
     this.containerEl = this.el?.querySelector(Marquee.SELECTOR_CONTAINER) || null
   }
 
-  public initAccessibilityAttrs() {
+  public initAccessibilityAttrs(): void {
     this.el?.setAttribute('tabindex', '0')
   }
 
-  protected initEvents() {
+  protected initEvents(): void {
     if (!this.el)
       return
 
@@ -139,7 +139,7 @@ export default class Marquee extends Parent<Events> {
   /**
    * Init accessibility events.
    */
-  private initAccessibilityEvents() {
+  private initAccessibilityEvents(): void {
     if (!this.el)
       return
 
@@ -176,13 +176,13 @@ export default class Marquee extends Parent<Events> {
     })
   }
 
-  private get elSize() {
+  private get elSize(): number {
     if (!this.el)
       return 0
     return this.opts.direction === 'up' || this.opts.direction === 'down' ? this.el.clientHeight : this.el.clientWidth
   }
 
-  private get containerSize() {
+  private get containerSize(): number {
     if (!this.containerEl)
       return 0
     return this.opts.direction === 'up' || this.opts.direction === 'down' ? this.containerEl.clientHeight / (this.fillMultiplier + 1) : this.containerEl.clientWidth / (this.fillMultiplier + 1)
@@ -191,7 +191,7 @@ export default class Marquee extends Parent<Events> {
   /**
    * Update the marquee
    */
-  public update(forceFillRegeneration = false) {
+  public update(forceFillRegeneration = false): void {
     if (!this.el)
       return
 
@@ -268,21 +268,21 @@ export default class Marquee extends Parent<Events> {
     }
   }
 
-  public play() {
+  public play(): void {
     this.el?.classList.remove(Marquee.CLASS_PAUSE)
     this.emitEvent('play')
   }
 
-  public pause() {
+  public pause(): void {
     this.el?.classList.add(Marquee.CLASS_PAUSE)
     this.emitEvent('pause')
   }
 
-  public get isPaused() {
+  public get isPaused(): boolean {
     return this.el?.classList.contains(Marquee.CLASS_PAUSE) || true
   }
 
-  private fill(fillMultiplier: number) {
+  private fill(fillMultiplier: number): void {
     if (!this.containerEl)
       return
 
@@ -305,7 +305,7 @@ export default class Marquee extends Parent<Events> {
     }
   }
 
-  public destroy() {
+  public destroy(): void {
     if (!this.el)
       return
     this.mutationObserver?.disconnect()

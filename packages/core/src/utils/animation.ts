@@ -2,7 +2,7 @@
  * From bootstrap
  * @see https://github.com/twbs/bootstrap/blob/main/js/src/util/index.js
  */
-export function getTransitionDuration(el: HTMLElement) {
+export function getTransitionDuration(el: HTMLElement): number {
   let { transitionDuration, transitionDelay } = window.getComputedStyle(el)
 
   const floatTransitionDuration = Number.parseFloat(transitionDuration)

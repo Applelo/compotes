@@ -32,7 +32,7 @@ const config: InlineConfig = {
   },
 }
 
-export default async () => {
+export default async (): Promise<void> => {
   await build(config)
   const previewServer = await preview(config)
   previewServer.printUrls()

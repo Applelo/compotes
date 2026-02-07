@@ -6,6 +6,6 @@ import { useParent } from './_parent'
 export function useDrag(
   el: Ref<HTMLElement | null>,
   options?: DragOptions,
-) {
+): Ref<Drag | null> {
   return useParent(Drag, el, options)
 }

@@ -38,7 +38,7 @@ export default class Drag extends Parent<Events> {
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options?: DragOptions) {
+  public init(el: HTMLElement | string, options?: DragOptions): void {
     super.init(el, options)
 
     if (!this.el)
@@ -51,7 +51,7 @@ export default class Drag extends Parent<Events> {
     this.resizeObserver.observe(this.el)
   }
 
-  protected initEvents() {
+  protected initEvents(): void {
     if (!this.el)
       return
 
@@ -88,7 +88,7 @@ export default class Drag extends Parent<Events> {
     })
   }
 
-  private blockClick(e: MouseEvent) {
+  private blockClick(e: MouseEvent): void {
     if (!this.hasMoved)
       return
 
@@ -96,7 +96,7 @@ export default class Drag extends Parent<Events> {
     this.hasMoved = false
   }
 
-  private handleDragStart(e: MouseEvent) {
+  private handleDragStart(e: MouseEvent): void {
     if (!this.isDraggable || !this.el)
       return
     this.isDown = true
@@ -108,7 +108,7 @@ export default class Drag extends Parent<Events> {
     this.emitEvent('start')
   }
 
-  private handleDragEnd() {
+  private handleDragEnd(): void {
     if (!this.el)
       return
     this.isDown = false
@@ -116,7 +116,7 @@ export default class Drag extends Parent<Events> {
     this.emitEvent('end')
   }
 
-  private handleDragMove(e: MouseEvent) {
+  private handleDragMove(e: MouseEvent): void {
     if (!this.isDown || !this.el)
       return
     e.preventDefault()
@@ -137,7 +137,7 @@ export default class Drag extends Parent<Events> {
   /**
    * Tell if the element is draggable or not
    */
-  public get isDraggable() {
+  public get isDraggable(): boolean {
     if (!this.el)
       return false
     return this.el.clientHeight !== this.el.scrollHeight
@@ -147,11 +147,11 @@ export default class Drag extends Parent<Events> {
   /**
    * Tell if the element is dragging
    */
-  public get isDragging() {
+  public get isDragging(): boolean {
     return this.isDown
   }
 
-  public destroy() {
+  public destroy(): void {
     this.resizeObserver?.disconnect()
     this.el?.classList.remove(Drag.CLASS_DRAGGING)
     this.el?.classList.remove(Drag.CLASS_DRAGGABLE)

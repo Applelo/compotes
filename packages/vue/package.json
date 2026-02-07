@@ -2,7 +2,6 @@
   "name": "@compotes/vue",
   "type": "module",
   "version": "0.10.0",
-  "packageManager": "pnpm@10.29.1+sha512.48dae233635a645768a3028d19545cacc1688639eeb1f3734e42d6d6b971afbf22aa1ac9af52a173d9c3a20c15857cfa400f19994d79a2f626fcc73fccda9bbc",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
@@ -30,11 +29,11 @@
       },
       "require": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/compotes.umd.cjs"
+        "default": "./dist/compotes.umd.js"
       }
     }
   },
-  "main": "./dist/compotes.umd.cjs",
+  "main": "./dist/compotes.umd.js",
   "module": "./dist/compotes.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -44,8 +43,8 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "vite build --watch",
-    "build": "vite build && vue-tsc --emitDeclarationOnly",
+    "dev": "tsdown --watch",
+    "build": "tsdown",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm build"
@@ -57,11 +56,10 @@
     "compotes": "workspace:*"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.4",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1",
-    "vue": "^3.5.27",
-    "vue-tsc": "^3.2.4"
+    "typescript": "catalog:",
+    "unplugin-vue": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
   },
   "publishConfig": {
     "access": "public"

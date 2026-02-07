@@ -40,7 +40,7 @@ export default class Collapse extends Parent<Events> {
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options?: CollapseOptions) {
+  public init(el: HTMLElement | string, options?: CollapseOptions): void {
     super.init(el, options)
     this.initAccessibilityAttrs()
 
@@ -53,14 +53,14 @@ export default class Collapse extends Parent<Events> {
     this.setTriggers()
   }
 
-  public initAccessibilityAttrs() {
+  public initAccessibilityAttrs(): void {
     this.triggers.forEach((trigger) => {
       if (trigger.tagName !== 'BUTTON')
         trigger.setAttribute('role', 'button')
     })
   }
 
-  public initEvents() {
+  public initEvents(): void {
     this.triggers.forEach((item) => {
       this.registerEvent({
         id: 'toggle',
@@ -71,7 +71,7 @@ export default class Collapse extends Parent<Events> {
     })
   }
 
-  private setTriggers() {
+  private setTriggers(): void {
     this.triggers = Array.from(
       document.querySelectorAll<HTMLElement>(
         `.${Collapse.CLASS_TRIGGER}[aria-controls="${this.el?.id}"]`,
@@ -82,7 +82,7 @@ export default class Collapse extends Parent<Events> {
   /**
    * Update trigger status
    */
-  public update() {
+  public update(): void {
     this.setTriggers()
     this.triggers.forEach((trigger) => {
       trigger.setAttribute(
@@ -96,7 +96,7 @@ export default class Collapse extends Parent<Events> {
   /**
    * Toggle collapse
    */
-  public toggle() {
+  public toggle(): void {
     if (this.status.expanded) {
       this.hide()
     }
@@ -108,7 +108,7 @@ export default class Collapse extends Parent<Events> {
   /**
    * Show collapse
    */
-  public show() {
+  public show(): void {
     if (!this.el)
       return
 
@@ -131,7 +131,7 @@ export default class Collapse extends Parent<Events> {
   /**
    * Hide collapse
    */
-  public hide() {
+  public hide(): void {
     if (!this.el)
       return
 
@@ -152,7 +152,7 @@ export default class Collapse extends Parent<Events> {
     this.update()
   }
 
-  private onCollapse() {
+  private onCollapse(): void {
     if (!this.el)
       return
 
@@ -174,18 +174,18 @@ export default class Collapse extends Parent<Events> {
   /**
    * Return the status of the collapse
    */
-  public get isExpanded() {
+  public get isExpanded(): boolean {
     return this.status.expanded
   }
 
   /**
    * Return if the collapse is collapsing
    */
-  public get isCollapsing() {
+  public get isCollapsing(): boolean {
     return this.status.collapsing
   }
 
-  private get hasTransition() {
+  private get hasTransition(): boolean {
     if (!this.el)
       return false
     return getTransitionDuration(this.el) !== 0

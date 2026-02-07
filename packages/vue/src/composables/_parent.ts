@@ -17,7 +17,7 @@ export function useParent<
   ComponentClass: new (el: HTMLElement | string, options?: O) => T,
   el: Ref<HTMLElement | null>,
   options: ComposableOptions<O> = {} as ComposableOptions<O>,
-) {
+): Ref<T | null> {
   const component: Ref<T | null> = options.shallow ? shallowRef(null) : ref(null)
 
   const init = () => {

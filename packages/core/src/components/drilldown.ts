@@ -69,7 +69,7 @@ export default class Drilldown extends Parent<Events> {
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options?: DrilldownOptions) {
+  public init(el: HTMLElement | string, options?: DrilldownOptions): void {
     super.init(el, options)
     this.initAccessibilityAttrs()
 
@@ -104,7 +104,7 @@ export default class Drilldown extends Parent<Events> {
     this.update(true)
   }
 
-  public initAccessibilityAttrs() {
+  public initAccessibilityAttrs(): void {
     if (!this.el)
       return
 
@@ -137,7 +137,7 @@ export default class Drilldown extends Parent<Events> {
     })
   }
 
-  protected initEvents() {
+  protected initEvents(): void {
     if (!this.el)
       return
 
@@ -167,7 +167,7 @@ export default class Drilldown extends Parent<Events> {
    * Init accessibility events.
    * Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/ controls
    */
-  public initAccessibilityEvents() {
+  public initAccessibilityEvents(): void {
     if (!this.el)
       return
 
@@ -236,7 +236,7 @@ export default class Drilldown extends Parent<Events> {
   /**
    * Update the drilldown component
    */
-  public update(reloadItems = false) {
+  public update(reloadItems = false): void {
     if (!this.wrapper)
       return
 
@@ -259,7 +259,7 @@ export default class Drilldown extends Parent<Events> {
     this.emitEvent(Events.Update)
   }
 
-  private updateItems(menu: HTMLUListElement, level = 0) {
+  private updateItems(menu: HTMLUListElement, level = 0): void {
     const children = menu.children
 
     for (let index = 0; index < children.length; index++) {
@@ -276,7 +276,7 @@ export default class Drilldown extends Parent<Events> {
     })
   }
 
-  private updateHeight() {
+  private updateHeight(): void {
     if (!this.el)
       return
 
@@ -299,7 +299,10 @@ export default class Drilldown extends Parent<Events> {
   /**
    * Get Next or Back button with click event
    */
-  private getButton(button: HTMLButtonElement | Event, type: 'back' | 'next') {
+  private getButton(
+    button: HTMLButtonElement | Event,
+    type: 'back' | 'next',
+  ): HTMLButtonElement | null {
     let btn: HTMLButtonElement | null = null
     if ('target' in button) {
       const target = button.target as HTMLButtonElement | null
@@ -319,7 +322,7 @@ export default class Drilldown extends Parent<Events> {
     return btn
   }
 
-  private disableFocusElements() {
+  private disableFocusElements(): void {
     if (!this.el)
       return
 
@@ -348,7 +351,7 @@ export default class Drilldown extends Parent<Events> {
    *
    * @param {(HTMLButtonElement | Event)} button
    */
-  private next(button: HTMLButtonElement | MouseEvent) {
+  private next(button: HTMLButtonElement | MouseEvent): void {
     if (!this.el)
       return
 
@@ -369,7 +372,7 @@ export default class Drilldown extends Parent<Events> {
   /**
    * Back to one level
    */
-  public back() {
+  public back(): void {
     if (!this.el)
       return
 
@@ -396,7 +399,7 @@ export default class Drilldown extends Parent<Events> {
   /**
    * Reset the drilldown to the root level
    */
-  public reset() {
+  public reset(): void {
     if (!this.el)
       return
 
@@ -415,7 +418,7 @@ export default class Drilldown extends Parent<Events> {
     this.emitEvent(Events.Reset)
   }
 
-  public destroy() {
+  public destroy(): void {
     if (!this.el)
       return
 

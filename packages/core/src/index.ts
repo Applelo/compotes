@@ -11,7 +11,7 @@ import Drilldown from './components/drilldown'
 import Dropdown from './components/dropdown'
 import Marquee from './components/marquee'
 
-import.meta.glob(['@css/*.css'], {
+import.meta.glob(['./css/*.css'], {
   eager: true,
 })
 

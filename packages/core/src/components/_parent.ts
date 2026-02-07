@@ -35,7 +35,7 @@ export default abstract class Parent<E extends string = Events> {
   /**
    * Init the component
    */
-  public init(el?: HTMLElement | string, options?: ParentOptions<E>) {
+  public init(el?: HTMLElement | string, options?: ParentOptions<E>): void {
     if (!el)
       return
     const checkEl = typeof el === 'string'
@@ -72,7 +72,7 @@ export default abstract class Parent<E extends string = Events> {
   /**
    * Emit an event
    */
-  protected emitEvent(name: string, cancelable = false) {
+  protected emitEvent(name: string, cancelable = false): boolean | undefined {
     const event = new CustomEvent<this>(
       `c.${this.name}.${name}`,
       {
@@ -96,7 +96,7 @@ export default abstract class Parent<E extends string = Events> {
   /**
    * Register an event
    */
-  protected registerEvent(e: ParentEvent) {
+  protected registerEvent(e: ParentEvent): void {
     if (!this.eventsController)
       return
 
@@ -112,7 +112,7 @@ export default abstract class Parent<E extends string = Events> {
   /**
    * Destroy the component
    */
-  public destroy() {
+  public destroy(): void {
     this.eventsController?.abort()
     this.emitEvent(Events.Destroy)
   }
@@ -120,7 +120,7 @@ export default abstract class Parent<E extends string = Events> {
   /**
    * Options of the component
    */
-  public get options() {
+  public get options(): ParentOptions<E> {
     return this.opts
   }
 
@@ -128,11 +128,11 @@ export default abstract class Parent<E extends string = Events> {
    * Generate an error message
    * Can be use with `throw` or directly inside `console.error(`)`
    */
-  protected error(msg: string, params?: ErrorOptions) {
+  protected error(msg: string, params?: ErrorOptions): ErrorCompotes {
     return new ErrorCompotes(msg, params, this.name)
   }
 
-  protected get isInitializable() {
+  protected get isInitializable(): boolean {
     return typeof this.opts.init === 'undefined' || this.opts.init === true
   }
 }

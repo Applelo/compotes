@@ -69,7 +69,7 @@ export default class Dropdown extends Parent<Events> {
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options?: DropdownOptions) {
+  public init(el: HTMLElement | string, options?: DropdownOptions): void {
     super.init(el, options)
 
     if (!this.el)
@@ -109,7 +109,7 @@ export default class Dropdown extends Parent<Events> {
     }
   }
 
-  public initAccessibilityAttrs() {
+  public initAccessibilityAttrs(): void {
     if (!this.triggerEl || !this.menuEl)
       return
     this.triggerEl.setAttribute('aria-expanded', this.opened ? 'true' : 'false')
@@ -134,7 +134,7 @@ export default class Dropdown extends Parent<Events> {
     })
   }
 
-  protected initEvents() {
+  protected initEvents(): void {
     if (!this.triggerEl || !this.menuEl)
       return
     this.registerEvent({
@@ -202,7 +202,7 @@ export default class Dropdown extends Parent<Events> {
   /**
    * Init accessibility events.
    */
-  private initAccessibilityEvents() {
+  private initAccessibilityEvents(): void {
     if (!this.el)
       return
 
@@ -260,7 +260,7 @@ export default class Dropdown extends Parent<Events> {
   /**
    * Update the dropdown component
    */
-  public update() {
+  public update(): void {
     this.initAccessibilityAttrs()
 
     if (this.opts.equalizeWidth === true)
@@ -270,7 +270,7 @@ export default class Dropdown extends Parent<Events> {
   /**
    * Open the dropdown
    */
-  public open() {
+  public open(): void {
     if (!this.triggerEl)
       return
     this.triggerEl.setAttribute('aria-expanded', 'true')
@@ -282,7 +282,7 @@ export default class Dropdown extends Parent<Events> {
    * Return the type of the dropdown
    *
    */
-  public get type() {
+  public get type(): 'default' | 'menu' {
     if (this.opts.enforceType)
       return this.opts.enforceType
     return this.menuEl?.tagName === 'UL'
@@ -293,7 +293,7 @@ export default class Dropdown extends Parent<Events> {
   /**
    * Get and set the same width on the trigger and the container
    */
-  public equalizeWidth() {
+  public equalizeWidth(): void {
     setTimeout(() => {
       if (!this.el || !this.triggerEl || !this.menuEl)
         return
@@ -310,7 +310,7 @@ export default class Dropdown extends Parent<Events> {
   /**
    * Close the dropdown
    */
-  public close() {
+  public close(): void {
     if (!this.triggerEl)
       return
     this.triggerEl.setAttribute('aria-expanded', 'false')
@@ -321,7 +321,7 @@ export default class Dropdown extends Parent<Events> {
   /**
    * Toggle the dropdown
    */
-  public toggle() {
+  public toggle(): void {
     if (this.opened)
       this.close()
     else
@@ -331,11 +331,11 @@ export default class Dropdown extends Parent<Events> {
   /**
    * Return if the dropdown is opened
    */
-  public get isOpen() {
+  public get isOpen(): boolean {
     return this.opened
   }
 
-  public destroy() {
+  public destroy(): void {
     this.mutationObserver?.disconnect()
     if (this.triggerEl) {
       if (this.triggerEl.tagName !== 'BUTTON')
