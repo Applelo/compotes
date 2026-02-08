@@ -30,7 +30,7 @@ jobs:
         run: pnpm install
 
       - name: Playwright Install
-        run: npx playwright install
+        run: npx playwright install --with-deps
 
       - name: Build
         run: pnpm build
@@ -73,7 +73,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    name: 'Lint: node-20, ubuntu-latest'
+    name: "Lint: node-20, ubuntu-latest"
 
     steps:
       - uses: actions/checkout@v3
