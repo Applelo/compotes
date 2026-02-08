@@ -1,22 +1,10 @@
 <script setup lang="ts">
 import { useCollapse } from '@compotes/vue'
-import { computed, ref, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import 'compotes/css/collapse'
 
 const collapseEl = shallowRef<null | HTMLElement>(null)
-const show = ref<boolean>(false)
-useCollapse(collapseEl, {
-  on: {
-    shown: () => {
-      show.value = true
-    },
-    hidden: () => {
-      show.value = false
-    },
-  },
-})
-
-const isExpanded = computed(() => show.value ? 'Expanded' : 'Hidden')
+const collapse = useCollapse(collapseEl)
 </script>
 
 <template>
@@ -32,6 +20,6 @@ const isExpanded = computed(() => show.value ? 'Expanded' : 'Hidden')
     </div>
   </div>
   <div style="position: absolute; top: 0; left: 0;">
-    Status: {{ isExpanded }}
+    Status: {{ collapse.isExpanded ? 'Expanded' : 'Hidden' }}
   </div>
 </template>

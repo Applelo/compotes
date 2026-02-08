@@ -59,7 +59,8 @@ That's it for Vue composable.
 
 ## Methods
 
-You can access all the component methods through the composable. There will be available after the mounted vue lifecycle hook.
+You can access the component methods through the composable. They will be available after the mounted vue lifecycle hook.
+For advanced usage, `marquee.instance` (or the matching composable) gives access to the underlying Compotes class instance.
 Here an example with the marquee component with a simple play/pause implementation.
 
 ```vue
@@ -71,10 +72,10 @@ const marquee = useMarquee(marqueeEl, { fill: true })
 </script>
 
 <template>
-  <button @click="marquee?.pause()">
+  <button @click="marquee.pause()">
     Pause
   </button>
-  <button @click="marquee?.play()">
+  <button @click="marquee.play()">
     Play
   </button>
   <div ref="marqueeEl" class="c-marquee">
@@ -88,9 +89,10 @@ const marquee = useMarquee(marqueeEl, { fill: true })
 
 ## Data
 
-All the component data are available after the mounted vue lifecycle hook.
+All the component data are reactive after the mounted vue lifecycle hook.
+You can use them directly in templates and `<script setup>`. If you need a ref, use `toRef` on the returned object.
 
-Here an example to show the current status of the collapse component.
+Here an example to show the current status of the marquee component.
 
 ```vue
 <script setup lang="ts">
