@@ -260,6 +260,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
   }
 
   private updateItems(menu: HTMLUListElement, level = 0): void {
+    this.items = []
     const children = menu.children
 
     for (let index = 0; index < children.length; index++) {
