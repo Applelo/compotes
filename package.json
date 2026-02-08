@@ -44,6 +44,8 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
+    "@vitest/ui": "catalog:",
     "eslint": "catalog:",
     "playwright": "catalog:",
     "rollup": "catalog:",

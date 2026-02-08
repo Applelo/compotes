@@ -1,70 +1,86 @@
-import type { Browser } from 'playwright'
-import { chromium } from 'playwright'
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { destroyComponent } from './helper/destroy'
+import type { Events } from '@src/components/collapse'
+import Collapse from '@src/components/collapse'
+import { beforeAll, expect, it } from 'vitest'
+import { page, userEvent } from 'vitest/browser'
+import { registerEventListeners } from './helper'
+import '@css/collapse.css'
 
-let browser: Browser
+let bodyHTML: string = ''
 
-beforeAll(async () => {
-  browser = await chromium.launch()
+beforeAll(() => {
+  const html = `
+  <div>
+    <button class="c-collapse-trigger" aria-controls="accordion-1" data-testid="trigger">
+      Accordion 2
+    </button>
+    <div
+    class="c-collapse"
+    id="accordion-1"
+    data-testid="collapse"
+    style="transition: height 0.2s;">
+      <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia facere possimus impedit facilis culpa illo earum deserunt consequuntur minus. Ad et qui labore reprehenderit magnam exercitationem placeat magni nesciunt suscipit.
+      </p>
+    </div>
+  </div>
+`
+  document.body.innerHTML = html
+  bodyHTML = document.body.innerHTML
+
+  return () => {
+    expect(bodyHTML).toBe(document.body.innerHTML)
+  }
 })
 
-afterAll(async () => {
-  browser.close()
-})
+it('collapse', async () => {
+  const triggerLoc = page.getByTestId('trigger')
+  const collapseLoc = page.getByTestId('collapse')
 
-describe('collapse', async () => {
-  it.concurrent('events', async () => {
-    const page = await browser.newPage()
-    const events = [
-      'c.collapse.show',
-      'c.collapse.hide',
-      'c.collapse.hidden',
-      'c.collapse.shown',
-    ]
-    const showEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.show'))
-    const hideEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.hide'))
-    const shownEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.shown'))
-    const hiddenEvent = page.waitForEvent('console', msg => msg.text().includes('c.collapse.hidden'))
-    await page.goto('http://localhost:3000/collapse.html')
+  const { callback: showEvent, removeEventListener: removeShowEvent } = registerEventListeners<`c.collapse.${Events}`>('c.collapse.show', collapseLoc)
+  const { callback: hideEvent, removeEventListener: removeHideEvent } = registerEventListeners<`c.collapse.${Events}`>('c.collapse.hide', collapseLoc)
+  const { callback: shownEvent, removeEventListener: removeShownEvent } = registerEventListeners<`c.collapse.${Events}`>('c.collapse.shown', collapseLoc)
+  const { callback: hiddenEvent, removeEventListener: removeHiddenEvent } = registerEventListeners<`c.collapse.${Events}`>('c.collapse.hidden', collapseLoc)
 
-    await page.evaluate(() => {
-      const el = document.querySelector('.c-collapse')
-      if (!el)
-        return
-      [
-        'c.collapse.show',
-        'c.collapse.hide',
-        'c.collapse.hidden',
-        'c.collapse.shown',
-      ].forEach((e) => {
-        el.addEventListener(e, () => {
-          // eslint-disable-next-line no-console
-          console.log(e)
-        })
-      })
-    })
+  expect(triggerLoc).toBeInTheDocument()
+  expect(collapseLoc).not.toBeVisible()
 
-    const triggerEl = page.locator('.c-collapse-trigger').first()
-    await triggerEl.click()
-    await shownEvent
-    await triggerEl.click()
+  const collapse = new Collapse(collapseLoc.element() as HTMLElement)
+  expect(collapse.isExpanded).toBe(false)
 
-    const result = (await Promise.all([
-      showEvent,
-      shownEvent,
-      hideEvent,
-      hiddenEvent,
-    ])).map(item => item.text())
+  await userEvent.click(triggerLoc)
+  expect(triggerLoc).toHaveAttribute('aria-expanded', 'true')
+  expect(showEvent).toHaveBeenCalledTimes(1)
+  expect(collapse.isCollapsing).toBe(true)
+  await new Promise<void>(resolve => setTimeout(resolve, 200))
+  expect(collapseLoc).toBeVisible()
+  expect(shownEvent).toHaveBeenCalledTimes(1)
+  expect(collapse.isExpanded).toBe(true)
+  expect(collapse.isCollapsing).toBe(false)
 
-    events.forEach(e => expect(result).toContain(e))
-  })
+  await userEvent.click(triggerLoc)
+  expect(triggerLoc).toHaveAttribute('aria-expanded', 'false')
+  expect(hideEvent).toHaveBeenCalledTimes(1)
+  expect(collapse.isCollapsing).toBe(true)
+  await new Promise<void>(resolve => setTimeout(resolve, 200))
+  expect(collapseLoc).not.toBeVisible()
+  expect(hiddenEvent).toHaveBeenCalledTimes(1)
+  expect(collapse.isExpanded).toBe(false)
+  expect(collapse.isCollapsing).toBe(false)
 
-  it.concurrent('destroy', async () => {
-    const page = await browser.newPage()
-    await page.goto('http://localhost:3000/collapse.html')
-    const { before, after } = await destroyComponent(page)
-    expect(before).not.toEqual(after)
-    expect(after).toMatchSnapshot()
-  })
+  // Test JS method
+  collapse.show()
+  await new Promise<void>(resolve => setTimeout(resolve, 200))
+  expect(collapse.isExpanded).toBe(true)
+
+  collapse.hide()
+  await new Promise<void>(resolve => setTimeout(resolve, 200))
+  expect(collapse.isExpanded).toBe(false)
+
+  // Remove event listeners
+  removeShowEvent()
+  removeHideEvent()
+  removeShownEvent()
+  removeHiddenEvent()
+
+  collapse?.destroy()
 })

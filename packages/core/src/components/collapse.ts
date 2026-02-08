@@ -2,7 +2,7 @@ import type { ParentOptions } from './_parent'
 import { getTransitionDuration } from './../utils/animation'
 import Parent from './_parent'
 
-enum Events {
+export enum Events {
   Show = 'show',
   Shown = 'shown',
   Hide = 'hide',

@@ -59,13 +59,15 @@
     "build": "tsdown",
     "test:vitest": "vitest",
     "test:types": "tsc --noEmit && vue-tsc --noEmit",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "test:browser": "vitest --config=vitest.browser.config.ts"
   },
   "dependencies": {
     "tabbable": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
     "fast-glob": "catalog:",
     "lightningcss": "catalog:",
     "typescript": "catalog:",
