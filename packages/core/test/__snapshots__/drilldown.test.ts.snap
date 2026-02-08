@@ -1,0 +1,204 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`drilldown 1`] = `
+<ul
+  aria-multiselectable="false"
+  aria-orientation="vertical"
+  class="c-drilldown-menu"
+  data-testid="root-menu"
+  role="menubar"
+  style="transform: translateX(0%); --c-drilldown-delay: 0ms;"
+>
+  
+        
+  <li
+    role="none"
+  >
+    
+          
+    <button
+      aria-controls="section-1"
+      aria-expanded="false"
+      class="c-drilldown-next"
+      data-testid="next-1"
+      role="menuitem"
+    >
+      
+            Go to section 1
+          
+    </button>
+    
+          
+    <ul
+      class="c-drilldown-menu"
+      data-testid="section-1"
+      id="section-1"
+      role="menu"
+    >
+      
+            
+      <li
+        role="none"
+      >
+        
+              
+        <button
+          class="c-drilldown-back"
+          data-testid="back-1"
+          role="menuitem"
+        >
+          
+                Go Back
+              
+        </button>
+        
+            
+      </li>
+      
+            
+      <li
+        role="none"
+      >
+        
+              
+        <button
+          aria-controls="c-id-1"
+          aria-expanded="false"
+          class="c-drilldown-next"
+          data-testid="next-1-1"
+          role="menuitem"
+        >
+          
+                Go to section 1 1
+              
+        </button>
+        
+              
+        <ul
+          class="c-drilldown-menu"
+          data-testid="section-1-1"
+          id="c-id-1"
+          role="menu"
+        >
+          
+                
+          <li
+            role="none"
+          >
+            
+                  
+            <button
+              class="c-drilldown-back"
+              data-testid="back-1-1"
+              role="menuitem"
+            >
+              
+                    Go Back
+                  
+            </button>
+            
+                
+          </li>
+          
+                
+          <li
+            role="none"
+          >
+            
+                  Item Section 1 1
+                
+          </li>
+          
+              
+        </ul>
+        
+            
+      </li>
+      
+            
+      <li
+        role="none"
+      >
+        
+              Item Section 1
+            
+      </li>
+      
+          
+    </ul>
+    
+        
+  </li>
+  
+        
+  <li
+    role="none"
+  >
+    
+          Hello
+        
+  </li>
+  
+        
+  <li
+    role="none"
+  >
+    
+          
+    <button
+      aria-controls="section-2"
+      aria-expanded="false"
+      class="c-drilldown-next"
+      data-testid="next-2"
+      role="menuitem"
+    >
+      
+            Go to section 2
+          
+    </button>
+    
+          
+    <ul
+      class="c-drilldown-menu"
+      data-testid="section-2"
+      id="section-2"
+      role="menu"
+    >
+      
+            
+      <li
+        role="none"
+      >
+        
+              
+        <button
+          class="c-drilldown-back"
+          data-testid="back-2"
+          role="menuitem"
+        >
+          
+                Go Back
+              
+        </button>
+        
+            
+      </li>
+      
+            
+      <li
+        role="none"
+      >
+        
+              Item Section 2
+            
+      </li>
+      
+          
+    </ul>
+    
+        
+  </li>
+  
+      
+</ul>
+`;
