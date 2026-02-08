@@ -3,11 +3,13 @@ import { getTransitionDuration } from './../utils/animation'
 import Parent from './_parent'
 
 export enum Events {
+  Init = 'init',
   Show = 'show',
   Shown = 'shown',
   Hide = 'hide',
   Hidden = 'hidden',
   Update = 'update',
+  Destroy = 'destroy',
 }
 
 declare global {

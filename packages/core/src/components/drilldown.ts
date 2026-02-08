@@ -4,7 +4,7 @@ import { focusChar, focusFirst, focusLast, focusSibling, generateId } from '../u
 import { getTransitionDuration } from './../utils/animation'
 import Parent from './_parent'
 
-enum Events {
+export enum Events {
   Init = 'init',
   Destroy = 'destroy',
   Update = 'update',

@@ -1,7 +1,7 @@
 import type { ParentOptions } from './_parent'
 import Parent from './_parent'
 
-enum Events {
+export enum Events {
   Init = 'init',
   Start = 'start',
   End = 'end',

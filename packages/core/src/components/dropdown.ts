@@ -2,7 +2,7 @@ import type { ParentOptions } from './_parent'
 import { focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
 import Parent from './_parent'
 
-enum Events {
+export enum Events {
   Init = 'init',
   Opened = 'opened',
   Closed = 'closed',

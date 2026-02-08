@@ -35,6 +35,7 @@ beforeAll(() => {
 
 it('parent', () => {
   const parentLoc = page.getByTestId('parent')
+  expect(parentLoc).toBeInTheDocument()
 
   const { callback: initEvent, removeEventListener: removeInitEvent } = registerEventListeners<ChildEvents>('c.child.init', parentLoc)
   const { callback: destroyEvent, removeEventListener: removeDestroyEvent } = registerEventListeners<ChildEvents>('c.child.destroy', parentLoc)
