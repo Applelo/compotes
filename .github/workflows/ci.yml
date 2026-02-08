@@ -73,7 +73,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    name: "Lint: node-20, ubuntu-latest"
+    name: 'Lint: node-20, ubuntu-latest'
 
     steps:
       - uses: actions/checkout@v3
