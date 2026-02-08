@@ -39,7 +39,7 @@ export interface DropdownOptions extends ParentOptions<Events> {
   mutationObserver?: boolean
 }
 
-export default class Dropdown extends Parent<Events> {
+export default class Dropdown extends Parent<Events, DropdownOptions> {
   public readonly name = 'dropdown'
   declare protected opts: DropdownOptions
 
@@ -62,14 +62,14 @@ export default class Dropdown extends Parent<Events> {
   private opened: boolean = false
   private mutationObserver?: MutationObserver
 
-  constructor(el: HTMLElement | string, options: DropdownOptions = {}) {
+  constructor(el?: HTMLElement | string, options: DropdownOptions = {}) {
     super()
     this.opts = options
     if (this.isInitializable)
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options?: DropdownOptions): void {
+  public init(el?: HTMLElement | string, options?: DropdownOptions): void {
     super.init(el, options)
 
     if (!this.el)
@@ -341,6 +341,8 @@ export default class Dropdown extends Parent<Events> {
       if (this.triggerEl.tagName !== 'BUTTON')
         this.triggerEl.removeAttribute('role')
       this.triggerEl.removeAttribute('aria-controls')
+      this.triggerEl.removeAttribute('aria-expanded')
+      this.triggerEl.removeAttribute('aria-haspopup')
     }
 
     if (this.menuEl && this.menuEl.id.startsWith('c-id-'))

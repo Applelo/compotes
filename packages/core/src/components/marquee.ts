@@ -45,7 +45,7 @@ export interface MarqueeOptions extends ParentOptions<Events> {
   mutationObserver?: boolean
 }
 
-export default class Marquee extends Parent<Events> {
+export default class Marquee extends Parent<Events, MarqueeOptions> {
   public readonly name = 'marquee'
   declare protected opts: MarqueeOptions
 
@@ -77,14 +77,14 @@ export default class Marquee extends Parent<Events> {
   private clones: Element[] = []
   private fillMultiplier = 1
 
-  constructor(el: HTMLElement | string, options: MarqueeOptions = {}) {
+  constructor(el?: HTMLElement | string, options: MarqueeOptions = {}) {
     super()
     this.opts = options
     if (this.isInitializable)
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options?: MarqueeOptions): void {
+  public init(el?: HTMLElement | string, options?: MarqueeOptions): void {
     super.init(el, options)
     this.initAccessibilityAttrs()
 

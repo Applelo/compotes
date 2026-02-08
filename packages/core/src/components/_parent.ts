@@ -25,28 +25,35 @@ interface ParentEvent {
   el: Element | Window
 }
 
-export default abstract class Parent<E extends string = Events> {
+export default abstract class Parent<
+  E extends string = Events,
+  O extends ParentOptions<E> = ParentOptions<E>,
+> {
   protected abstract readonly name: string
 
   public el: HTMLElement | null = null
-  protected opts: ParentOptions<E> = {}
+  protected opts: O = {} as O
   private eventsController: AbortController | null = null
 
   /**
    * Init the component
    */
-  public init(el?: HTMLElement | string, options?: ParentOptions<E>): void {
-    if (!el)
+  public init(el?: HTMLElement | string, options?: O): void {
+    if (!el && !this.el)
       return
-    const checkEl = typeof el === 'string'
-      ? document.querySelector<HTMLElement>(el)
-      : el
 
-    if (!checkEl)
-      throw this.error('The element/selector provided cannot be found.')
+    if (!this.el) {
+      const checkEl = typeof el === 'string'
+        ? document.querySelector<HTMLElement>(el)
+        : el
 
-    this.el = checkEl
-    this.opts = options ?? this.opts ?? {}
+      if (!checkEl)
+        throw this.error('The element/selector provided cannot be found.')
+
+      this.el = checkEl
+    }
+
+    this.opts = options ?? this.opts ?? ({} as O)
 
     if (this.opts.on) {
       for (const key in this.opts.on) {
@@ -120,7 +127,7 @@ export default abstract class Parent<E extends string = Events> {
   /**
    * Options of the component
    */
-  public get options(): ParentOptions<E> {
+  public get options(): O {
     return this.opts
   }
 

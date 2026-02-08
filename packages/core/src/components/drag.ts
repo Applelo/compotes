@@ -14,7 +14,7 @@ declare global {
 
 export interface DragOptions extends ParentOptions<Events> {}
 
-export default class Drag extends Parent<Events> {
+export default class Drag extends Parent<Events, DragOptions> {
   public readonly name = 'drag'
   declare protected opts: DragOptions
 
@@ -31,14 +31,14 @@ export default class Drag extends Parent<Events> {
 
   private resizeObserver?: ResizeObserver
 
-  constructor(el: HTMLElement | string, options: DragOptions = {}) {
+  constructor(el?: HTMLElement | string, options: DragOptions = {}) {
     super()
     this.opts = options
     if (this.isInitializable)
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options?: DragOptions): void {
+  public init(el?: HTMLElement | string, options?: DragOptions): void {
     super.init(el, options)
 
     if (!this.el)

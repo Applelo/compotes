@@ -35,7 +35,7 @@ interface DrilldownItem {
   level: number
 }
 
-export default class Drilldown extends Parent<Events> {
+export default class Drilldown extends Parent<Events, DrilldownOptions> {
   public readonly name = 'drilldown'
   declare protected opts: DrilldownOptions
 
@@ -62,14 +62,14 @@ export default class Drilldown extends Parent<Events> {
   private resizeObserver?: ResizeObserver
   private mutationObserver?: MutationObserver
 
-  constructor(el: HTMLElement | string, options: DrilldownOptions = {}) {
+  constructor(el?: HTMLElement | string, options: DrilldownOptions = {}) {
     super()
     this.opts = options
     if (this.isInitializable)
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options?: DrilldownOptions): void {
+  public init(el?: HTMLElement | string, options?: DrilldownOptions): void {
     super.init(el, options)
     this.initAccessibilityAttrs()
 

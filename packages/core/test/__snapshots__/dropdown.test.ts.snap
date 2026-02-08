@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`dropdown 1`] = `
+<div
+  class="c-dropdown"
+  data-testid="dropdown"
+>
+  
+    
+  <button
+    aria-controls="dropdown-container"
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="c-dropdown-trigger"
+    data-testid="trigger"
+  >
+    
+      Basic Dropdown
+    
+  </button>
+  
+    
+  <div
+    class="c-dropdown-container"
+    data-testid="container"
+    id="dropdown-container"
+  >
+    
+      Hello World
+    
+  </div>
+  
+  
+</div>
+`;

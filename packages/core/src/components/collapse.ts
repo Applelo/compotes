@@ -18,7 +18,7 @@ declare global {
 
 export interface CollapseOptions extends ParentOptions<Events> {}
 
-export default class Collapse extends Parent<Events> {
+export default class Collapse extends Parent<Events, CollapseOptions> {
   public readonly name = 'collapse'
   declare protected opts: CollapseOptions
 
@@ -35,14 +35,14 @@ export default class Collapse extends Parent<Events> {
 
   private timeout: number | undefined = undefined
 
-  constructor(el: HTMLElement | string, options: CollapseOptions = {}) {
+  constructor(el?: HTMLElement | string, options: CollapseOptions = {}) {
     super()
     this.opts = options
     if (this.isInitializable)
       this.init(el, options)
   }
 
-  public init(el: HTMLElement | string, options?: CollapseOptions): void {
+  public init(el?: HTMLElement | string, options?: CollapseOptions): void {
     super.init(el, options)
     this.initAccessibilityAttrs()
 
