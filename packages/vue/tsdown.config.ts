@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'tsdown'
+import Vue from 'unplugin-vue/rolldown'
 
 export default defineConfig({
   entry: {
@@ -18,12 +19,12 @@ export default defineConfig({
       vue: 'vue',
     },
   },
-  // dts: {
-  //  vue: true,
-  //  },
+  dts: {
+    vue: true,
+  },
   plugins: [
-    // Vue({
-    // isProduction: true,
-    // })
+    Vue({
+      isProduction: true,
+    }),
   ],
 })

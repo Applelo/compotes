@@ -1,8 +1,10 @@
 import path from 'node:path'
 import { playwright } from '@vitest/browser-playwright'
+import Vue from 'unplugin-vue/vite'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  plugins: [Vue()],
   resolve: {
     alias: {
       '@src': path.resolve(__dirname, './src'),
