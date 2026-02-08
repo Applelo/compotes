@@ -5,6 +5,8 @@ import { page, userEvent } from 'vitest/browser'
 import { registerEventListeners } from './helper'
 import '@css/collapse.css'
 
+type CollapseEvents = `c.collapse.${Events}`
+
 let bodyHTML: string = ''
 
 beforeAll(() => {
@@ -36,10 +38,10 @@ it('collapse', async () => {
   const triggerLoc = page.getByTestId('trigger')
   const collapseLoc = page.getByTestId('collapse')
 
-  const { callback: showEvent, removeEventListener: removeShowEvent } = registerEventListeners<`c.collapse.${Events}`>('c.collapse.show', collapseLoc)
-  const { callback: hideEvent, removeEventListener: removeHideEvent } = registerEventListeners<`c.collapse.${Events}`>('c.collapse.hide', collapseLoc)
-  const { callback: shownEvent, removeEventListener: removeShownEvent } = registerEventListeners<`c.collapse.${Events}`>('c.collapse.shown', collapseLoc)
-  const { callback: hiddenEvent, removeEventListener: removeHiddenEvent } = registerEventListeners<`c.collapse.${Events}`>('c.collapse.hidden', collapseLoc)
+  const { callback: showEvent, removeEventListener: removeShowEvent } = registerEventListeners<CollapseEvents>('c.collapse.show', collapseLoc)
+  const { callback: hideEvent, removeEventListener: removeHideEvent } = registerEventListeners<CollapseEvents>('c.collapse.hide', collapseLoc)
+  const { callback: shownEvent, removeEventListener: removeShownEvent } = registerEventListeners<CollapseEvents>('c.collapse.shown', collapseLoc)
+  const { callback: hiddenEvent, removeEventListener: removeHiddenEvent } = registerEventListeners<CollapseEvents>('c.collapse.hidden', collapseLoc)
 
   expect(triggerLoc).toBeInTheDocument()
   expect(collapseLoc).not.toBeVisible()

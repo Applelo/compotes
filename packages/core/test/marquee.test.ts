@@ -1,8 +1,11 @@
+import type { Events } from '@src/components/marquee'
 import Marquee from '@src/components/marquee'
 import { beforeAll, expect, it } from 'vitest'
 import { page } from 'vitest/browser'
 import { registerEventListeners } from './helper'
 import '@css/marquee.css'
+
+type MarqueeEvents = `c.marquee.${Events}`
 
 let bodyHTML: string = ''
 
@@ -30,9 +33,9 @@ it('marquee', async () => {
 
   expect(marqueeLoc).toBeInTheDocument()
 
-  const { callback: playEvent, removeEventListener: removePlayEvent } = registerEventListeners('c.marquee.play', marqueeLoc)
-  const { callback: pauseEvent, removeEventListener: removePauseEvent } = registerEventListeners('c.marquee.pause', marqueeLoc)
-  const { callback: loopEvent, removeEventListener: removeLoopEvent } = registerEventListeners('c.marquee.loop', marqueeLoc)
+  const { callback: playEvent, removeEventListener: removePlayEvent } = registerEventListeners<MarqueeEvents>('c.marquee.play', marqueeLoc)
+  const { callback: pauseEvent, removeEventListener: removePauseEvent } = registerEventListeners<MarqueeEvents>('c.marquee.pause', marqueeLoc)
+  const { callback: loopEvent, removeEventListener: removeLoopEvent } = registerEventListeners<MarqueeEvents>('c.marquee.loop', marqueeLoc)
 
   const marquee = new Marquee(marqueeLoc.element() as HTMLElement, {
     duration: '1s',

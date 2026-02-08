@@ -2,7 +2,7 @@ import type { ParentOptions } from './_parent'
 import { tabbable } from 'tabbable'
 import Parent from './_parent'
 
-enum Events {
+export enum Events {
   Init = 'init',
   Play = 'play',
   Pause = 'pause',
