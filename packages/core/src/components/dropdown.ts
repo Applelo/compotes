@@ -361,6 +361,8 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
     }
     this.el?.classList.remove(Dropdown.CLASS_WIDTH)
     this.el?.style.removeProperty(Dropdown.CSSVAR_WIDTH)
+    if (this.el?.getAttribute('style')?.trim() === '')
+      this.el.removeAttribute('style')
     super.destroy()
   }
 }

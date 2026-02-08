@@ -424,12 +424,17 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
 
     this.mutationObserver?.disconnect()
     this.resizeObserver?.disconnect()
+
+    this.el.style.removeProperty('height')
+
     this.wrapper?.removeAttribute('role')
     this.wrapper?.removeAttribute('aria-multiselectable')
     this.wrapper?.removeAttribute('aria-orientation')
     this.wrapper?.querySelectorAll(Drilldown.SELECTOR_MENU).forEach((menu) => {
       menu.removeAttribute('role')
     })
+    this.wrapper?.style.removeProperty('transform')
+    this.wrapper?.style.removeProperty(Drilldown.CSSVAR_DELAY)
 
     const items = this.el.querySelectorAll(Drilldown.SELECTOR_MENU_ITEMS)
     items.forEach((item) => {
@@ -455,7 +460,6 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
       el.removeAttribute('tabindex')
     })
 
-    this.wrapper?.style.removeProperty(Drilldown.CSSVAR_DELAY)
     super.destroy()
   }
 }
