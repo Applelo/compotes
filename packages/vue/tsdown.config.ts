@@ -10,7 +10,7 @@ export default defineConfig({
   globalName: 'compotes',
   hash: false,
   alias: {
-    '@': fileURLToPath(new URL('./src', import.meta.url)),
+    '@src': fileURLToPath(new URL('./src', import.meta.url)),
   },
   outputOptions: {
     globals: {
