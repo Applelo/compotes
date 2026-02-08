@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`marquee 1`] = `
+<div
+  class="c-marquee c-marquee--behavior-alternate c-marquee--direction-left"
+  data-testid="marquee"
+  style="width: 200px; --c-marquee-duration: 1s; --c-marquee-end: 200px;"
+  tabindex="0"
+>
+  
+      
+  <ul
+    class="c-marquee-container"
+  >
+    
+        
+    <li>
+      Marquee Left Direction
+    </li>
+    
+        
+    <li>
+      <img
+        height="25"
+        src="https://vitejs.dev/logo.svg"
+        width="25"
+      />
+    </li>
+    
+      
+  </ul>
+  
+    
+</div>
+`;

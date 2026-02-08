@@ -86,6 +86,7 @@ export default class Marquee extends Parent<Events> {
 
   public init(el: HTMLElement | string, options?: MarqueeOptions): void {
     super.init(el, options)
+    this.initAccessibilityAttrs()
 
     if (!this.el)
       return
