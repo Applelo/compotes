@@ -15,9 +15,9 @@ To learn more, check the *[documentation](https://compotes.dev)*.
 
 ## 🍏 Compotes
 
-- Collapse/Accordion ([demo](https://compotes.dev/demo/drilldown.html))
+- Collapse/Accordion ([demo](https://compotes.dev/demo/collapse.html))
 - Drag ([demo](https://compotes.dev/demo/drag.html))
-- Drilldown ([demo](https://compotes.dev/demo/collapse.html))
+- Drilldown ([demo](https://compotes.dev/demo/drilldown.html))
 - Dropdown ([demo](https://compotes.dev/demo/dropdown.html))
 - Marquee ([demo](https://compotes.dev/demo/marquee.html))
 <!--
@@ -75,11 +75,11 @@ pnpm add -D @compotes/nuxt
 
 ## 🙋‍♂️ Why ?
 
-A lot of components library are already shipped with styles but as a Front End developer, I always wants to override a lot. Futhermore, there are not always accessible or they are shipped with jQuery.
+A lot of component libraries are already shipped with styles but as a Front End developer, I always want to override a lot. Furthermore, they are not always accessible or they are shipped with jQuery.
 
-There are some good library like [React Aria](https://react-spectrum.adobe.com/react-aria/react-aria-components.html) but it's made to work on one framework and I work on different tech like Wordpress, Symfony or VueJS.
+There are some good libraries like [React Aria](https://react-spectrum.adobe.com/react-aria/react-aria-components.html) but it's made to work on one framework and I work on different tech like Wordpress, Symfony or VueJS.
 
-> This library provides only the compotes and it's you to make a tart.
+> This library provides only the compotes and it's up to you to make a tart.
 
 ## 👨‍💼 License
 

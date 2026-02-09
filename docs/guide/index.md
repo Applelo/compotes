@@ -2,7 +2,7 @@
 
 ## Browser support
 
-**Compotes** uses modern API to work like `ResizableObserver`, `MutationObserver`, css variables or `:scope` selector: so IE11 is not supported.
+**Compotes** uses modern APIs to work like `ResizableObserver`, `MutationObserver`, CSS variables or `:scope` selector: so IE11 is not supported.
 
 ## Installation
 
@@ -15,7 +15,7 @@ pnpm add -D compotes
 # bun
 bun add -D compotes
 
-#npm
+# npm
 npm i -D compotes
 
 # yarn
@@ -31,7 +31,7 @@ const collapse = new Collapse('#my-collapse')
 ```
 
 ::: info
-If you need to init several element, you need to do a loop.
+If you need to init several elements, you need to do a loop.
 
 ```js
 Array.from(document.getElementsByClassName('c-collapse'))

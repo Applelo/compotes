@@ -4,7 +4,7 @@ next: false
 
 # Drilldown
 
-This component allows you to build a compact menu. This can be useful to make a mobile one.
+This component allows you to build a compact menu, which is useful for mobile interfaces.
 
 > This component is inspired by the [Foundation](https://get.foundation/sites/docs/drilldown-menu.html) component.
 
@@ -15,14 +15,14 @@ This component allows you to build a compact menu. This can be useful to make a 
 ```js
 import { Drilldown } from 'compotes'
 
-const drilldown = new Collapse('#my-drilldown')
+const drilldown = new Drilldown('#my-drilldown')
 ```
 
-You need to structure the component like below imbricating `ul` and `li`. If you want to go to the next menu, you will need to add a next button with `c-drilldown-next` class just before the `c-drilldown-menu`.
+You need to structure the component like the example below, nesting `ul` and `li`. If you want to go to the next menu, you will need to add a next button with `c-drilldown-next` class just before the `c-drilldown-menu`.
 To go back, you will need to add an entry to your `ul` menu containing a back button with `c-drilldown-back`.
 
 ::: warning
-You should respect the structure and elements tags used in this component. It will ensure the component to work properly with accessibility.
+You should respect the structure and elements tags used in this component. This ensures the component works properly with accessibility.
 :::
 
 ```html
@@ -70,11 +70,11 @@ You should respect the structure and elements tags used in this component. It wi
 
 ## Accessibility
 
-This component inject a lot of aria attribute to ensure a good accessibility coverage:
+This component injects many ARIA attributes to ensure a good accessibility coverage:
 - Add role `menubar` on first menu
 - Set `aria-multiselectable` to `false`
 - Set `aria-orientation` to `vertical`
-- Add role `menu` to all child menu
+- Add role `menu` to all child menus
 - Disable list item role for `li` with `none` role
 - Add role `menuitem` to back and next button
 - Add `aria-expanded`, `aria-controls` to next button
@@ -84,14 +84,14 @@ This component inject a lot of aria attribute to ensure a good accessibility cov
 You should add an `id` attribute to every menu inside your main menu (like the example above). By default, the plugin will generate an `id` attribute if it doesn't find one but to prevent `id` naming issue, I recommend to put one.
 :::
 
-The drilldown menu comes with keyboard shortcut if your focus is inside the component :
+The drilldown menu comes with keyboard shortcuts if your focus is inside the component :
 - ArrowUp: Focus to previous element
 - ArrowDown: Focus to the next element
 - ArrowLeft/Escape: Go back
 - ArrowRight: Go to the next menu if your focus is on the next button
 - Home/PageUp: Focus first of the current menu
 - End/PageDown: Focus last element of the current menu
-- And do a focus with first element found with the char you have pressed
+- Focus the first element matching the character pressed
 
 ## Options
 
@@ -100,7 +100,7 @@ You can change some options from the component.
 ```js
 import { Drilldown } from 'compotes'
 
-const drilldown = new Collapse('#my-drilldown', {
+const drilldown = new Drilldown('#my-drilldown', {
   init: true, // [!code focus:5]
   dynamicHeight: false,
   mutationObserver: true,
@@ -113,12 +113,12 @@ const drilldown = new Collapse('#my-drilldown', {
 
 ## Methods
 
-The collapse component provides several methods allowing you to control the component programatically.
+The drilldown component provides several methods allowing you to control the component programatically.
 
 ```js
 import { Drilldown } from 'compotes'
 
-const drilldown = new Collapse('#my-drilldown')
+const drilldown = new Drilldown('#my-drilldown')
 drilldown.reset()// [!code focus]
 ```
 
@@ -135,7 +135,7 @@ You can access data from the component like this:
 ```js
 import { Drilldown } from 'compotes'
 
-const drilldown = new Collapse('#my-drilldown')
+const drilldown = new Drilldown('#my-drilldown')
 console.log(drilldown.options)// [!code focus]
 ```
 

@@ -1,6 +1,6 @@
 # Collapse / Accordion
 
-The collapse component allows to collapse any elements you want. You can make an accordion with it for example.
+The collapse component allows you to collapse any elements you want. You can make an accordion with it for example.
 
 > This component is inspired by the [Collapse](https://getbootstrap.com/docs/5.3/components/collapse/) component from Bootstrap.
 
@@ -14,7 +14,7 @@ import { Collapse } from 'compotes'
 const collapse = new Collapse('#my-collapse')
 ```
 
-It is recommended to put an `id` to the element you want to collapse. To all your trigger buttons, add an `aria-controls` attribute refering to the `id` of the collapse.
+It is recommended to put an `id` to the element you want to collapse. To all your trigger buttons, add an `aria-controls` attribute referring to the `id` of the collapse.
 
 ```html
 <button class="c-collapse-trigger" aria-controls="my-collapse">
@@ -47,7 +47,7 @@ You can set the CSS transition to the collapse element. The component will show 
 
 ## Accessibility
 
-To ensure accessibility feature, the component will inject `aria-expanded` to all trigger elements. This allow the user to know if the collapse is expanded or not. The user also knows what element it refer thanks to the `aria-controls` attribute.
+To ensure accessibility features, the component will inject `aria-expanded` to all trigger elements. This allows the user to know if the collapse is expanded or not. The user also knows what element it refers to thanks to the `aria-controls` attribute.
 
 ## Options
 
@@ -65,7 +65,7 @@ const collapse = new Collapse('#my-collapse', {
 
 ## Methods
 
-The collapse component provides several methods allowing you to control the component programatically.
+The collapse component provides several methods allowing you to control the component programmatically.
 
 ```js
 import { Collapse } from 'compotes'
@@ -93,8 +93,8 @@ console.log(collapse.isExpanded)// [!code focus]
 ```
 
 - `options` (options object): Get options used to init the component
-- `isExpanded` (boolean): If the collapse element is expanded or not
-- `isCollapsing` (boolean): If the collapse is in his collapsing animation
+- `isExpanded` (boolean): Indicates if the collapse element is expanded or not
+- `isCollapsing` (boolean): Indicates if the collapse is currently animating
 
 ## Events
 
@@ -111,8 +111,8 @@ collapseElement.addEventListener('c.collapse.init', (e) => { // [!code focus:3]
 ```
 
 - `c.collapse.init`: On component init
-- `c.collapse.show`: Show animation is launch
+- `c.collapse.show`: Show animation is launched
 - `c.collapse.shown`: The collapse element is shown
-- `c.collapse.hide`: Hide animation is launch
+- `c.collapse.hide`: Hide animation is launched
 - `c.collapse.hidden`: The collapse element is hidden
 - `c.collapse.destroy`: On component destroy

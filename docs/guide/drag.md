@@ -1,6 +1,6 @@
 # Drag
 
-The drag component allows to create a draggable zone you can control with your mouse.
+The drag component allows you to create a draggable zone you can control with your mouse.
 
 ```scss
 @import 'compotes/css/drag';
@@ -12,7 +12,7 @@ import { Drag } from 'compotes'
 const drag = new Drag('.c-drag')
 ```
 
-You need to have elements overflowing inside the component because it uses the css property `overflow: auto;`.
+You need to have elements overflowing inside the component because it uses the CSS property `overflow: auto;`.
 
 ```html
 
@@ -63,8 +63,8 @@ console.log(drag.isDraggable)// [!code focus]
 ```
 
 - `options` (options object): Get options used to init the component
-- `isDraggable` (boolean): Tell if the component is draggable or not
-- `isDragging` (boolean): Tell if the component is currently dragging or not
+- `isDraggable` (boolean): Indicates if the component is draggable or not
+- `isDragging` (boolean): Indicates if the component is currently dragging or not
 
 ## Events
 
