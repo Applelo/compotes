@@ -101,15 +101,17 @@ You can change some options from the component.
 import { Drilldown } from 'compotes'
 
 const drilldown = new Drilldown('#my-drilldown', {
-  init: true, // [!code focus:5]
+  init: true, // [!code focus:6]
   dynamicHeight: false,
   mutationObserver: true,
+  on: undefined,
 })
 ```
 
 - `init` (boolean): Init the component on creation
 - `dynamicHeight` (boolean): By default, the height of the drilldown is the tallest menu found. You can set this option to `true` to update the height to the current menu.
 - `mutationObserver` (boolean): Use MutationObserver to update component on changes
+- `on` (object): events to listen to
 
 ## Methods
 

@@ -59,6 +59,7 @@ const dropdown = new Dropdown('.c-dropdown', {
   openOn: 'click',
   equalizeWidth: undefined,
   mutationObserver: true,
+  on: undefined,
 })
 ```
 
@@ -67,6 +68,7 @@ const dropdown = new Dropdown('.c-dropdown', {
 - `openOn` ('click' or 'hover'): Open the dropdown on click/hover from the trigger element
 - `equalizeWidth` (boolean): Equalize width on the trigger and the container. It will refresh on mutation observer (if enable)
 - `mutationObserver` (boolean): Use MutationObserver to update component on changes
+- `on` (object): events to listen to
 
 ## Methods
 
@@ -83,6 +85,7 @@ dropdown.init()// [!code focus]
 
 - `init()`: Init the component
 - `destroy()`: Destroy the component
+- `update()`: Update the component
 - `open()`: Open the dropdown
 - `toggle()`: Toggle the dropdown
 - `close()`: Close the dropdown

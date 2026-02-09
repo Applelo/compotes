@@ -57,11 +57,13 @@ You can change some options from the component.
 import { Collapse } from 'compotes'
 
 const collapse = new Collapse('#my-collapse', {
-  init: true, // [!code focus:3]
+  init: true, // [!code focus:4]
+  on: undefined,
 })
 ```
 
 - `init` (boolean): Init the component on creation
+- `on` (object): events to listen to
 
 ## Methods
 
@@ -111,6 +113,7 @@ collapseElement.addEventListener('c.collapse.init', (e) => { // [!code focus:3]
 ```
 
 - `c.collapse.init`: On component init
+- `c.collapse.update`: On component update
 - `c.collapse.show`: Show animation is launched
 - `c.collapse.shown`: The collapse element is shown
 - `c.collapse.hide`: Hide animation is launched

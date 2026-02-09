@@ -29,11 +29,13 @@ You can change some options from the component.
 import { Drag } from 'compotes'
 
 const drag = new Drag('.c-drag', {
-  init: true, // [!code focus:2]
+  init: true, // [!code focus:3]
+  on: undefined,
 })
 ```
 
 - `init` (boolean): Init the component on creation
+- `on` (object): events to listen to
 
 ## Methods
 

@@ -45,7 +45,8 @@ const marquee = new Marquee('.c-marquee', {
   direction: 'right',
   behavior: 'scroll',
   duration: 1,
-  mutationObserver: true
+  mutationObserver: true,
+  on: undefined,
 })
 ```
 
@@ -55,6 +56,7 @@ const marquee = new Marquee('.c-marquee', {
 - `behavior` ('scroll' | 'alternate'): The behavior of the marquee animation
 - `duration` (number or string): The duration of the marquee animation
 - `mutationObserver` (boolean): Use MutationObserver to update component on changes
+- `on` (object): events to listen to
 
 ## Methods
 
