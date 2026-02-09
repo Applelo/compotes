@@ -5,7 +5,6 @@ import { computed, provide, ref } from 'vue'
 import { useCollapse } from '../composables/collapse'
 import { useStableId } from '../utils/id'
 import { collapseContextKey } from './context'
-import 'compotes/css/collapse'
 
 const props = withDefaults(defineProps<{
   as?: string | Component

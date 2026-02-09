@@ -3,7 +3,6 @@ import type { MarqueeOptions } from 'compotes'
 import type { Component } from 'vue'
 import { ref } from 'vue'
 import { useMarquee } from '../composables/marquee'
-import 'compotes/css/marquee'
 
 const props = withDefaults(defineProps<{
   as?: string | Component

@@ -3,7 +3,6 @@ import type { DrilldownOptions } from 'compotes'
 import type { Component } from 'vue'
 import { ref } from 'vue'
 import { useDrilldown } from '../composables/drilldown'
-import 'compotes/css/drilldown'
 
 const props = withDefaults(defineProps<{
   as?: string | Component

@@ -5,7 +5,6 @@ import { computed, provide, ref } from 'vue'
 import { useDropdown } from '../composables/dropdown'
 import { useStableId } from '../utils/id'
 import { dropdownContextKey } from './context'
-import 'compotes/css/dropdown'
 
 const props = withDefaults(defineProps<{
   as?: string | Component

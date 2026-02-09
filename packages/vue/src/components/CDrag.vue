@@ -3,7 +3,6 @@ import type { DragOptions } from 'compotes'
 import type { Component } from 'vue'
 import { ref } from 'vue'
 import { useDrag } from '../composables/drag'
-import 'compotes/css/drag'
 
 const props = withDefaults(defineProps<{
   as?: string | Component

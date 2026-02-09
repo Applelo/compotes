@@ -15,8 +15,13 @@ export default defineConfig({
   },
   outputOptions: {
     globals: {
-      compotes: 'compotes',
-      vue: 'vue',
+      'compotes': 'compotes',
+      'vue': 'vue',
+      'compotes/css/collapse': 'compotes_css_collapse',
+      'compotes/css/drag': 'compotes_css_drag',
+      'compotes/css/drilldown': 'compotes_css_drilldown',
+      'compotes/css/dropdown': 'compotes_css_dropdown',
+      'compotes/css/marquee': 'compotes_css_marquee',
     },
   },
   dts: {
