@@ -1,6 +1,6 @@
 # Vue
 
-`@compotes/vue` provides [composables](/guide/vue/composables) and soon components wrappers for the `compotes` library.
+`@compotes/vue` provides [composables](/guide/vue/composables) and components wrappers for the `compotes` library.
 
 ::: warning
 This module is still in active development. Breaking changes can happen between versions.
@@ -28,4 +28,4 @@ npm i -D @compotes/vue
 yarn add -D @compotes/vue
 ```
 
-For usage, check the [composables](/guide/vue/composables) page.
+For usage, check the [composables](/guide/vue/composables) or [components](/guide/vue/components) pages.

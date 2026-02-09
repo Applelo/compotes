@@ -56,6 +56,10 @@ export default defineConfig({
               text: 'Composables',
               link: '/guide/vue/composables',
             },
+            {
+              text: 'Components',
+              link: '/guide/vue/components',
+            }
           ],
         },
       ],
