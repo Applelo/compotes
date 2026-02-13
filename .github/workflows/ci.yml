@@ -59,7 +59,7 @@ jobs:
 
       - name: Install
         run: pnpm install
-      
+
       - name: Playwright Install
         run: npx playwright install --with-deps
 
