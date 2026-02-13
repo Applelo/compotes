@@ -1,4 +1,4 @@
-import type { Collapse, CollapseOptions } from 'compotes'
+import type { Collapse, CollapseOptions, StateChangeCallback } from 'compotes'
 import type { Ref } from 'vue'
 import { Collapse as CollapseComponent } from 'compotes'
 import { markRaw, shallowReactive, watch } from 'vue'
@@ -24,51 +24,36 @@ export function useCollapse(
   el: Ref<HTMLElement | null>,
   options?: CollapseOptions,
 ): CollapseComposable {
-  const instance = useParent(CollapseComponent, el, options)
   const state = shallowReactive<CollapseComposableState>({
     instance: null as Collapse | null,
     isExpanded: false,
     isCollapsing: false,
   })
 
-  const sync = (target: Collapse | null) => {
-    if (!target) {
-      state.isExpanded = false
-      state.isCollapsing = false
-      return
-    }
-    state.isExpanded = target.isExpanded
-    state.isCollapsing = target.isCollapsing
+  // Create options with state change callback
+  const opts = options || {}
+  const composableOptions: CollapseOptions = {
+    ...opts,
+    onStateChange: ((newState: any) => {
+      state.isExpanded = newState.isExpanded
+      state.isCollapsing = newState.isCollapsing
+    }) as StateChangeCallback,
   }
 
-  watch(instance, (target, _prev, onCleanup) => {
+  const instance = useParent(CollapseComponent, el, composableOptions)
+
+  watch(instance, (target) => {
     state.instance = target ? markRaw(target) : null
 
-    if (!target?.el) {
-      sync(target)
-      return
+    if (target) {
+      // Initial state sync
+      state.isExpanded = target.isExpanded
+      state.isCollapsing = target.isCollapsing
     }
-
-    const handler = () => sync(target)
-    const events = [
-      'c.collapse.update',
-      'c.collapse.show',
-      'c.collapse.shown',
-      'c.collapse.hide',
-      'c.collapse.hidden',
-    ] as const
-
-    events.forEach((event) => {
-      target.el?.addEventListener(event, handler as EventListener)
-    })
-
-    onCleanup(() => {
-      events.forEach((event) => {
-        target.el?.removeEventListener(event, handler as EventListener)
-      })
-    })
-
-    sync(target)
+    else {
+      state.isExpanded = false
+      state.isCollapsing = false
+    }
   }, { immediate: true })
 
   const show = () => instance.value?.show()

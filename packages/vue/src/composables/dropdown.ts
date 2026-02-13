@@ -1,4 +1,4 @@
-import type { Dropdown, DropdownOptions } from 'compotes'
+import type { Dropdown, DropdownOptions, StateChangeCallback } from 'compotes'
 import type { Ref } from 'vue'
 import { Dropdown as DropdownComponent } from 'compotes'
 import { markRaw, shallowReactive, watch } from 'vue'
@@ -25,49 +25,35 @@ export function useDropdown(
   el: Ref<HTMLElement | null>,
   options?: DropdownOptions,
 ): DropdownComposable {
-  const instance = useParent(DropdownComponent, el, options)
   const state = shallowReactive<DropdownComposableState>({
     instance: null as Dropdown | null,
     isOpen: false,
     type: 'default' as 'default' | 'menu',
   })
 
-  const sync = (target: Dropdown | null) => {
-    if (!target) {
-      state.isOpen = false
-      state.type = 'default'
-      return
-    }
-    state.isOpen = target.isOpen
-    state.type = target.type
+  const opts = options || {}
+  const composableOptions: DropdownOptions = {
+    ...opts,
+    onStateChange: ((newState: any) => {
+      state.isOpen = newState.isOpen
+      state.type = newState.type
+    }) as StateChangeCallback,
   }
 
-  watch(instance, (target, _prev, onCleanup) => {
+  const instance = useParent(DropdownComponent, el, composableOptions)
+
+  watch(instance, (target) => {
     state.instance = target ? markRaw(target) : null
 
-    if (!target?.el) {
-      sync(target)
-      return
-    }
-
-    const onOpen = () => {
-      state.isOpen = true
+    if (target) {
+      // Initial state sync
+      state.isOpen = target.isOpen
       state.type = target.type
     }
-    const onClose = () => {
+    else {
       state.isOpen = false
-      state.type = target.type
+      state.type = 'default'
     }
-
-    target.el.addEventListener('c.dropdown.opened', onOpen as EventListener)
-    target.el.addEventListener('c.dropdown.closed', onClose as EventListener)
-
-    onCleanup(() => {
-      target.el?.removeEventListener('c.dropdown.opened', onOpen as EventListener)
-      target.el?.removeEventListener('c.dropdown.closed', onClose as EventListener)
-    })
-
-    sync(target)
   }, { immediate: true })
 
   const open = () => {

@@ -5,6 +5,11 @@ export enum Events {
   Destroy = 'destroy',
 }
 
+/**
+ * Callback function for state changes
+ */
+export type StateChangeCallback<T = any> = (state: T) => void
+
 export interface ParentOptions<E extends string> {
   /**
    * Init the component on creation.
@@ -16,6 +21,11 @@ export interface ParentOptions<E extends string> {
    * @default undefined
    */
   on?: Partial<Record<E, (e: CustomEvent<Parent<E>>) => void | undefined>>
+  /**
+   * Callback function invoked when component state changes
+   * @default undefined
+   */
+  onStateChange?: StateChangeCallback
 }
 
 interface ParentEvent {
@@ -34,6 +44,7 @@ export default abstract class Parent<
   public el: HTMLElement | null = null
   protected opts: O = {} as O
   private eventsController: AbortController | null = null
+  private stateChangeCallback: StateChangeCallback | null = null
 
   /**
    * Init the component
@@ -69,6 +80,8 @@ export default abstract class Parent<
       }
     }
 
+    this.stateChangeCallback = this.opts.onStateChange ?? null
+
     this.eventsController = new AbortController()
     this.emitEvent(Events.Init)
     if (this.initElements)
@@ -87,7 +100,23 @@ export default abstract class Parent<
         cancelable,
       },
     )
-    return this.el?.dispatchEvent(event)
+    const result = this.el?.dispatchEvent(event)
+    this.notifyStateChange()
+    return result
+  }
+
+  /**
+   * Get the current state of the component
+   */
+  protected abstract getState(): any
+
+  /**
+   * Notify state change callback if registered
+   */
+  protected notifyStateChange(): void {
+    if (this.stateChangeCallback) {
+      this.stateChangeCallback(this.getState())
+    }
   }
 
   /**
@@ -121,6 +150,7 @@ export default abstract class Parent<
    */
   public destroy(): void {
     this.eventsController?.abort()
+    this.stateChangeCallback = null
     this.emitEvent(Events.Destroy)
   }
 

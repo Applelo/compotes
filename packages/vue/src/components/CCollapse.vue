@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Collapse, CollapseOptions } from 'compotes'
 import type { Component } from 'vue'
-import { computed, provide, ref, watch } from 'vue'
+import { computed, provide, ref } from 'vue'
+import { useComponentEvents } from '../composables/_events'
 import { useCollapse } from '../composables/collapse'
 import { useStableId } from '../utils/id'
 import { collapseContextKey } from './context'
@@ -34,28 +35,12 @@ const collapseId = computed(() => props.id ?? autoId)
 
 provide(collapseContextKey, { id: collapseId })
 
-watch(el, (newEl, _oldEl, onCleanup) => {
-  if (!newEl)
-    return
-
-  const events = [
-    'c.collapse.init',
-    'c.collapse.show',
-    'c.collapse.shown',
-    'c.collapse.hide',
-    'c.collapse.hidden',
-    'c.collapse.update',
-    'c.collapse.destroy',
-  ] as const
-
-  const handler = (e: Event) => {
-    const eventName = (e.type.split('.').pop() ?? '') as keyof typeof emit
-    emit(eventName, e as CustomEvent<Collapse>)
-  }
-
-  events.forEach(event => newEl.addEventListener(event, handler))
-  onCleanup(() => events.forEach(event => newEl.removeEventListener(event, handler)))
-}, { immediate: true })
+useComponentEvents(
+  el,
+  'collapse',
+  ['init', 'show', 'shown', 'hide', 'hidden', 'update', 'destroy'],
+  emit,
+)
 
 defineExpose(collapse)
 </script>

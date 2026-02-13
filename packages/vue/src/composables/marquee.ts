@@ -1,4 +1,4 @@
-import type { Marquee, MarqueeOptions } from 'compotes'
+import type { Marquee, MarqueeOptions, StateChangeCallback } from 'compotes'
 import type { Ref } from 'vue'
 import { Marquee as MarqueeComponent } from 'compotes'
 import { markRaw, shallowReactive, watch } from 'vue'
@@ -22,46 +22,31 @@ export function useMarquee(
   el: Ref<HTMLElement | null>,
   options?: MarqueeOptions,
 ): MarqueeComposable {
-  const instance = useParent(MarqueeComponent, el, options)
   const state = shallowReactive<MarqueeComposableState>({
     instance: null as Marquee | null,
     isPaused: false,
   })
 
-  const sync = (target: Marquee | null) => {
-    if (!target?.el) {
-      state.isPaused = false
-      return
-    }
-    const el = target.el
-    state.isPaused = el.classList.contains('c-marquee--pause')
-      || el.classList.contains('c-collapse--pause')
+  const opts = options || {}
+  const composableOptions: MarqueeOptions = {
+    ...opts,
+    onStateChange: ((newState: any) => {
+      state.isPaused = newState.isPaused
+    }) as StateChangeCallback,
   }
 
-  watch(instance, (target, _prev, onCleanup) => {
+  const instance = useParent(MarqueeComponent, el, composableOptions)
+
+  watch(instance, (target) => {
     state.instance = target ? markRaw(target) : null
 
-    if (!target?.el) {
-      sync(target)
-      return
+    if (target) {
+      // Initial state sync
+      state.isPaused = target.isPaused
     }
-
-    const onPlay = () => {
+    else {
       state.isPaused = false
     }
-    const onPause = () => {
-      state.isPaused = true
-    }
-
-    target.el.addEventListener('c.marquee.play', onPlay as EventListener)
-    target.el.addEventListener('c.marquee.pause', onPause as EventListener)
-
-    onCleanup(() => {
-      target.el?.removeEventListener('c.marquee.play', onPlay as EventListener)
-      target.el?.removeEventListener('c.marquee.pause', onPause as EventListener)
-    })
-
-    sync(target)
   }, { immediate: true })
 
   const play = () => {

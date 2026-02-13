@@ -30,6 +30,11 @@ export interface DrilldownOptions extends ParentOptions<Events> {
   mutationObserver?: boolean
 }
 
+export interface DrilldownState {
+  level: number
+  currentMenuId: string | null
+}
+
 interface DrilldownItem {
   el: HTMLUListElement
   level: number
@@ -417,6 +422,13 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
     if (this.currentEl)
       focusFirst(this.currentEl, this.el)
     this.emitEvent(Events.Reset)
+  }
+
+  protected getState(): DrilldownState {
+    return {
+      level: this.level,
+      currentMenuId: this.currentEl?.id || null,
+    }
   }
 
   public destroy(): void {

@@ -1,4 +1,4 @@
-import type { Drag, DragOptions } from 'compotes'
+import type { Drag, DragOptions, StateChangeCallback } from 'compotes'
 import type { Ref } from 'vue'
 import { Drag as DragComponent } from 'compotes'
 import { markRaw, shallowReactive, watch } from 'vue'
@@ -20,31 +20,38 @@ export function useDrag(
   el: Ref<HTMLElement | null>,
   options?: DragOptions,
 ): DragComposable {
-  const instance = useParent(DragComponent, el, options)
   const state = shallowReactive<DragComposableState>({
     instance: null as Drag | null,
     isDragging: false,
     isDraggable: false,
   })
 
-  const sync = (target: Drag | null) => {
-    if (!target) {
-      state.isDragging = false
-      state.isDraggable = false
-      return
-    }
-    state.isDragging = target.isDragging
-    state.isDraggable = target.isDraggable
+  // Use state callback for draggable changes (from ResizeObserver in core)
+  // but keep event listeners for drag start/end (test compatibility)
+  const opts = options || {}
+  const composableOptions: DragOptions = {
+    ...opts,
+    onStateChange: ((newState: any) => {
+      state.isDraggable = newState.isDraggable
+    }) as StateChangeCallback,
   }
+
+  const instance = useParent(DragComponent, el, composableOptions)
 
   watch(instance, (target, _prev, onCleanup) => {
     state.instance = target ? markRaw(target) : null
 
     if (!target?.el) {
-      sync(target)
+      state.isDragging = false
+      state.isDraggable = false
       return
     }
 
+    // Initial state sync
+    state.isDragging = target.isDragging
+    state.isDraggable = target.isDraggable
+
+    // Keep event listeners for drag events (test compatibility)
     const onStart = () => {
       state.isDragging = true
     }
@@ -55,18 +62,10 @@ export function useDrag(
     target.el.addEventListener('c.drag.start', onStart as EventListener)
     target.el.addEventListener('c.drag.end', onEnd as EventListener)
 
-    const resizeObserver = new ResizeObserver(() => {
-      state.isDraggable = target.isDraggable
-    })
-    resizeObserver.observe(target.el)
-
     onCleanup(() => {
       target.el?.removeEventListener('c.drag.start', onStart as EventListener)
       target.el?.removeEventListener('c.drag.end', onEnd as EventListener)
-      resizeObserver.disconnect()
     })
-
-    sync(target)
   }, { immediate: true })
 
   const destroy = () => instance.value?.destroy()

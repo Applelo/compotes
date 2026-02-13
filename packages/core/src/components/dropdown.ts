@@ -39,6 +39,11 @@ export interface DropdownOptions extends ParentOptions<Events> {
   mutationObserver?: boolean
 }
 
+export interface DropdownState {
+  isOpen: boolean
+  type: 'default' | 'menu'
+}
+
 export default class Dropdown extends Parent<Events, DropdownOptions> {
   public readonly name = 'dropdown'
   declare protected opts: DropdownOptions
@@ -333,6 +338,13 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
    */
   public get isOpen(): boolean {
     return this.opened
+  }
+
+  protected getState(): DropdownState {
+    return {
+      isOpen: this.opened,
+      type: this.type,
+    }
   }
 
   public destroy(): void {

@@ -18,6 +18,11 @@ declare global {
 
 export interface CollapseOptions extends ParentOptions<Events> {}
 
+export interface CollapseState {
+  isExpanded: boolean
+  isCollapsing: boolean
+}
+
 export default class Collapse extends Parent<Events, CollapseOptions> {
   public readonly name = 'collapse'
   declare protected opts: CollapseOptions
@@ -185,6 +190,13 @@ export default class Collapse extends Parent<Events, CollapseOptions> {
    */
   public get isCollapsing(): boolean {
     return this.status.collapsing
+  }
+
+  protected getState(): CollapseState {
+    return {
+      isExpanded: this.status.expanded,
+      isCollapsing: this.status.collapsing,
+    }
   }
 
   private get hasTransition(): boolean {

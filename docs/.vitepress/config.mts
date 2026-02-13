@@ -59,7 +59,7 @@ export default defineConfig({
             {
               text: 'Components',
               link: '/guide/vue/components',
-            }
+            },
           ],
         },
       ],

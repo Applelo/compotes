@@ -45,6 +45,10 @@ export interface MarqueeOptions extends ParentOptions<Events> {
   mutationObserver?: boolean
 }
 
+export interface MarqueeState {
+  isPaused: boolean
+}
+
 export default class Marquee extends Parent<Events, MarqueeOptions> {
   public readonly name = 'marquee'
   declare protected opts: MarqueeOptions
@@ -280,7 +284,13 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
   }
 
   public get isPaused(): boolean {
-    return this.el?.classList.contains(Marquee.CLASS_PAUSE) || true
+    return this.el?.classList.contains(Marquee.CLASS_PAUSE) || false
+  }
+
+  protected getState(): MarqueeState {
+    return {
+      isPaused: this.isPaused,
+    }
   }
 
   private fill(fillMultiplier: number): void {

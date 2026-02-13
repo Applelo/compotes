@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Marquee, MarqueeOptions } from 'compotes'
 import type { Component } from 'vue'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
+import { useComponentEvents } from '../composables/_events'
 import { useMarquee } from '../composables/marquee'
 
 const props = withDefaults(defineProps<{
@@ -24,26 +25,12 @@ const emit = defineEmits<{
 const el = ref<HTMLElement | null>(null)
 const marquee = useMarquee(el, props.options)
 
-watch(el, (newEl, _oldEl, onCleanup) => {
-  if (!newEl)
-    return
-
-  const events = [
-    'c.marquee.init',
-    'c.marquee.play',
-    'c.marquee.pause',
-    'c.marquee.loop',
-    'c.marquee.destroy',
-  ] as const
-
-  const handler = (e: Event) => {
-    const eventName = (e.type.split('.').pop() ?? '') as keyof typeof emit
-    emit(eventName, e as CustomEvent<Marquee>)
-  }
-
-  events.forEach(event => newEl.addEventListener(event, handler))
-  onCleanup(() => events.forEach(event => newEl.removeEventListener(event, handler)))
-}, { immediate: true })
+useComponentEvents(
+  el,
+  'marquee',
+  ['init', 'play', 'pause', 'loop', 'destroy'],
+  emit,
+)
 
 defineExpose(marquee)
 </script>

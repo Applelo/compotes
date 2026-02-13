@@ -22,6 +22,10 @@ class Child extends Parent<Events> {
 
   protected initEvents(): void {
   }
+
+  protected getState(): any {
+    return {}
+  }
 }
 
 beforeAll(() => {

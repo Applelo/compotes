@@ -6,8 +6,8 @@ First, [use a ref to get your HTMLElement ](https://vuejs.org/guide/essentials/t
 
 ```vue
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
 import { useMarquee } from '@compotes/vue'
+import { useTemplateRef } from 'vue'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl)
@@ -22,8 +22,8 @@ As the second argument, you can pass the options of the component.
 
 ```vue
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
 import { useMarquee } from '@compotes/vue'
+import { useTemplateRef } from 'vue'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl, { fill: true })
@@ -34,8 +34,8 @@ For the template, you need to respect the structure of the component you referen
 
 ```vue
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
 import { useMarquee } from '@compotes/vue'
+import { useTemplateRef } from 'vue'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl, { fill: true })
@@ -70,8 +70,8 @@ Here an example with the marquee component with a simple play/pause implementati
 
 ```vue
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
 import { useMarquee } from '@compotes/vue'
+import { useTemplateRef } from 'vue'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl, { fill: true })
@@ -139,8 +139,8 @@ Here an example to show the current status of the marquee component.
 
 ```vue
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
 import { useMarquee } from '@compotes/vue'
+import { useTemplateRef } from 'vue'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl, { fill: true })
@@ -165,14 +165,15 @@ If you need to listen to events directly, you can access them through the `insta
 
 ```vue
 <script setup lang="ts">
-import { useTemplateRef, watchEffect } from 'vue'
 import { useMarquee } from '@compotes/vue'
+import { useTemplateRef, watchEffect } from 'vue'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl, { fill: true })
 
 watchEffect((onCleanup) => {
-  if (!marquee.instance?.el) return
+  if (!marquee.instance?.el)
+    return
 
   const handler = () => console.log('Marquee started playing!')
   marquee.instance.el.addEventListener('c.marquee.play', handler)

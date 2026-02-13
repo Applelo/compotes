@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Drilldown, DrilldownOptions } from 'compotes'
 import type { Component } from 'vue'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
+import { useComponentEvents } from '../composables/_events'
 import { useDrilldown } from '../composables/drilldown'
 
 const props = withDefaults(defineProps<{
@@ -23,27 +24,12 @@ const emit = defineEmits<{
 const el = ref<HTMLElement | null>(null)
 const drilldown = useDrilldown(el, props.options)
 
-watch(el, (newEl, _oldEl, onCleanup) => {
-  if (!newEl)
-    return
-
-  const events = [
-    'c.drilldown.init',
-    'c.drilldown.destroy',
-    'c.drilldown.update',
-    'c.drilldown.next',
-    'c.drilldown.back',
-    'c.drilldown.reset',
-  ] as const
-
-  const handler = (e: Event) => {
-    const eventName = (e.type.split('.').pop() ?? '') as keyof typeof emit
-    emit(eventName, e as CustomEvent<Drilldown>)
-  }
-
-  events.forEach(event => newEl.addEventListener(event, handler))
-  onCleanup(() => events.forEach(event => newEl.removeEventListener(event, handler)))
-}, { immediate: true })
+useComponentEvents(
+  el,
+  'drilldown',
+  ['init', 'destroy', 'update', 'next', 'back', 'reset'],
+  emit,
+)
 
 defineExpose(drilldown)
 </script>

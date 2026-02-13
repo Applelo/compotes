@@ -2,7 +2,6 @@
 
 The Vue package provides a set of components that wrap the core functionality of Compote.
 
-
 ::: warning
 You need to import the css manually to make the components work.
 

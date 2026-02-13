@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Drag, DragOptions } from 'compotes'
 import type { Component } from 'vue'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
+import { useComponentEvents } from '../composables/_events'
 import { useDrag } from '../composables/drag'
 
 const props = withDefaults(defineProps<{
@@ -21,25 +22,12 @@ const emit = defineEmits<{
 const el = ref<HTMLElement | null>(null)
 const drag = useDrag(el, props.options)
 
-watch(el, (newEl, _oldEl, onCleanup) => {
-  if (!newEl)
-    return
-
-  const events = [
-    'c.drag.init',
-    'c.drag.start',
-    'c.drag.end',
-    'c.drag.destroy',
-  ] as const
-
-  const handler = (e: Event) => {
-    const eventName = (e.type.split('.').pop() ?? '') as keyof typeof emit
-    emit(eventName, e as CustomEvent<Drag>)
-  }
-
-  events.forEach(event => newEl.addEventListener(event, handler))
-  onCleanup(() => events.forEach(event => newEl.removeEventListener(event, handler)))
-}, { immediate: true })
+useComponentEvents(
+  el,
+  'drag',
+  ['init', 'start', 'end', 'destroy'],
+  emit,
+)
 
 defineExpose(drag)
 </script>

@@ -14,6 +14,11 @@ declare global {
 
 export interface DragOptions extends ParentOptions<Events> {}
 
+export interface DragState {
+  isDragging: boolean
+  isDraggable: boolean
+}
+
 export default class Drag extends Parent<Events, DragOptions> {
   public readonly name = 'drag'
   declare protected opts: DragOptions
@@ -28,6 +33,7 @@ export default class Drag extends Parent<Events, DragOptions> {
   private scrollLeft = 0
   private scrollTop = 0
   private hasMoved = false
+  private previousIsDraggable = false
 
   private resizeObserver?: ResizeObserver
 
@@ -44,8 +50,17 @@ export default class Drag extends Parent<Events, DragOptions> {
     if (!this.el)
       return
 
+    this.previousIsDraggable = this.isDraggable
+
     this.resizeObserver = new ResizeObserver(() => {
-      this.el?.classList.toggle(Drag.CLASS_DRAGGABLE, this.isDraggable)
+      const isDraggable = this.isDraggable
+      this.el?.classList.toggle(Drag.CLASS_DRAGGABLE, isDraggable)
+
+      if (this.previousIsDraggable !== isDraggable) {
+        this.notifyStateChange()
+      }
+
+      this.previousIsDraggable = isDraggable
     })
 
     this.resizeObserver.observe(this.el)
@@ -149,6 +164,13 @@ export default class Drag extends Parent<Events, DragOptions> {
    */
   public get isDragging(): boolean {
     return this.isDown
+  }
+
+  protected getState(): DragState {
+    return {
+      isDragging: this.isDown,
+      isDraggable: this.isDraggable,
+    }
   }
 
   public destroy(): void {
