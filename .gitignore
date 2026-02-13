@@ -51,3 +51,7 @@ Temporary Items
 .apdisk
 
 docs/.vitepress/cache
+
+# CLAUDE
+.claude
+CLAUDE.md
