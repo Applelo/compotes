@@ -1,4 +1,5 @@
 import type { ParentOptions } from './_parent'
+import { debounceResizeObserver } from '@src/utils/debounce'
 import Parent from './_parent'
 
 export enum Events {
@@ -52,7 +53,7 @@ export default class Drag extends Parent<Events, DragOptions> {
 
     this.previousIsDraggable = this.isDraggable
 
-    this.resizeObserver = new ResizeObserver(() => {
+    this.resizeObserver = debounceResizeObserver(() => {
       const isDraggable = this.isDraggable
       this.el?.classList.toggle(Drag.CLASS_DRAGGABLE, isDraggable)
 

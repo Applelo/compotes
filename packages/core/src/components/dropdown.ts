@@ -1,4 +1,5 @@
 import type { ParentOptions } from './_parent'
+import { debounceMutationObserver } from '@src/utils/debounce'
 import { focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
 import Parent from './_parent'
 
@@ -82,7 +83,7 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
 
     this.mutationObserver = this.opts.mutationObserver === false
       ? undefined
-      : new MutationObserver(() => {
+      : debounceMutationObserver(() => {
           this.update()
         })
     this.mutationObserver?.observe(this.el, {

@@ -1,4 +1,5 @@
 import type { ParentOptions } from './_parent'
+import { debounceMutationObserver, debounceResizeObserver } from '@src/utils/debounce'
 import { tabbable } from 'tabbable'
 import { focusChar, focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
 import { getTransitionDuration } from './../utils/animation'
@@ -93,10 +94,10 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
 
     this.mutationObserver = this.opts.mutationObserver === false
       ? undefined
-      : new MutationObserver(() => {
+      : debounceMutationObserver(() => {
           this.update(true)
         })
-    this.resizeObserver = new ResizeObserver(() => {
+    this.resizeObserver = debounceResizeObserver(() => {
       this.updateHeight()
     })
 
