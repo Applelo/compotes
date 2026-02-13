@@ -120,14 +120,15 @@ export default class Collapse extends Parent<Events, CollapseOptions> {
       return
 
     this.status.expanded = true
+    this.el.classList.add(Collapse.CLASS_COLLAPSING)
     if (this.hasTransition) {
       this.status.collapsing = true
-      this.el?.classList.add(Collapse.CLASS_COLLAPSING)
       const height = this.el.scrollHeight
       this.el.style.height = `${height}px`
       this.onCollapse()
     }
     else {
+      this.el.classList.remove(Collapse.CLASS_COLLAPSING)
       this.emitEvent(Events.Show)
       this.emitEvent(Events.Shown)
     }
