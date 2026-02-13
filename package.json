@@ -34,8 +34,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "pnpm run test:types && pnpm run test:vitest",
-    "test:vitest": "pnpm run -r test:vitest",
-    "test:coverage": "pnpm run -r test:coverage",
+    "test:vitest": "vitest",
+    "test:coverage": "vitest run --coverage",
     "test:types": "pnpm run -r test:types",
     "prepublishOnly": "pnpm build",
     "docs:dev": "vitepress dev docs",
@@ -56,6 +56,7 @@
     "typescript": "catalog:",
     "vite": "catalog:",
     "vitepress": "catalog:",
+    "unplugin-vue": "catalog:",
     "vitest": "catalog:",
     "vue": "catalog:",
     "vue-tsc": "catalog:"

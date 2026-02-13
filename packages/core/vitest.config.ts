@@ -1,29 +1,12 @@
 import path from 'node:path'
-import { playwright } from '@vitest/browser-playwright'
-import { defineConfig } from 'vitest/config'
+import { defineConfig, mergeConfig } from 'vitest/config'
+import configShared from './../../vitest.shared'
 
-export default defineConfig({
+export default defineConfig(mergeConfig(configShared, {
   resolve: {
     alias: {
       '@src': path.resolve(__dirname, './src'),
       '@css': path.resolve(__dirname, './src/css'),
     },
   },
-  test: {
-    browser: {
-      provider: playwright(),
-      enabled: true,
-      headless: true,
-      instances: [
-        { browser: 'chromium' },
-        { browser: 'firefox' },
-        { browser: 'webkit' },
-      ],
-    },
-    coverage: {
-      provider: 'istanbul',
-      include: ['src/**/*.ts'],
-      reporter: ['lcov', 'html'],
-    },
-  },
-})
+}))
