@@ -8,15 +8,12 @@ First, [use a ref to get your HTMLElement ](https://vuejs.org/guide/essentials/t
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
 import { useTemplateRef } from 'vue'
+import 'compotes/css/marquee.css'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl)
 </script>
 ```
-
-::: info
-You can also pass a string for `querySelector` your element, as first argument, but it is recommanded to pass ref for proper Vue integration.
-:::
 
 As the second argument, you can pass the options of the component.
 
@@ -24,6 +21,7 @@ As the second argument, you can pass the options of the component.
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
 import { useTemplateRef } from 'vue'
+import 'compotes/css/marquee.css'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl, { fill: true })
@@ -36,6 +34,7 @@ For the template, you need to respect the structure of the component you referen
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
 import { useTemplateRef } from 'vue'
+import 'compotes/css/marquee.css'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl, { fill: true })
@@ -50,7 +49,12 @@ const marquee = useMarquee(marqueeEl, { fill: true })
   </div>
 </template>
 ```
-That's it for Vue composable.
+
+::: warning
+Don't forget to import the CSS of the component you want to use!
+:::
+
+That's it for the basic Vue composable setup.
 
 ## List
 
@@ -58,7 +62,7 @@ That's it for Vue composable.
 |------------|-------|---------|
 | useCollapse(el, [options](/guide/collapse#options)) | `instance`, `isExpanded`, `isCollapsing` | `show()`, `hide()`, `toggle()`, `update()`, `destroy()` |
 | useDrag(el, [options](/guide/drag#options)) | `instance`, `isDragging`, `isDraggable` | `destroy()` |
-| useDrilldown(el, [options](/guide/drilldown#options)) | `instance` | `update(reloadItems?)`, `back()`, `reset()`, `destroy()` |
+| useDrilldown(el, [options](/guide/drilldown#options)) | `instance`, `level`, `currentMenuId` | `update(reloadItems?)`, `back()`, `reset()`, `destroy()` |
 | useDropdown(el, [options](/guide/dropdown#options)) | `instance`, `isOpen`, `type` | `open()`, `close()`, `toggle()`, `update()`, `equalizeWidth()`, `destroy()` |
 | useMarquee(el, [options](/guide/marquee#options)) | `instance`, `isPaused` | `play()`, `pause()`, `update(fill?)`, `destroy()` |
 
@@ -72,6 +76,7 @@ Here an example with the marquee component with a simple play/pause implementati
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
 import { useTemplateRef } from 'vue'
+import 'compotes/css/marquee.css'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl, { fill: true })
@@ -119,6 +124,8 @@ You can use them directly in templates and `<script setup>`. If you need a ref, 
 | State | Type | Description |
 |-------|------|-------------|
 | `instance` | `Drilldown \| null` | The underlying Compotes Drilldown instance |
+| `level` | `number` | The current navigation depth level |
+| `currentMenuId` | `string \| null` | The ID of the currently active menu |
 
 ### useDropdown
 
@@ -141,6 +148,7 @@ Here an example to show the current status of the marquee component.
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
 import { useTemplateRef } from 'vue'
+import 'compotes/css/marquee.css'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl, { fill: true })
@@ -167,6 +175,7 @@ If you need to listen to events directly, you can access them through the `insta
 <script setup lang="ts">
 import { useMarquee } from '@compotes/vue'
 import { useTemplateRef, watchEffect } from 'vue'
+import 'compotes/css/marquee.css'
 
 const marqueeEl = useTemplateRef<HTMLElement>('marqueeEl')
 const marquee = useMarquee(marqueeEl, { fill: true })

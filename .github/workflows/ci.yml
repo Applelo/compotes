@@ -98,3 +98,26 @@ jobs:
 
       - name: Lint
         run: pnpm lint
+
+  docs-sync:
+    runs-on: ubuntu-latest
+    name: 'Docs Sync'
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
+      - name: Set node version to 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install
+
+      - name: Check docs are in sync
+        run: pnpm docs:sync

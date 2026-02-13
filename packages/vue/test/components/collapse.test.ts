@@ -5,15 +5,20 @@ import { cleanupComponent, mountComponent } from './helpers'
 
 it('cCollapse wires trigger and exposes API', async () => {
   let api: any = null
+  const testId = 'test-collapse'
 
   const { app, root } = await mountComponent(() =>
     h(CCollapse, {
+      'id': testId,
       'ref': (el: any) => {
         api = el
       },
       'data-testid': 'collapse',
     }, {
-      default: () => h(CCollapseTrigger, { 'data-testid': 'trigger' }, {
+      default: () => h(CCollapseTrigger, {
+        'ariaControls': testId,
+        'data-testid': 'trigger',
+      }, {
         default: () => 'Toggle',
       }),
     }),
@@ -26,8 +31,8 @@ it('cCollapse wires trigger and exposes API', async () => {
     .querySelector('[data-testid="trigger"]')
     ?.getAttribute('aria-controls')
 
-  expect(collapseId).toBeTruthy()
-  expect(triggerControls).toBe(collapseId)
+  expect(collapseId).toBe(testId)
+  expect(triggerControls).toBe(testId)
 
   expect(api.instance).not.toBeNull()
   expect(api.isExpanded).toBe(false)

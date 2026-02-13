@@ -119,12 +119,15 @@ Vue components wrap core components using a composable pattern:
    - Add CSS file in `src/css/{name}.css`
    - Export from `src/index.ts`
    - Add CSS export to `package.json` exports field
+   - Document in `docs/guide/{name}.md` (options, methods, events, data)
 
 2. **Vue package**:
    - Create composable in `src/composables/{name}.ts` extending `useParent()`
    - Create component(s) in `src/components/C{Name}.vue`
    - Add context key if needed in `src/components/context.ts`
    - Export from `src/index.ts`
+   - Document component in `docs/guide/vue/components.md` (props, events, exposed)
+   - Document composable in `docs/guide/vue/composables.md` (list table, state section)
 
 ### Event Naming Convention
 

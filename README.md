@@ -39,6 +39,9 @@ yarn add -D compotes
 
 # pnpm
 pnpm add -D compotes
+
+#bun
+bun add -D compotes
 ```
 
 <br></details>
@@ -54,6 +57,9 @@ yarn add -D @compotes/vue
 
 # pnpm
 pnpm add -D @compotes/vue
+
+#bun
+bun add -D @compotes/vue
 ```
 
 <br></details>
@@ -80,6 +86,10 @@ A lot of component libraries are already shipped with styles but as a Front End 
 There are some good libraries like [React Aria](https://react-spectrum.adobe.com/react-aria/react-aria-components.html) but it's made to work on one framework and I work on different tech like Wordpress, Symfony or VueJS.
 
 > This library provides only the compotes and it's up to you to make a tart.
+
+## AI Usage
+
+This project uses AI to improve and keep the documentation up to date. It also helps me writing the connection between core components to VueJS.
 
 ## 👨‍💼 License
 

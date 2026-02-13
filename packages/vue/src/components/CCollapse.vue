@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import type { Collapse, CollapseOptions } from 'compotes'
 import type { Component } from 'vue'
-import { computed, provide, ref } from 'vue'
+import { ref } from 'vue'
 import { useComponentEvents } from '../composables/_events'
 import { useCollapse } from '../composables/collapse'
-import { useStableId } from '../utils/id'
-import { collapseContextKey } from './context'
 
 const props = withDefaults(defineProps<{
   as?: string | Component
-  id?: string
+  id: string
   options?: CollapseOptions
   defaultOpen?: boolean
 }>(), {
@@ -30,11 +28,6 @@ const emit = defineEmits<{
 const el = ref<HTMLElement | null>(null)
 const collapse = useCollapse(el, props.options)
 
-const autoId = useStableId('c-collapse')
-const collapseId = computed(() => props.id ?? autoId)
-
-provide(collapseContextKey, { id: collapseId })
-
 useComponentEvents(
   el,
   'collapse',
@@ -48,7 +41,7 @@ defineExpose(collapse)
 <template>
   <component
     :is="as"
-    :id="collapseId"
+    :id="id"
     ref="el"
     class="c-collapse"
     :class="{ 'c-collapse--show': defaultOpen }"

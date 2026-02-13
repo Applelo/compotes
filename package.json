@@ -34,12 +34,13 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "pnpm run test:types && pnpm run test:vitest",
-    "test:vitest": "pnpm run -r test:vitest",
+    "test:vitest": "pnpm run -r test:vitest --run",
     "test:types": "pnpm run -r test:types",
     "prepublishOnly": "pnpm build",
-    "docs": "vitepress dev docs",
+    "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
+    "docs:sync": "node scripts/doc-sync.js",
     "publish": "pnpm run -r publish"
   },
   "devDependencies": {

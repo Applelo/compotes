@@ -8,19 +8,25 @@
 
 1. Install the library with your favorite package manager
 
-```shell
-# pnpm
-pnpm add -D compotes
+::: code-group
 
-# bun
-bun add -D compotes
-
-# npm
-npm i -D compotes
-
-# yarn
-yarn add -D compotes
+```sh [npm]
+$ npm add -D compotes
 ```
+
+```sh [pnpm]
+$ pnpm add -D compotes
+```
+
+```sh [yarn]
+$ yarn add -D compotes
+```
+
+```sh [bun]
+$ bun add -D compotes
+```
+
+:::
 
 2. Import the component(s) you want
 
