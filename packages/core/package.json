@@ -58,9 +58,9 @@
     "dev": "tsdown --watch",
     "build": "tsdown",
     "test:vitest": "vitest",
+    "test:coverage": "vitest --run --coverage",
     "test:types": "tsc --noEmit && vue-tsc --noEmit",
-    "prepublishOnly": "pnpm build",
-    "test:browser": "vitest --config=vitest.browser.config.ts"
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "tabbable": "catalog:"

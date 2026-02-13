@@ -157,7 +157,7 @@ declare global {
 
 ## Important Notes
 
-- Node.js >= 20 required
+- Node.js 24 required
 - pnpm is the package manager (use pnpm, not npm or yarn)
 - Vue package has peer dependency on Vue >= 3.0.0
 - Core components work in any JavaScript environment (no framework required)

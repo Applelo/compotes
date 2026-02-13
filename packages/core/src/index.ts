@@ -1,3 +1,5 @@
+/* istanbul ignore file -- @preserve */
+
 import type { ParentOptions, StateChangeCallback } from './components/_parent'
 import type Parent from './components/_parent'
 import type { CollapseOptions, CollapseState } from './components/collapse'

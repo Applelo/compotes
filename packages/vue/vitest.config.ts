@@ -11,7 +11,6 @@ export default defineConfig({
     },
   },
   test: {
-    ui: true,
     browser: {
       provider: playwright(),
       enabled: true,
@@ -21,6 +20,10 @@ export default defineConfig({
         { browser: 'firefox' },
         { browser: 'webkit' },
       ],
+    },
+    coverage: {
+      provider: 'istanbul',
+      include: ['src/**/*.{ts,vue}'],
     },
   },
 })

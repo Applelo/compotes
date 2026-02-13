@@ -46,6 +46,7 @@
     "dev": "tsdown --watch",
     "build": "tsdown",
     "test:vitest": "vitest",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "pnpm build"

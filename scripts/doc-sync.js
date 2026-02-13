@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable regexp/no-super-linear-backtracking */
 
-/* eslint-disable no-console */
 /* eslint-disable regexp/optimal-quantifier-concatenation */
 
 /**

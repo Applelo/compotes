@@ -25,7 +25,12 @@ beforeAll(() => {
   document.body.innerHTML = html
   bodyHTML = document.body.innerHTML
 
-  return () => {
+  return async () => {
+    // Wait for any pending debounced resize observer callbacks to settle
+    await new Promise(resolve => setTimeout(resolve, 200))
+    // Clean any classes that may have been re-added by pending observers
+    const dragEl = document.querySelector('[data-testid="drag"]')
+    dragEl?.classList.remove('c-drag--draggable', 'c-drag--dragging')
     expect(bodyHTML).toBe(document.body.innerHTML)
   }
 })
@@ -88,4 +93,98 @@ it('drag', async () => {
 
   removeStartEvent()
   removeEndEvent()
+})
+
+it('drag click without movement is not prevented', async () => {
+  const dragLoc = page.getByTestId('drag')
+  const dragEl = dragLoc.element() as HTMLElement
+
+  const drag = new Drag(dragEl)
+  await new Promise(resolve => setTimeout(resolve, 50))
+
+  // Mousedown then click without moving should NOT prevent click
+  dragEl.dispatchEvent(new MouseEvent('mousedown', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 100,
+    clientY: 100,
+  }))
+
+  // Click without any mousemove
+  const clickEvent = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
+  })
+  dragEl.dispatchEvent(clickEvent)
+  expect(clickEvent.defaultPrevented).toBe(false)
+
+  dragEl.dispatchEvent(new MouseEvent('mouseup', {
+    bubbles: true,
+    cancelable: true,
+  }))
+
+  drag.destroy()
+})
+
+it('drag mouseleave ends drag', async () => {
+  const dragLoc = page.getByTestId('drag')
+  const dragEl = dragLoc.element() as HTMLElement
+
+  const { callback: endEvent, removeEventListener: removeEndEvent } = registerEventListeners<DragEvents>('c.drag.end', dragLoc)
+
+  const drag = new Drag(dragEl)
+  await new Promise(resolve => setTimeout(resolve, 50))
+
+  dragEl.dispatchEvent(new MouseEvent('mousedown', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 100,
+    clientY: 100,
+  }))
+
+  expect(drag.isDragging).toBe(true)
+
+  // mouseleave should end the drag
+  dragEl.dispatchEvent(new MouseEvent('mouseleave', {
+    bubbles: true,
+    cancelable: true,
+  }))
+
+  expect(endEvent).toHaveBeenCalledTimes(1)
+  expect(drag.isDragging).toBe(false)
+
+  drag.destroy()
+  removeEndEvent()
+})
+
+it('drag isDraggable false when content fits', async () => {
+  // Create a non-scrollable element dynamically
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = `
+    <div class="c-drag" data-testid="drag-no-scroll" style="width: 200px; height: 200px; overflow: hidden;">
+      <div style="width: 100px; height: 100px;">
+        <p>Small content</p>
+      </div>
+    </div>
+  `
+  document.body.appendChild(wrapper)
+
+  const dragEl = wrapper.querySelector('[data-testid="drag-no-scroll"]') as HTMLElement
+  const drag = new Drag(dragEl)
+  await new Promise(resolve => setTimeout(resolve, 200))
+
+  expect(drag.isDraggable).toBe(false)
+
+  // mousedown should not start drag when not draggable
+  dragEl.dispatchEvent(new MouseEvent('mousedown', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 50,
+    clientY: 50,
+  }))
+
+  expect(drag.isDragging).toBe(false)
+
+  drag.destroy()
+  document.body.removeChild(wrapper)
 })

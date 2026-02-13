@@ -10,17 +10,19 @@ export default defineConfig({
     },
   },
   test: {
-    ui: true,
     browser: {
       provider: playwright(),
       enabled: true,
       headless: true,
-      // at least one instance is required
       instances: [
         { browser: 'chromium' },
         { browser: 'firefox' },
         { browser: 'webkit' },
       ],
+    },
+    coverage: {
+      provider: 'istanbul',
+      include: ['src/**/*.ts'],
     },
   },
 })

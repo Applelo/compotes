@@ -23,7 +23,7 @@ jobs:
       - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - name: Install
@@ -38,38 +38,38 @@ jobs:
       - name: Test
         run: pnpm test
 
-  # coverage:
-  #   runs-on: ubuntu-latest
-  #   name: 'Coverage'
+  coverage:
+    runs-on: ubuntu-latest
+    name: Coverage
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-  #     - uses: pnpm/action-setup@v2.2.4
-  #       with:
-  #         version: 7
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10
 
-  #     - name: Set node version to 16
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16
-  #         cache: pnpm
+      - name: Set node version to 24
+        uses: actions/setup-node@v3
+        with:
+          node-version: 24
+          cache: pnpm
 
-  #     - name: Install
-  #       run: pnpm install
+      - name: Install
+        run: pnpm install
 
-  #     - name: Build
-  #       run: pnpm build
+      - name: Build
+        run: pnpm build
 
-  #     - name: Test
-  #       run: pnpm coverage
+      - name: Test
+        run: pnpm coverage
 
-  #     - name: Coveralls
-  #       uses: coverallsapp/github-action@master
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   lint:
     runs-on: ubuntu-latest
@@ -84,10 +84,10 @@ jobs:
         with:
           version: 10
 
-      - name: Set node version to 20
+      - name: Set node version to 24
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - name: Install
@@ -101,7 +101,7 @@ jobs:
 
   docs-sync:
     runs-on: ubuntu-latest
-    name: 'Docs Sync'
+    name: Docs Sync
 
     steps:
       - uses: actions/checkout@v3
@@ -110,10 +110,10 @@ jobs:
         with:
           version: 10
 
-      - name: Set node version to 20
+      - name: Set node version to 24
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - name: Install
