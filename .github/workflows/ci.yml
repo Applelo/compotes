@@ -20,7 +20,7 @@ jobs:
         with:
           version: 10
 
-      - name: Use Node.js 20
+      - name: Use Node.js 24
         uses: actions/setup-node@v3
         with:
           node-version: 24
@@ -64,7 +64,7 @@ jobs:
         run: pnpm build
 
       - name: Test
-        run: pnpm coverage
+        run: pnpm test:coverage
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
@@ -73,7 +73,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    name: 'Lint: node-20, ubuntu-latest'
+    name: 'Lint: node-24, ubuntu-latest'
 
     steps:
       - uses: actions/checkout@v3
