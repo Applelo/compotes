@@ -12,53 +12,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    name: Test & Coverage
 
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 10
-
-      - name: Use Node.js 24
-        uses: actions/setup-node@v3
-        with:
-          node-version: 24
-          cache: pnpm
-
-      - name: Install
-        run: pnpm install
-
-      - name: Playwright Install
-        run: npx playwright install --with-deps
-
-      - name: Build
-        run: pnpm build
-
-      - name: Test
-        run: pnpm test
-
-  coverage:
-    runs-on: ubuntu-latest
-    name: Coverage
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 10
-
-      - name: Set node version to 24
-        uses: actions/setup-node@v3
-        with:
-          node-version: 24
-          cache: pnpm
-
-      - name: Install
-        run: pnpm install
+      - uses: ./.github/actions/setup
 
       - name: Playwright Install
         run: npx playwright install --with-deps
@@ -76,28 +33,10 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    name: 'Lint: node-24, ubuntu-latest'
+    name: Lint
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 10
-
-      - name: Set node version to 24
-        uses: actions/setup-node@v3
-        with:
-          node-version: 24
-          cache: pnpm
-
-      - name: Install
-        run: pnpm install
-
-      - name: Build
-        run: pnpm build
+      - uses: ./.github/actions/setup
 
       - name: Lint
         run: pnpm lint
@@ -107,20 +46,17 @@ jobs:
     name: Docs Sync
 
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 10
-
-      - name: Set node version to 24
-        uses: actions/setup-node@v3
-        with:
-          node-version: 24
-          cache: pnpm
-
-      - name: Install
-        run: pnpm install
+      - uses: ./.github/actions/setup
 
       - name: Check docs are in sync
         run: pnpm docs:sync
+
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+
+    steps:
+      - uses: ./.github/actions/setup
+
+      - name: Build
+        run: pnpm build
