@@ -79,17 +79,16 @@ it('dropdown', async () => {
   expect(containerLoc).not.toBeVisible()
 
   dropdown.destroy()
-  // Ensure pointer isn't already over the trigger so hover re-enters.
-  await userEvent.unhover(triggerLoc)
 
   dropdown.options.openOn = 'hover'
   dropdown.init()
-  await userEvent.hover(triggerLoc)
+  const triggerEl = triggerLoc.element() as HTMLElement
+  triggerEl.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true, pointerType: 'mouse' }))
   expect(dropdown.isOpen).toBe(true)
   expect(openedEvent).toHaveBeenCalledTimes(3)
   expect(containerLoc).toBeVisible()
 
-  await userEvent.unhover(triggerLoc)
+  triggerEl.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true, pointerType: 'mouse' }))
   expect(dropdown.isOpen).toBe(false)
   expect(closedEvent).toHaveBeenCalledTimes(3)
   expect(containerLoc).not.toBeVisible()
@@ -256,7 +255,8 @@ it('dropdown hover on menu element', async () => {
   })
 
   // Hover on trigger to open
-  await userEvent.hover(triggerLoc)
+  const triggerEl = triggerLoc.element() as HTMLElement
+  triggerEl.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true, pointerType: 'mouse' }))
   expect(dropdown.isOpen).toBe(true)
 
   // Pointer enter on menu element should keep it open.
