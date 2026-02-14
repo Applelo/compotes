@@ -1,6 +1,6 @@
 # Vue Composables
 
-The [composable](https://vuejs.org/guide/reusability/composables.html) are the easy way to connect Compotes into VueJS hooks.
+The [composables](https://vuejs.org/guide/reusability/composables.html) are the easiest way to integrate Compote into your Vue application using the Composition API.
 
 First, [use a ref to get your HTMLElement ](https://vuejs.org/guide/essentials/template-refs.html) and pass it to your composable as a first argument.
 
@@ -56,7 +56,7 @@ Don't forget to import the CSS of the component you want to use!
 
 That's it for the basic Vue composable setup.
 
-## List
+## Available Composables
 
 | Composable | State | Methods |
 |------------|-------|---------|
@@ -68,9 +68,9 @@ That's it for the basic Vue composable setup.
 
 ## Methods
 
-You can access the component methods through the composable. They will be available after the mounted vue lifecycle hook.
+You can access the component methods through the composable. They will be available after the `onMounted` lifecycle hook.
 For advanced usage, `instance` gives access to the underlying Compotes class instance.
-Here an example with the marquee component with a simple play/pause implementation.
+Here is an example with the marquee component with a simple play/pause implementation.
 
 ```vue
 <script setup lang="ts">
@@ -100,7 +100,7 @@ const marquee = useMarquee(marqueeEl, { fill: true })
 
 ## State
 
-All the component state properties are reactive after the mounted vue lifecycle hook.
+All the component state properties are reactive after the `onMounted` lifecycle hook.
 You can use them directly in templates and `<script setup>`. If you need a ref, use `toRef` on the returned object.
 
 ### useCollapse
@@ -142,7 +142,7 @@ You can use them directly in templates and `<script setup>`. If you need a ref, 
 | `instance` | `Marquee \| null` | The underlying Compotes Marquee instance |
 | `isPaused` | `boolean` | Whether the marquee is currently paused |
 
-Here an example to show the current status of the marquee component.
+Here is an example to show the current status of the marquee component.
 
 ```vue
 <script setup lang="ts">
@@ -167,7 +167,7 @@ const marquee = useMarquee(marqueeEl, { fill: true })
 
 ## Events
 
-Events are automatically handled by the composables. The reactive state is kept in sync with the component by listening to the underlying events. You don't need to manually subscribe to events – simply use the reactive state properties provided by each composable.
+Events are automatically handled by the composables. The reactive state is kept in sync with the underlying component by listening to its events, so you don't need to manually subscribe — simply use the reactive state properties provided by each composable.
 
 If you need to listen to events directly, you can access them through the `instance` property:
 

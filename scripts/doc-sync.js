@@ -278,7 +278,7 @@ function parseComposableDocs(filePath) {
   const result = { list: [], states: [] }
 
   // Extract list table
-  const listMatch = content.match(/## List\s+\|[^\n][^\n|]*\|[^\n]+\|\s+((?:\|[^\n]+\|\s*)+)/)
+  const listMatch = content.match(/## (?:List|Available Composables)\s+\|[^\n][^\n|]*\|[^\n]+\|\s+((?:\|[^\n]+\|\s*)+)/)
   if (listMatch) {
     const rows = listMatch[1].split('\n').filter(line => line.trim().startsWith('|'))
     rows.forEach((row) => {

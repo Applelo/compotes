@@ -2,6 +2,8 @@
 
 The Vue package provides a set of components that wrap the core functionality of Compote.
 
+**Available components:** [CCollapse](#ccollapse) · [CCollapseTrigger](#ccollapsetrigger) · [CDrag](#cdrag) · [CDrilldown](#cdrilldown) · [CDrilldownMenu](#cdrilldownmenu) · [CDrilldownNext](#cdrilldownnext) · [CDrilldownBack](#cdrilldownback) · [CDropdown](#cdropdown) · [CDropdownMenu](#cdropdownmenu) · [CDropdownTrigger](#cdropdowntrigger) · [CMarquee](#cmarquee)
+
 All components support the `as` prop, which lets you change the rendered HTML tag or pass a custom Vue component. They also forward attributes via `v-bind="$attrs"` and provide a default slot for content.
 
 ::: warning
@@ -11,7 +13,7 @@ You need to import the CSS manually to make the components work.
 import 'compotes/css'
 ```
 
-or component by component
+or individually per component
 
 ```ts
 import 'compotes/css/collapse'

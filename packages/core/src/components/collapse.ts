@@ -149,6 +149,8 @@ export default class Collapse extends Parent<Events, CollapseOptions> {
       this.el.style.height = `${height}px`
       this.status.collapsing = true
       this.el.classList.add(Collapse.CLASS_COLLAPSING)
+      // Force reflow so the browser registers the explicit height before transitioning to 0
+      void this.el.offsetHeight
       this.el.style.height = '0px'
       this.onCollapse()
     }
