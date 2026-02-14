@@ -54,7 +54,7 @@ it('drag', async () => {
   dragEl.scrollLeft = 10
   dragEl.scrollTop = 10
 
-  dragEl.dispatchEvent(new MouseEvent('mousedown', {
+  dragEl.dispatchEvent(new PointerEvent('pointerdown', {
     bubbles: true,
     cancelable: true,
     clientX: 100,
@@ -64,7 +64,7 @@ it('drag', async () => {
   expect(startEvent).toHaveBeenCalledTimes(1)
   expect(drag.isDragging).toBe(true)
 
-  dragEl.dispatchEvent(new MouseEvent('mousemove', {
+  dragEl.dispatchEvent(new PointerEvent('pointermove', {
     bubbles: true,
     cancelable: true,
     clientX: 80,
@@ -81,7 +81,7 @@ it('drag', async () => {
   dragEl.dispatchEvent(clickEvent)
   expect(clickEvent.defaultPrevented).toBe(true)
 
-  dragEl.dispatchEvent(new MouseEvent('mouseup', {
+  dragEl.dispatchEvent(new PointerEvent('pointerup', {
     bubbles: true,
     cancelable: true,
   }))
@@ -102,15 +102,15 @@ it('drag click without movement is not prevented', async () => {
   const drag = new Drag(dragEl)
   await new Promise(resolve => setTimeout(resolve, 50))
 
-  // Mousedown then click without moving should NOT prevent click
-  dragEl.dispatchEvent(new MouseEvent('mousedown', {
+  // Pointerdown then click without moving should NOT prevent click
+  dragEl.dispatchEvent(new PointerEvent('pointerdown', {
     bubbles: true,
     cancelable: true,
     clientX: 100,
     clientY: 100,
   }))
 
-  // Click without any mousemove
+  // Click without any pointermove
   const clickEvent = new MouseEvent('click', {
     bubbles: true,
     cancelable: true,
@@ -118,7 +118,7 @@ it('drag click without movement is not prevented', async () => {
   dragEl.dispatchEvent(clickEvent)
   expect(clickEvent.defaultPrevented).toBe(false)
 
-  dragEl.dispatchEvent(new MouseEvent('mouseup', {
+  dragEl.dispatchEvent(new PointerEvent('pointerup', {
     bubbles: true,
     cancelable: true,
   }))
@@ -126,7 +126,7 @@ it('drag click without movement is not prevented', async () => {
   drag.destroy()
 })
 
-it('drag mouseleave ends drag', async () => {
+it('drag pointerleave ends drag', async () => {
   const dragLoc = page.getByTestId('drag')
   const dragEl = dragLoc.element() as HTMLElement
 
@@ -135,7 +135,7 @@ it('drag mouseleave ends drag', async () => {
   const drag = new Drag(dragEl)
   await new Promise(resolve => setTimeout(resolve, 50))
 
-  dragEl.dispatchEvent(new MouseEvent('mousedown', {
+  dragEl.dispatchEvent(new PointerEvent('pointerdown', {
     bubbles: true,
     cancelable: true,
     clientX: 100,
@@ -144,8 +144,8 @@ it('drag mouseleave ends drag', async () => {
 
   expect(drag.isDragging).toBe(true)
 
-  // mouseleave should end the drag
-  dragEl.dispatchEvent(new MouseEvent('mouseleave', {
+  // pointerleave should end the drag
+  dragEl.dispatchEvent(new PointerEvent('pointerleave', {
     bubbles: true,
     cancelable: true,
   }))
@@ -175,8 +175,8 @@ it('drag isDraggable false when content fits', async () => {
 
   expect(drag.isDraggable).toBe(false)
 
-  // mousedown should not start drag when not draggable
-  dragEl.dispatchEvent(new MouseEvent('mousedown', {
+  // pointerdown should not start drag when not draggable
+  dragEl.dispatchEvent(new PointerEvent('pointerdown', {
     bubbles: true,
     cancelable: true,
     clientX: 50,
@@ -201,7 +201,7 @@ it('drag onStateChange callback', async () => {
 
   const callCountAfterInit = onStateChange.mock.calls.length
 
-  dragEl.dispatchEvent(new MouseEvent('mousedown', {
+  dragEl.dispatchEvent(new PointerEvent('pointerdown', {
     bubbles: true,
     cancelable: true,
     clientX: 100,
@@ -214,7 +214,7 @@ it('drag onStateChange callback', async () => {
     expect.objectContaining({ isDragging: true, isDraggable: true }),
   )
 
-  dragEl.dispatchEvent(new MouseEvent('mouseup', {
+  dragEl.dispatchEvent(new PointerEvent('pointerup', {
     bubbles: true,
     cancelable: true,
   }))

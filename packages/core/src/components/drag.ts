@@ -71,9 +71,9 @@ export default class Drag extends Parent<Events, DragOptions> {
     if (!this.el)
       return
 
-    const mouseEvents: (keyof HTMLElementEventMap)[] = ['mouseleave', 'mouseup']
-    for (let index = 0; index < mouseEvents.length; index++) {
-      const event = mouseEvents[index]
+    const pointerEvents: (keyof HTMLElementEventMap)[] = ['pointerleave', 'pointerup']
+    for (let index = 0; index < pointerEvents.length; index++) {
+      const event = pointerEvents[index]
       this.registerEvent({
         id: 'handleDragEnd',
         function: this.handleDragEnd.bind(this),
@@ -85,14 +85,14 @@ export default class Drag extends Parent<Events, DragOptions> {
     this.registerEvent({
       id: 'handleDragMove',
       function: this.handleDragMove.bind(this),
-      event: 'mousemove',
+      event: 'pointermove',
       el: this.el,
     })
 
     this.registerEvent({
       id: 'handleDragStart',
       function: this.handleDragStart.bind(this),
-      event: 'mousedown',
+      event: 'pointerdown',
       el: this.el,
     })
 
@@ -112,11 +112,17 @@ export default class Drag extends Parent<Events, DragOptions> {
     this.hasMoved = false
   }
 
-  private handleDragStart(e: MouseEvent): void {
+  private handleDragStart(e: PointerEvent): void {
     if (!this.isDraggable || !this.el)
       return
     this.isDown = true
     this.el.classList.add(Drag.CLASS_DRAGGING)
+    try {
+      this.el.setPointerCapture(e.pointerId)
+    }
+    catch {
+      // setPointerCapture may fail with synthetic events
+    }
     this.startX = e.pageX - this.el.offsetLeft
     this.startY = e.pageY - this.el.offsetTop
     this.scrollLeft = this.el.scrollLeft
@@ -125,14 +131,14 @@ export default class Drag extends Parent<Events, DragOptions> {
   }
 
   private handleDragEnd(): void {
-    if (!this.el)
+    if (!this.el || !this.isDown)
       return
     this.isDown = false
     this.el.classList.remove(Drag.CLASS_DRAGGING)
     this.emitEvent('end')
   }
 
-  private handleDragMove(e: MouseEvent): void {
+  private handleDragMove(e: PointerEvent): void {
     if (!this.isDown || !this.el)
       return
     e.preventDefault()

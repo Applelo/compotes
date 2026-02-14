@@ -102,7 +102,7 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
       ? undefined
       : debounceMutationObserver(([el]) => {
           const addedEls = Array.from(el.addedNodes) as HTMLElement[]
-          const isFilling = addedEls.findIndex(item => item.classList.contains(Marquee.CLASS_CLONE)) === -1
+          const isFilling = addedEls.findIndex(item => item.classList.contains(Marquee.CLASS_CLONE)) !== -1
           if (!isFilling)
             this.update(this.opts.fill)
         })

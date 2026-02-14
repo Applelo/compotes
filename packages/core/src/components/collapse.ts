@@ -116,7 +116,7 @@ export default class Collapse extends Parent<Events, CollapseOptions> {
    * Show collapse
    */
   public show(): void {
-    if (!this.el)
+    if (!this.el || this.status.collapsing)
       return
 
     this.status.expanded = true
@@ -140,7 +140,7 @@ export default class Collapse extends Parent<Events, CollapseOptions> {
    * Hide collapse
    */
   public hide(): void {
-    if (!this.el)
+    if (!this.el || this.status.collapsing)
       return
 
     this.status.expanded = false

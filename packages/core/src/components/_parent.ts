@@ -150,8 +150,8 @@ export default abstract class Parent<
    * Destroy the component
    */
   public destroy(): void {
-    this.stateChangeCallback = null
     this.emitEvent(Events.Destroy)
+    this.stateChangeCallback = null
     this.eventsController?.abort()
   }
 

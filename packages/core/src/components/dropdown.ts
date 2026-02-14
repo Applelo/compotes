@@ -109,7 +109,7 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
     this.menuEl = this.el?.querySelector(Dropdown.SELECTOR_CONTAINER) || null
     if (!this.menuEl) {
       throw this.error(
-        'The component needs to have a container element with the class `c-dropdown-trigger` as a direct child',
+        'The component needs to have a container element with the class `c-dropdown-container` as a direct child',
         { cause: this.el },
       )
     }

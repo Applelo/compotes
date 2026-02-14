@@ -100,7 +100,7 @@ export function focusChar(container: HTMLElement, char: string): void {
     if (
       focusEl
       && focusEl.textContent
-      && focusEl.textContent.trim().toLowerCase()[0] === char
+      && focusEl.textContent.trim().toLowerCase()[0] === char.toLowerCase()
     ) {
       focusEl.focus()
       return
