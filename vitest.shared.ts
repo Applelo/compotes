@@ -1,5 +1,5 @@
+import type { UserConfig } from 'vite'
 import { playwright } from '@vitest/browser-playwright'
-import { UserConfig } from 'vite'
 
 export default {
   test: {
@@ -20,4 +20,3 @@ export default {
     },
   },
 } as UserConfig
-

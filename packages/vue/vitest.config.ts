@@ -10,4 +10,4 @@ export default defineConfig(mergeConfig(configShared, {
       '@src': path.resolve(__dirname, './src'),
     },
   },
-  }))
+}))
