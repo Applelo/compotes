@@ -9,7 +9,7 @@ type ChildEvents = `c.child.${Events}`
 class Child extends Parent<Events> {
   public readonly name = 'child'
 
-  constructor(el: HTMLElement | string, options: ParentOptions<Events> = {}) {
+  constructor(el?: HTMLElement | string, options: ParentOptions<Events> = {}) {
     super()
     this.opts = options
     if (this.isInitializable)
@@ -24,9 +24,11 @@ class Child extends Parent<Events> {
   }
 
   protected getState(): any {
-    return {}
+    return { name: this.name }
   }
 }
+
+let bodyHTML: string = ''
 
 beforeAll(() => {
   const html = `
@@ -35,6 +37,11 @@ beforeAll(() => {
   </div>
 `
   document.body.innerHTML = html
+  bodyHTML = document.body.innerHTML
+
+  return () => {
+    expect(bodyHTML).toBe(document.body.innerHTML)
+  }
 })
 
 it('parent', () => {
@@ -71,4 +78,51 @@ it('parent', () => {
 
   removeInitEvent()
   removeDestroyEvent()
+})
+
+it('parent init with no element returns early', () => {
+  const child = new Child(undefined, { init: false })
+  child.init()
+  expect(child.el).toBeNull()
+})
+
+it('parent init with invalid selector throws', () => {
+  expect(() => new Child('#non-existent-element')).toThrowError(
+    'The element/selector provided cannot be found.',
+  )
+})
+
+it('parent on option with undefined handler', () => {
+  const parentLoc = page.getByTestId('parent')
+  const child = new Child(parentLoc.element() as HTMLElement, {
+    on: {
+      init: undefined,
+      destroy: vi.fn(),
+    },
+  })
+  // Should not throw — undefined handler is skipped via continue
+  expect(child.el).not.toBeNull()
+  child.destroy()
+})
+
+it('parent onStateChange callback', () => {
+  const parentLoc = page.getByTestId('parent')
+  const onStateChange = vi.fn()
+  const child = new Child(parentLoc.element() as HTMLElement, {
+    onStateChange,
+  })
+  // onStateChange is called during init (via emitEvent)
+  expect(onStateChange).toHaveBeenCalled()
+  expect(onStateChange).toHaveBeenCalledWith({ name: 'child' })
+  child.destroy()
+})
+
+it('parent registerEvent guard after destroy', () => {
+  const parentLoc = page.getByTestId('parent')
+  const child = new Child(parentLoc.element() as HTMLElement)
+  child.destroy()
+  // After destroy, eventsController is aborted; triggering events should not throw
+  const el = parentLoc.element() as HTMLElement
+  el.dispatchEvent(new Event('click', { bubbles: true }))
+  expect(child.el).not.toBeNull()
 })

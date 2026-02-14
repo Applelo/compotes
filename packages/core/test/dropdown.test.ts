@@ -1,6 +1,6 @@
 import type { Events } from '@src/components/dropdown'
 import Dropdown from '@src/components/dropdown'
-import { beforeAll, expect, it } from 'vitest'
+import { beforeAll, expect, it, vi } from 'vitest'
 import { page, userEvent } from 'vitest/browser'
 import { registerEventListeners } from './helper'
 import '@css/dropdown.css'
@@ -221,5 +221,93 @@ it('dropdown mutationObserver false disables observer', () => {
   expect(dropdown.isOpen).toBe(false)
   dropdown.open()
   expect(dropdown.isOpen).toBe(true)
+  dropdown.destroy()
+})
+
+it('dropdown onStateChange callback', () => {
+  const dropdownLoc = page.getByTestId('dropdown')
+  const onStateChange = vi.fn()
+
+  const dropdown = new Dropdown(dropdownLoc.element() as HTMLElement, {
+    onStateChange,
+    mutationObserver: false,
+  })
+
+  expect(onStateChange).toHaveBeenCalled()
+
+  const callCountAfterInit = onStateChange.mock.calls.length
+  dropdown.open()
+  expect(onStateChange).toHaveBeenCalledWith(
+    expect.objectContaining({ isOpen: true, type: 'default' }),
+  )
+  expect(onStateChange.mock.calls.length).toBeGreaterThan(callCountAfterInit)
+
+  dropdown.destroy()
+})
+
+it('dropdown hover on menu element', async () => {
+  const dropdownLoc = page.getByTestId('dropdown-menu')
+  const containerLoc = page.getByTestId('container-menu')
+  const triggerLoc = page.getByTestId('trigger-menu')
+
+  const dropdown = new Dropdown(dropdownLoc.element() as HTMLElement, {
+    openOn: 'hover',
+    mutationObserver: false,
+  })
+
+  // Hover on trigger to open
+  await userEvent.hover(triggerLoc)
+  expect(dropdown.isOpen).toBe(true)
+
+  // Pointer enter on menu element should keep it open.
+  const containerEl = containerLoc.element() as HTMLElement
+  containerEl.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true, pointerType: 'mouse' }))
+  expect(dropdown.isOpen).toBe(true)
+
+  // Pointer leave from menu should close it.
+  containerEl.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true, pointerType: 'mouse' }))
+  expect(dropdown.isOpen).toBe(false)
+
+  dropdown.destroy()
+})
+
+it('dropdown PageUp/PageDown keys', () => {
+  const dropdownLoc = page.getByTestId('dropdown-menu')
+
+  const dropdown = new Dropdown(dropdownLoc.element() as HTMLElement, {
+    mutationObserver: false,
+  })
+  expect(dropdown.type).toBe('menu')
+  dropdown.open()
+
+  const el = dropdownLoc.element() as HTMLElement
+  const menuItem1 = page.getByTestId('menu-item-1').element() as HTMLElement
+  menuItem1.focus()
+
+  // PageDown moves to last
+  el.dispatchEvent(new KeyboardEvent('keydown', { key: 'PageDown', bubbles: true }))
+  expect(document.activeElement?.getAttribute('data-testid')).toBe('menu-item-3')
+
+  // PageUp moves to first
+  el.dispatchEvent(new KeyboardEvent('keydown', { key: 'PageUp', bubbles: true }))
+  expect(document.activeElement?.getAttribute('data-testid')).toBe('menu-item-1')
+
+  dropdown.destroy()
+})
+
+it('dropdown pointerdown inside does not close', () => {
+  const dropdownLoc = page.getByTestId('dropdown')
+
+  const dropdown = new Dropdown(dropdownLoc.element() as HTMLElement, {
+    mutationObserver: false,
+  })
+  dropdown.open()
+  expect(dropdown.isOpen).toBe(true)
+
+  // Pointerdown inside the dropdown should NOT close it
+  const el = dropdownLoc.element() as HTMLElement
+  el.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }))
+  expect(dropdown.isOpen).toBe(true)
+
   dropdown.destroy()
 })

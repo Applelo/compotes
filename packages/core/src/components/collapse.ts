@@ -207,8 +207,15 @@ export default class Collapse extends Parent<Events, CollapseOptions> {
   }
 
   public destroy(): void {
+    clearTimeout(this.timeout)
     this.el?.classList.remove(Collapse.CLASS_COLLAPSING)
+    this.el?.classList.remove(Collapse.CLASS_SHOW)
+    this.el?.style.removeProperty('height')
+    if (this.el?.getAttribute('style')?.trim() === '')
+      this.el.removeAttribute('style')
     this.triggers.forEach((trigger) => {
+      if (trigger.tagName !== 'BUTTON')
+        trigger.removeAttribute('role')
       trigger.removeAttribute('aria-expanded')
     })
     super.destroy()

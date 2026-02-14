@@ -1,6 +1,6 @@
 import type { Events } from '@src/components/drag'
 import Drag from '@src/components/drag'
-import { beforeAll, expect, it } from 'vitest'
+import { beforeAll, expect, it, vi } from 'vitest'
 import { page } from 'vitest/browser'
 import { registerEventListeners } from './helper'
 import '@css/drag.css'
@@ -184,6 +184,63 @@ it('drag isDraggable false when content fits', async () => {
   }))
 
   expect(drag.isDragging).toBe(false)
+
+  drag.destroy()
+  document.body.removeChild(wrapper)
+})
+
+it('drag onStateChange callback', async () => {
+  const dragLoc = page.getByTestId('drag')
+  const dragEl = dragLoc.element() as HTMLElement
+  const onStateChange = vi.fn()
+
+  const drag = new Drag(dragEl, { onStateChange })
+  await new Promise(resolve => setTimeout(resolve, 50))
+
+  expect(onStateChange).toHaveBeenCalled()
+
+  const callCountAfterInit = onStateChange.mock.calls.length
+
+  dragEl.dispatchEvent(new MouseEvent('mousedown', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 100,
+    clientY: 100,
+  }))
+
+  // start event triggers state change
+  expect(onStateChange.mock.calls.length).toBeGreaterThan(callCountAfterInit)
+  expect(onStateChange).toHaveBeenCalledWith(
+    expect.objectContaining({ isDragging: true, isDraggable: true }),
+  )
+
+  dragEl.dispatchEvent(new MouseEvent('mouseup', {
+    bubbles: true,
+    cancelable: true,
+  }))
+
+  drag.destroy()
+})
+
+it('drag resize observer notifies state change', async () => {
+  const onStateChange = vi.fn()
+
+  // Create an element that is initially NOT draggable (content fits)
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = `
+    <div class="c-drag" data-testid="drag-resize" style="width: 200px; height: 200px; overflow: auto;">
+      <div style="width: 100px; height: 100px;">
+        <p>Small content</p>
+      </div>
+    </div>
+  `
+  document.body.appendChild(wrapper)
+
+  const dragEl = wrapper.querySelector('[data-testid="drag-resize"]') as HTMLElement
+  const drag = new Drag(dragEl, { onStateChange })
+  await new Promise(resolve => setTimeout(resolve, 200))
+
+  expect(drag.isDraggable).toBe(false)
 
   drag.destroy()
   document.body.removeChild(wrapper)

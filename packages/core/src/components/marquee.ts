@@ -57,14 +57,14 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
   // Constant
   private static readonly CLASS_ROOT = 'c-marquee'
   private static readonly CLASS_KEYBOARD = 'c-marquee--keyboard'
-  private static readonly CLASS_PAUSE = 'c-collapse--pause'
+  private static readonly CLASS_PAUSE = 'c-marquee--pause'
   private static readonly CLASS_BEHAVIOR_ALTERNATE = 'c-marquee--behavior-alternate'
   private static readonly CLASS_BEHAVIOR_SCROLL = 'c-marquee--behavior-scroll'
   private static readonly CLASS_DIRECTION = 'c-marquee--direction'
   private static readonly CLASS_DIRECTION_LEFT = `${Marquee.CLASS_DIRECTION}-left`
   private static readonly CLASS_DIRECTION_RIGHT = `${Marquee.CLASS_DIRECTION}-right`
-  private static readonly CLASS_DIRECTION_TOP = `${Marquee.CLASS_DIRECTION}-top`
-  private static readonly CLASS_DIRECTION_BOTTOM = `${Marquee.CLASS_DIRECTION}-bottom`
+  private static readonly CLASS_DIRECTION_UP = `${Marquee.CLASS_DIRECTION}-up`
+  private static readonly CLASS_DIRECTION_DOWN = `${Marquee.CLASS_DIRECTION}-down`
   private static readonly CLASS_FILL = 'c-marquee--fill'
   private static readonly CLASS_CLONE = 'c-marquee-clone'
   private static readonly CLASS_CONTAINER = 'c-marquee-container'
@@ -327,10 +327,10 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
       Marquee.CLASS_KEYBOARD,
       Marquee.CLASS_BEHAVIOR_ALTERNATE,
       Marquee.CLASS_BEHAVIOR_SCROLL,
-      Marquee.CLASS_DIRECTION_BOTTOM,
+      Marquee.CLASS_DIRECTION_DOWN,
       Marquee.CLASS_DIRECTION_LEFT,
       Marquee.CLASS_DIRECTION_RIGHT,
-      Marquee.CLASS_DIRECTION_TOP,
+      Marquee.CLASS_DIRECTION_UP,
       Marquee.CLASS_FILL,
     )
 

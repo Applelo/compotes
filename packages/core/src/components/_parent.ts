@@ -66,6 +66,10 @@ export default abstract class Parent<
 
     this.opts = options ?? this.opts ?? ({} as O)
 
+    this.stateChangeCallback = this.opts.onStateChange ?? null
+
+    this.eventsController = new AbortController()
+
     if (this.opts.on) {
       for (const key in this.opts.on) {
         if (Object.prototype.hasOwnProperty.call(this.opts.on, key)) {
@@ -75,14 +79,11 @@ export default abstract class Parent<
           this.el?.addEventListener(
             `c.${this.name}.${key}`,
             e => element(e as CustomEvent<Parent<E>>),
+            { signal: this.eventsController.signal },
           )
         }
       }
     }
-
-    this.stateChangeCallback = this.opts.onStateChange ?? null
-
-    this.eventsController = new AbortController()
     this.emitEvent(Events.Init)
     if (this.initElements)
       this.initElements()
@@ -149,9 +150,9 @@ export default abstract class Parent<
    * Destroy the component
    */
   public destroy(): void {
-    this.eventsController?.abort()
     this.stateChangeCallback = null
     this.emitEvent(Events.Destroy)
+    this.eventsController?.abort()
   }
 
   /**

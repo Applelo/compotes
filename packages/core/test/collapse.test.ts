@@ -1,6 +1,6 @@
 import type { Events } from '@src/components/collapse'
 import Collapse from '@src/components/collapse'
-import { beforeAll, expect, it } from 'vitest'
+import { beforeAll, expect, it, vi } from 'vitest'
 import { page, userEvent } from 'vitest/browser'
 import { registerEventListeners } from './helper'
 import '@css/collapse.css'
@@ -15,6 +15,9 @@ beforeAll(() => {
     <button class="c-collapse-trigger" aria-controls="accordion-1" data-testid="trigger">
       Accordion 2
     </button>
+    <a class="c-collapse-trigger" aria-controls="accordion-1" data-testid="trigger-link">
+      Accordion Link Trigger
+    </a>
     <div
     class="c-collapse"
     id="accordion-1"
@@ -24,6 +27,15 @@ beforeAll(() => {
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia facere possimus impedit facilis culpa illo earum deserunt consequuntur minus. Ad et qui labore reprehenderit magnam exercitationem placeat magni nesciunt suscipit.
       </p>
     </div>
+    <div
+    class="c-collapse"
+    id="accordion-notransition"
+    data-testid="collapse-notransition">
+      <p>No transition content</p>
+    </div>
+    <button class="c-collapse-trigger" aria-controls="accordion-notransition" data-testid="trigger-notransition">
+      No Transition Trigger
+    </button>
   </div>
 `
   document.body.innerHTML = html
@@ -85,4 +97,71 @@ it('collapse', async () => {
   removeHiddenEvent()
 
   collapse?.destroy()
+})
+
+it('collapse non-button trigger gets role button', () => {
+  const collapseLoc = page.getByTestId('collapse')
+  const triggerLinkLoc = page.getByTestId('trigger-link')
+
+  const collapse = new Collapse(collapseLoc.element() as HTMLElement)
+
+  // Non-button trigger should get role="button"
+  expect(triggerLinkLoc.element()).toHaveAttribute('role', 'button')
+
+  collapse.destroy()
+
+  // After destroy, role should be cleaned up
+  expect(triggerLinkLoc.element()).not.toHaveAttribute('role')
+})
+
+it('collapse show/hide without CSS transition', () => {
+  const collapseLoc = page.getByTestId('collapse-notransition')
+
+  const { callback: showEvent, removeEventListener: removeShowEvent } = registerEventListeners<CollapseEvents>('c.collapse.show', collapseLoc)
+  const { callback: shownEvent, removeEventListener: removeShownEvent } = registerEventListeners<CollapseEvents>('c.collapse.shown', collapseLoc)
+  const { callback: hideEvent, removeEventListener: removeHideEvent } = registerEventListeners<CollapseEvents>('c.collapse.hide', collapseLoc)
+  const { callback: hiddenEvent, removeEventListener: removeHiddenEvent } = registerEventListeners<CollapseEvents>('c.collapse.hidden', collapseLoc)
+
+  const collapse = new Collapse(collapseLoc.element() as HTMLElement)
+
+  // Show without transition — show and shown fire synchronously
+  collapse.show()
+  expect(showEvent).toHaveBeenCalledTimes(1)
+  expect(shownEvent).toHaveBeenCalledTimes(1)
+  expect(collapse.isExpanded).toBe(true)
+  expect(collapse.isCollapsing).toBe(false)
+
+  // Hide without transition — hide and hidden fire synchronously
+  collapse.hide()
+  expect(hideEvent).toHaveBeenCalledTimes(1)
+  expect(hiddenEvent).toHaveBeenCalledTimes(1)
+  expect(collapse.isExpanded).toBe(false)
+  expect(collapse.isCollapsing).toBe(false)
+
+  collapse.destroy()
+  removeShowEvent()
+  removeShownEvent()
+  removeHideEvent()
+  removeHiddenEvent()
+})
+
+it('collapse onStateChange callback', () => {
+  const collapseLoc = page.getByTestId('collapse-notransition')
+  const onStateChange = vi.fn()
+
+  const collapse = new Collapse(collapseLoc.element() as HTMLElement, {
+    onStateChange,
+  })
+
+  // Called during init
+  expect(onStateChange).toHaveBeenCalled()
+
+  const callCountAfterInit = onStateChange.mock.calls.length
+  collapse.show()
+  expect(onStateChange).toHaveBeenCalledWith(
+    expect.objectContaining({ isExpanded: true, isCollapsing: false }),
+  )
+  expect(onStateChange.mock.calls.length).toBeGreaterThan(callCountAfterInit)
+
+  collapse.destroy()
 })
