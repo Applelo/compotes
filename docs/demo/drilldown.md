@@ -2,14 +2,12 @@
 
 <script setup>
   import './../../packages/core/dist/css/drilldown.css'
-  import { Drilldown } from './../../packages/core'
-  import { onMounted } from 'vue'
-
-  onMounted(() => {
-    const drilldown = new Drilldown('.c-drilldown', {
-      dynamicHeight: true,
-    })
-  })
+  import {
+    CDrilldown,
+    CDrilldownMenu,
+    CDrilldownNext,
+    CDrilldownBack
+  } from './../../packages/vue'
 </script>
 <style>
   .c-drilldown .c-drilldown-menu {
@@ -26,27 +24,27 @@
     color: var(--vp-c-brand-light);
   }
 </style>
-<nav style="margin-top: 2rem;" class="c-drilldown">
-  <ul class="c-drilldown-menu">
+<CDrilldown style="margin-top: 2rem;" :options="{ dynamicHeight: true }">
+  <CDrilldownMenu>
     <li>
-      <button class="c-drilldown-next">
+      <CDrilldownNext>
         Go to section 1
-      </button>
-      <ul class="c-drilldown-menu" id="section-1">
+      </CDrilldownNext>
+      <CDrilldownMenu id="section-1">
         <li>
-          <button class="c-drilldown-back">
+          <CDrilldownBack>
             Go Back
-          </button>
+          </CDrilldownBack>
         </li>
         <li>
-          <button class="c-drilldown-next">
+          <CDrilldownNext>
             Go to section 1 1
-          </button>
-          <ul class="c-drilldown-menu" id="section-1-1">
+          </CDrilldownNext>
+          <CDrilldownMenu id="section-1-1">
             <li>
-              <button class="c-drilldown-back">
+              <CDrilldownBack>
                 Go Back
-              </button>
+              </CDrilldownBack>
             </li>
             <li>
               Item Section 1 1
@@ -54,25 +52,25 @@
             <li>
               Item Section 1 1
             </li>
-          </ul>
+          </CDrilldownMenu>
         </li>
         <li>
           Item Section 1
         </li>
-      </ul>
+      </CDrilldownMenu>
     </li>
     <li>
       Hello
     </li>
     <li>
-      <button class="c-drilldown-next">
+      <CDrilldownNext>
         Go to section 2
-      </button>
-      <ul class="c-drilldown-menu" id="section-2">
+      </CDrilldownNext>
+      <CDrilldownMenu id="section-2">
         <li>
-          <button class="c-drilldown-back">
+          <CDrilldownBack>
             Go Back
-          </button>
+          </CDrilldownBack>
         </li>
         <li>
           Item Section 2
@@ -80,17 +78,17 @@
         <li>
           Item Section 2
         </li>
-      </ul>
+      </CDrilldownMenu>
     </li>
     <li>
-      <button class="c-drilldown-next">
+      <CDrilldownNext>
         Go to section 3
-      </button>
-      <ul class="c-drilldown-menu" id="section-3">
+      </CDrilldownNext>
+      <CDrilldownMenu id="section-3">
         <li>
-          <button class="c-drilldown-back">
+          <CDrilldownBack>
             Go Back
-          </button>
+          </CDrilldownBack>
         </li>
         <li>
           Item Section 3
@@ -98,10 +96,10 @@
         <li>
           Item Section 3
         </li>
-      </ul>
+      </CDrilldownMenu>
     </li>
     <li>
       Item
     </li>
-  </ul>
-</nav>
+  </CDrilldownMenu>
+</CDrilldown>
