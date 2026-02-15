@@ -1,6 +1,6 @@
 # Drag
 
-The drag component allows you to create a draggable zone you can control with your mouse.
+The drag component allows you to create a draggable zone you can scroll by clicking and dragging.
 
 ```scss
 @import 'compotes/css/drag';
@@ -12,7 +12,7 @@ import { Drag } from 'compotes'
 const drag = new Drag('.c-drag')
 ```
 
-You need to have elements overflowing inside the component because it uses the CSS property `overflow: auto;`.
+The element must have overflowing content, as the component relies on `overflow: auto` to enable scrolling.
 
 ```html
 
@@ -20,6 +20,10 @@ You need to have elements overflowing inside the component because it uses the C
   <!-- Your overflowing content -->
 </div>
 ```
+
+## Accessibility
+
+This component does not add specific accessibility features. It provides a mouse-driven scrolling experience for overflowing content.
 
 ## Options
 
@@ -73,6 +77,11 @@ console.log(drag.isDraggable)// [!code focus]
 You can listen to emitted events directly on the drag element like this:
 
 ```js
+import { Drag } from 'compotes'
+
+const dragEl = document.querySelector('.c-drag')
+const drag = new Drag(dragEl)
+
 dragEl.addEventListener('c.drag.init', (e) => { // [!code focus:3]
   console.log(e.detail)// drag object
 })

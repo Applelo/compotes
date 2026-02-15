@@ -1,8 +1,8 @@
 # Vue Composables
 
-The [composables](https://vuejs.org/guide/reusability/composables.html) are the easiest way to integrate Compote into your Vue application using the Composition API.
+The [composables](https://vuejs.org/guide/reusability/composables.html) are a flexible way to integrate Compote into your Vue application using the Composition API.
 
-First, [use a ref to get your HTMLElement ](https://vuejs.org/guide/essentials/template-refs.html) and pass it to your composable as a first argument.
+First, [use a ref to get your HTMLElement](https://vuejs.org/guide/essentials/template-refs.html) and pass it to your composable as a first argument.
 
 ```vue
 <script setup lang="ts">
@@ -28,7 +28,7 @@ const marquee = useMarquee(marqueeEl, { fill: true })
 </script>
 ```
 
-For the template, you need to respect the structure of the component you reference.
+In the template, follow the HTML structure required by the underlying component.
 
 ```vue
 <script setup lang="ts">

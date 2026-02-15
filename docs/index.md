@@ -4,23 +4,23 @@ layout: home
 
 hero:
   name: Compotes
-  tagline: Components library focused on accessibility/customization
+  tagline: Component library focused on accessibility/customization
   actions:
     - theme: brand
       text: Get started
       link: /guide/
     - theme: alt
-      text:  Demo
-      link: /demo/collapse
+      text: Demo
+      link: /demo/
 
 features:
   - title: Minimal CSS
     icon: 👨‍🎨
-    details: Only the logic to your component
+    details: Only the logic, you handle the styling
   - title: Accessibility
     icon: 🦾
-    details: Respect W3C WAI recommendation
+    details: Respects W3C WAI recommendations
   - title: Fully typed
     icon: 📠
-    details: Typescript for better world
+    details: TypeScript for a better DX
 ---

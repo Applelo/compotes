@@ -18,7 +18,7 @@
 <CDropdown id="dropdown" :options="{ openOn: 'hover', equalizeWidth: true }" style="margin-top: 2rem;">
   <CDropdownTrigger>Basic Dropdown</CDropdownTrigger>
   <CDropdownMenu>
-    lorem ipseum int
+    Lorem ipsum dolor sit amet
   </CDropdownMenu>
 </CDropdown>
 

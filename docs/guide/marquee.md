@@ -1,6 +1,6 @@
 # Marquee
 
-The marquee component allows you to create an animated text mimicking the old [marquee](https://developer.mozilla.org/fr/docs/Web/HTML/Element/marquee) element with modern support.
+The marquee component allows you to create animated content mimicking the old [marquee](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee) element with modern support.
 
 ```scss
 @import 'compotes/css/marquee';
@@ -23,14 +23,13 @@ The structure consists of a list of elements. All animations are CSS based.
 </div>
 ```
 
-You are not limited to text. You can also add any kind of valid HTML like image.
+You are not limited to text. You can also add any kind of valid HTML like images.
 
 ## Accessibility
 
-- Make the marquee tabbable and stop it if it is in focus via the keyboard
+- The marquee is tabbable and pauses when focused via keyboard.
 - If the user has configured `prefers-reduced-motion` in their browser, the marquee animation will not be played.
 - If you are using the `fill` option, all cloned elements will be set to `aria-hidden` to hide the unnecessary content to the screen reader and not be tabbable thanks to a `tabindex="-1"`.
-- If an element is focused with the keyboard, the marquee animation will stop.
 
 ## Options
 
@@ -96,6 +95,11 @@ console.log(marquee.isPaused)// [!code focus]
 You can listen to emitted events directly on the marquee element like this:
 
 ```js
+import { Marquee } from 'compotes'
+
+const marqueeEl = document.querySelector('.c-marquee')
+const marquee = new Marquee(marqueeEl)
+
 marqueeEl.addEventListener('c.marquee.init', (e) => { // [!code focus:3]
   console.log(e.detail)// marquee object
 })

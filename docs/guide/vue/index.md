@@ -1,6 +1,6 @@
 # Vue
 
-`@compotes/vue` provides [composables](/guide/vue/composables) and components wrappers for the `compotes` library.
+`@compotes/vue` provides [composables](/guide/vue/composables) and component wrappers for the `compotes` library.
 
 ::: warning
 This module is still in active development. Breaking changes can happen between versions.

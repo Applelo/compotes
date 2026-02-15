@@ -1,6 +1,6 @@
 # Dropdown
 
-The dropdown component allows you to create a popup menu with links or whatever you want, open by a button.
+The dropdown component allows you to create a popup menu opened by a button.
 
 ```scss
 @import 'compotes/css/dropdown';
@@ -12,9 +12,9 @@ import { Dropdown } from 'compotes'
 const dropdown = new Dropdown('.c-dropdown')
 ```
 
-You can use any kind of element to trigger the dropdown, just add the `c-dropdown-trigger` class.
+You can use any element as the dropdown trigger, just add the `c-dropdown-trigger` class.
 
-It is recommended to put an `id` to the dropdown container. On your trigger element, add an `aria-controls` attribute refering to the `id` of the dropdown.
+It is recommended to put an `id` to the dropdown container. On your trigger element, add an `aria-controls` attribute referring to the `id` of the dropdown.
 
 ```html
 <!-- Default dropdown -->
@@ -26,7 +26,7 @@ It is recommended to put an `id` to the dropdown container. On your trigger elem
 </div>
 ```
 
-If you are using a `ul` as a dropdown, it will use, by default, the `menu` mode adding accessibility features. You can change this by enforce the type of dropdown you want.
+If you are using a `ul` as a dropdown, it will use, by default, the `menu` mode adding accessibility features. You can change this by enforcing the type of dropdown you want.
 
 ```html
 <!-- Menu dropdown -->
@@ -66,7 +66,7 @@ const dropdown = new Dropdown('.c-dropdown', {
 - `init` (boolean): Init the component on creation
 - `enforceType` ('default' or 'menu'): The type of the dropdown
 - `openOn` ('click' or 'hover'): Open the dropdown on click/hover from the trigger element
-- `equalizeWidth` (boolean): Equalize width on the trigger and the container. It will refresh on mutation observer (if enable)
+- `equalizeWidth` (boolean): Equalize width on the trigger and the container. It will refresh on mutation observer (if enabled)
 - `mutationObserver` (boolean): Use MutationObserver to update component on changes
 - `on` (object): events to listen to
 
@@ -80,7 +80,7 @@ import { Dropdown } from 'compotes'
 const dropdown = new Dropdown('.c-dropdown', {
   init: false
 })
-dropdown.init()// [!code focus]
+dropdown.init() // [!code focus]
 ```
 
 - `init()`: Init the component

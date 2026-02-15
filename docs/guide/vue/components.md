@@ -101,7 +101,7 @@ The component applies the `c-collapse-trigger` CSS class.
 
 ## CDrag
 
-A generic draggable component.
+A click-and-drag scrollable component.
 
 ### Usage
 
@@ -440,7 +440,7 @@ function openCollapse() {
   <button @click="openCollapse">
     Open from outside
   </button>
-  <CCollapse ref="myCollapse">
+  <CCollapse id="my-collapse" ref="myCollapse">
     <p>Content here.</p>
   </CCollapse>
 </template>

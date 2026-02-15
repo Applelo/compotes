@@ -4,7 +4,7 @@ next: false
 
 # Drilldown
 
-This component allows you to build a compact menu, which is useful for mobile interfaces.
+This component allows you to build a compact hierarchical menu, ideal for mobile navigation.
 
 > This component is inspired by the [Foundation](https://get.foundation/sites/docs/drilldown-menu.html) component.
 
@@ -78,20 +78,20 @@ This component injects many ARIA attributes to ensure a good accessibility cover
 - Disable list item role for `li` with `none` role
 - Add role `menuitem` to back and next button
 - Add `aria-expanded`, `aria-controls` to next button
-- Add a basic `id` if is not set to the menu
+- Add a basic `id` if one is not set to the menu
 
 ::: info
-You should add an `id` attribute to every menu inside your main menu (like the example above). By default, the plugin will generate an `id` attribute if it doesn't find one but to prevent `id` naming issue, I recommend to put one.
+You should add an `id` attribute to every menu inside your main menu (like the example above). By default, the plugin will generate an `id` attribute if it doesn't find one, but to prevent `id` naming issues, it is recommended to add one.
 :::
 
-The drilldown menu comes with keyboard shortcuts if your focus is inside the component :
+The drilldown menu comes with keyboard shortcuts if your focus is inside the component:
 - ArrowUp: Focus to previous element
 - ArrowDown: Focus to the next element
 - ArrowLeft/Escape: Go back
 - ArrowRight: Go to the next menu if your focus is on the next button
-- Home/PageUp: Focus first of the current menu
+- Home/PageUp: Focus the first element of the current menu
 - End/PageDown: Focus last element of the current menu
-- Focus the first element matching the character pressed
+- Character keys: Focus the first element matching the character pressed
 
 ## Options
 
@@ -115,7 +115,7 @@ const drilldown = new Drilldown('#my-drilldown', {
 
 ## Methods
 
-The drilldown component provides several methods allowing you to control the component programatically.
+The drilldown component provides several methods allowing you to control the component programmatically.
 
 ```js
 import { Drilldown } from 'compotes'
@@ -142,12 +142,19 @@ console.log(drilldown.options)// [!code focus]
 ```
 
 - `options` (options object): Get options used to init the component
+- `level` (number): The current navigation depth level
+- `currentMenuId` (string | null): The ID of the currently active menu
 
 ## Events
 
 You can listen to emitted events directly on the drilldown element like this:
 
 ```js
+import { Drilldown } from 'compotes'
+
+const drilldownElement = document.querySelector('#my-drilldown')
+const drilldown = new Drilldown(drilldownElement)
+
 drilldownElement.addEventListener('c.drilldown.init', (e) => {
   console.log(e.detail)// drilldown object
 })
