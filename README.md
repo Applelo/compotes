@@ -13,6 +13,9 @@ To learn more, check the *[documentation](https://compotes.dev)*.
 - 👨‍🎨 Minimal CSS to do your customization
 - 🦾 Accessibility in mind
 - 📠 Fully typed
+- 🧩 Framework agnostic
+- 📦 Simple components ready to use
+- 🪶 Lightweight
 
 ## 🍏 Compotes
 

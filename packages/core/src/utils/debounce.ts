@@ -22,7 +22,7 @@ export function debounceMutationObserver(callback: (records: MutationRecord[]) =
   let firstTime = true
   return new MutationObserver((records) => {
     if (firstTime) {
-       callback(records)
+      callback(records)
       firstTime = false
       return
     }
