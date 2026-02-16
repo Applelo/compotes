@@ -14,7 +14,7 @@ beforeAll(() => {
   }
 })
 
-it('debounceResizeObserver fires callback after delay', async () => {
+it('debounceResizeObserver fires callback immediately on first trigger', async () => {
   const callback = vi.fn()
   const observer = debounceResizeObserver(callback, 50)
   const target = page.getByTestId('target').element() as HTMLElement
@@ -52,7 +52,7 @@ it('debounceResizeObserver debounces rapid triggers', async () => {
   observer.disconnect()
 })
 
-it('debounceMutationObserver fires callback after delay', async () => {
+it('debounceMutationObserver fires callback immediately on first trigger', async () => {
   const callback = vi.fn()
   const observer = debounceMutationObserver(callback, 50)
   const target = page.getByTestId('target').element() as HTMLElement
@@ -95,7 +95,7 @@ it('debounceMutationObserver debounces rapid mutations', async () => {
   observer.disconnect()
 })
 
-it('debounceResizeObserver accepts custom delay', async () => {
+it('debounceResizeObserver fires first trigger immediately then debounces with custom delay', async () => {
   const callback = vi.fn()
   const observer = debounceResizeObserver(callback, 200)
   const target = page.getByTestId('target').element() as HTMLElement
@@ -103,11 +103,19 @@ it('debounceResizeObserver accepts custom delay', async () => {
   observer.observe(target)
   target.style.width = '250px'
 
-  // After 100ms, should not have fired yet
+  // First trigger fires immediately
+  await new Promise(resolve => setTimeout(resolve, 200))
+  expect(callback).toHaveBeenCalledTimes(1)
+
+  // Second trigger should be debounced
+  callback.mockClear()
+  target.style.width = '300px'
+
+  // After 100ms, debounced callback should not have fired yet
   await new Promise(resolve => setTimeout(resolve, 100))
   expect(callback).not.toHaveBeenCalled()
 
-  // After total 350ms, should have fired
+  // After total 350ms, debounced callback should have fired
   await new Promise(resolve => setTimeout(resolve, 250))
   expect(callback).toHaveBeenCalled()
 
