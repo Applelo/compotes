@@ -165,3 +165,47 @@ it('collapse onStateChange callback', () => {
 
   collapse.destroy()
 })
+
+it('collapse show() while collapsing is blocked', async () => {
+  const collapseLoc = page.getByTestId('collapse')
+  const collapse = new Collapse(collapseLoc.element() as HTMLElement)
+
+  // Start show (with transition)
+  collapse.show()
+  expect(collapse.isCollapsing).toBe(true)
+
+  // Calling show() again while collapsing should be a no-op
+  collapse.show()
+  // Still collapsing from the first call
+  expect(collapse.isCollapsing).toBe(true)
+
+  await new Promise<void>(resolve => setTimeout(resolve, 300))
+  expect(collapse.isExpanded).toBe(true)
+  expect(collapse.isCollapsing).toBe(false)
+
+  collapse.destroy()
+})
+
+it('collapse hide() while collapsing is blocked', async () => {
+  const collapseLoc = page.getByTestId('collapse')
+  const collapse = new Collapse(collapseLoc.element() as HTMLElement)
+
+  // First expand it
+  collapse.show()
+  await new Promise<void>(resolve => setTimeout(resolve, 300))
+  expect(collapse.isExpanded).toBe(true)
+
+  // Start hide (with transition)
+  collapse.hide()
+  expect(collapse.isCollapsing).toBe(true)
+
+  // Calling hide() again while collapsing should be a no-op
+  collapse.hide()
+  expect(collapse.isCollapsing).toBe(true)
+
+  await new Promise<void>(resolve => setTimeout(resolve, 300))
+  expect(collapse.isExpanded).toBe(false)
+  expect(collapse.isCollapsing).toBe(false)
+
+  collapse.destroy()
+})

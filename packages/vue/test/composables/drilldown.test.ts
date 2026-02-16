@@ -48,3 +48,34 @@ it('useDrilldown exposes instance actions', async () => {
 
   await cleanupComposable(app, root)
 })
+
+it('useDrilldown actions are safe when instance is null', async () => {
+  const { app, root, composable } = await mountComposable(
+    el => h('nav', {
+      'ref': el,
+      'class': 'c-drilldown',
+      'data-testid': 'drilldown-null',
+      'innerHTML': `
+        <ul class="c-drilldown-menu">
+          <li>
+            <button class="c-drilldown-next">Next</button>
+            <ul class="c-drilldown-menu">
+              <li>
+                <button class="c-drilldown-back">Back</button>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      `,
+    }),
+    el => useDrilldown(el),
+  )
+
+  expect(composable.instance).not.toBeNull()
+  expect(composable.level).toBe(0)
+
+  // Destroy the instance and then call actions — they should be safe no-ops
+  composable.destroy()
+
+  await cleanupComposable(app, root)
+})

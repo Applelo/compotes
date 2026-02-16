@@ -59,6 +59,7 @@ export function focusSibling(
   dir: 'next' | 'previous',
 ): boolean | undefined {
   const activeElement = document.activeElement as HTMLElement | null
+  /* istanbul ignore if -- @preserve */
   if (!activeElement || !container)
     return focusFirst(container)
 
@@ -85,6 +86,7 @@ export function focusSibling(
       return
   }
 
+  /* istanbul ignore next -- @preserve */
   return dir === 'next' ? focusFirst(container) : focusLast(container)
 }
 

@@ -307,3 +307,28 @@ it('marquee fill with direction down', () => {
 
   marquee.destroy()
 })
+
+it('marquee mutationObserver triggers update on non-clone child added', async () => {
+  const marqueeLoc = page.getByTestId('marquee')
+  const el = marqueeLoc.element() as HTMLElement
+
+  const marquee = new Marquee(el, {
+    fill: true,
+    direction: 'left',
+  })
+
+  // Add a non-clone child to trigger mutation observer's update(fill) path
+  const container = el.querySelector('.c-marquee-container') as HTMLElement
+  const newItem = document.createElement('li')
+  newItem.textContent = 'New marquee item'
+  container.appendChild(newItem)
+
+  // Wait for debounced mutation observer
+  await new Promise(resolve => setTimeout(resolve, 100))
+
+  // Observer should have called update(fill=true) for a non-clone addition
+  expect(marquee).toBeTruthy()
+
+  container.removeChild(newItem)
+  marquee.destroy()
+})

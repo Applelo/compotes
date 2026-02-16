@@ -311,3 +311,68 @@ it('dropdown pointerdown inside does not close', () => {
 
   dropdown.destroy()
 })
+
+it('dropdown init without trigger throws error', () => {
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = `<div class="c-dropdown"><div class="c-dropdown-container">Content</div></div>`
+  document.body.appendChild(wrapper)
+
+  const el = wrapper.querySelector('.c-dropdown') as HTMLElement
+  expect(() => new Dropdown(el)).toThrow('trigger element')
+
+  wrapper.remove()
+})
+
+it('dropdown init without container throws error', () => {
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = `<div class="c-dropdown"><button class="c-dropdown-trigger">Trigger</button></div>`
+  document.body.appendChild(wrapper)
+
+  const el = wrapper.querySelector('.c-dropdown') as HTMLElement
+  expect(() => new Dropdown(el)).toThrow('container element')
+
+  wrapper.remove()
+})
+
+it('dropdown non-button trigger gets role button', () => {
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = `
+    <div class="c-dropdown">
+      <a class="c-dropdown-trigger" href="#">Link Trigger</a>
+      <div class="c-dropdown-container">Content</div>
+    </div>
+  `
+  document.body.appendChild(wrapper)
+
+  const el = wrapper.querySelector('.c-dropdown') as HTMLElement
+  const trigger = wrapper.querySelector('.c-dropdown-trigger') as HTMLElement
+  const dropdown = new Dropdown(el, { mutationObserver: false })
+
+  expect(trigger.getAttribute('role')).toBe('button')
+
+  dropdown.destroy()
+  expect(trigger.getAttribute('role')).toBeNull()
+  wrapper.remove()
+})
+
+it('dropdown mutationObserver triggers update on DOM change', async () => {
+  const dropdownLoc = page.getByTestId('dropdown')
+  const el = dropdownLoc.element() as HTMLElement
+
+  const dropdown = new Dropdown(el)
+
+  // Mutate DOM content to trigger the MutationObserver
+  const container = el.querySelector('.c-dropdown-container') as HTMLElement
+  const newChild = document.createElement('span')
+  newChild.textContent = 'New item'
+  container.appendChild(newChild)
+
+  // Wait for debounced mutation observer
+  await new Promise(resolve => setTimeout(resolve, 100))
+
+  // If we get here without error, the update was triggered successfully
+  expect(dropdown.isOpen).toBe(false)
+
+  container.removeChild(newChild)
+  dropdown.destroy()
+})

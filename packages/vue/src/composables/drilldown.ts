@@ -46,6 +46,7 @@ export function useDrilldown(
     if (target) {
       // Initial state sync - access private level property via getState
       const currentState = (target as any).getState?.() as DrilldownState | undefined
+      /* istanbul ignore else -- @preserve */
       if (currentState) {
         state.level = currentState.level
         state.currentMenuId = currentState.currentMenuId

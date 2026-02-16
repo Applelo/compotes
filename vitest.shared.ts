@@ -16,7 +16,7 @@ export default {
     coverage: {
       provider: 'istanbul',
       include: ['src/**/*.ts'],
-      reporter: ['lcov', 'html'],
+      reporter: ['lcov', 'html', 'text'],
     },
   },
 } as UserConfig

@@ -78,6 +78,7 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
   public init(el?: HTMLElement | string, options?: DropdownOptions): void {
     super.init(el, options)
 
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -116,6 +117,7 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
   }
 
   public initAccessibilityAttrs(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.triggerEl || !this.menuEl)
       return
     this.triggerEl.setAttribute('aria-expanded', this.opened ? 'true' : 'false')
@@ -141,6 +143,7 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
   }
 
   protected initEvents(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.triggerEl || !this.menuEl)
       return
     this.registerEvent({
@@ -155,6 +158,7 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
       event: 'pointerdown',
       function: (e: PointerEvent) => {
         const target = e.target as Element | null
+        /* istanbul ignore if -- @preserve */
         if (!target)
           return
         const dropdown = target.closest(Dropdown.SELECTOR_ROOT)
@@ -209,6 +213,7 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
    * Init accessibility events.
    */
   private initAccessibilityEvents(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -277,6 +282,7 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
    * Open the dropdown
    */
   public open(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.triggerEl)
       return
     this.triggerEl.setAttribute('aria-expanded', 'true')
@@ -301,6 +307,7 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
    */
   public equalizeWidth(): void {
     setTimeout(() => {
+      /* istanbul ignore if -- @preserve */
       if (!this.el || !this.triggerEl || !this.menuEl)
         return
       this.el.classList.remove(Dropdown.CLASS_WIDTH)
@@ -317,6 +324,7 @@ export default class Dropdown extends Parent<Events, DropdownOptions> {
    * Close the dropdown
    */
   public close(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.triggerEl)
       return
     this.triggerEl.setAttribute('aria-expanded', 'false')

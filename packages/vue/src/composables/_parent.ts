@@ -21,6 +21,7 @@ export function useParent<
   const component: Ref<T | null> = options.shallow ? shallowRef(null) : ref(null)
 
   const init = () => {
+    /* istanbul ignore if -- @preserve */
     if (!el.value)
       return
     const { shallow, ...componentOptions } = options

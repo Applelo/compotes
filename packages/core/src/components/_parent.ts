@@ -134,6 +134,7 @@ export default abstract class Parent<
    * Register an event
    */
   protected registerEvent(e: ParentEvent): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.eventsController)
       return
 

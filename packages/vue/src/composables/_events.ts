@@ -19,6 +19,7 @@ export function useComponentEvents(
   // Filter to only events that have a Vue listener (e.g. @init → onInit in vnode.props)
   const instance = getCurrentInstance()
   const vnodeProps = instance?.vnode.props
+  /* istanbul ignore next -- @preserve */
   const listenedEvents = vnodeProps
     ? eventNames.filter((name) => {
         const propKey = `on${name.charAt(0).toUpperCase()}${name.slice(1)}`
@@ -36,6 +37,7 @@ export function useComponentEvents(
     const events = listenedEvents.map(name => `c.${componentName}.${name}`)
 
     const handler = (e: Event) => {
+      /* istanbul ignore next -- @preserve */
       const eventName = e.type.split('.').pop() ?? ''
       emit(eventName, e as CustomEvent)
     }

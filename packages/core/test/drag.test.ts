@@ -225,12 +225,12 @@ it('drag onStateChange callback', async () => {
 it('drag resize observer notifies state change', async () => {
   const onStateChange = vi.fn()
 
-  // Create an element that is initially NOT draggable (content fits)
+  // Create an element with overflowing content (draggable)
   const wrapper = document.createElement('div')
   wrapper.innerHTML = `
     <div class="c-drag" data-testid="drag-resize" style="width: 200px; height: 200px; overflow: auto;">
-      <div style="width: 100px; height: 100px;">
-        <p>Small content</p>
+      <div style="width: 400px; height: 400px;">
+        <p>Large content</p>
       </div>
     </div>
   `
@@ -240,7 +240,20 @@ it('drag resize observer notifies state change', async () => {
   const drag = new Drag(dragEl, { onStateChange })
   await new Promise(resolve => setTimeout(resolve, 200))
 
+  expect(drag.isDraggable).toBe(true)
+
+  // Shrink the container to make it not overflow (change from draggable to not draggable)
+  dragEl.style.width = '500px'
+  dragEl.style.height = '500px'
+
+  // Wait for ResizeObserver to fire on the observed element resize
+  await new Promise(resolve => setTimeout(resolve, 200))
+
   expect(drag.isDraggable).toBe(false)
+  // onStateChange should have been called when isDraggable changed
+  expect(onStateChange).toHaveBeenCalledWith(
+    expect.objectContaining({ isDraggable: false }),
+  )
 
   drag.destroy()
   document.body.removeChild(wrapper)

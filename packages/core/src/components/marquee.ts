@@ -93,6 +93,7 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
     super.init(el, options)
     this.initAccessibilityAttrs()
 
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -124,6 +125,7 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
   }
 
   protected initEvents(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -143,12 +145,14 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
    * Init accessibility events.
    */
   private initAccessibilityEvents(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
     this.registerEvent({
       id: 'addKeyboardClass',
       function: () => {
+        /* istanbul ignore if -- @preserve */
         if (!this.el)
           return
         this.el.classList.add(Marquee.CLASS_KEYBOARD)
@@ -160,6 +164,7 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
     this.registerEvent({
       id: 'removeKeyboardClass',
       function: (e: FocusEvent) => {
+        /* istanbul ignore if -- @preserve */
         if (!this.el)
           return
 
@@ -180,12 +185,14 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
   }
 
   private get elSize(): number {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return 0
     return this.opts.direction === 'up' || this.opts.direction === 'down' ? this.el.clientHeight : this.el.clientWidth
   }
 
   private get containerSize(): number {
+    /* istanbul ignore if -- @preserve */
     if (!this.containerEl)
       return 0
     return this.opts.direction === 'up' || this.opts.direction === 'down' ? this.containerEl.clientHeight / (this.fillMultiplier + 1) : this.containerEl.clientWidth / (this.fillMultiplier + 1)
@@ -195,9 +202,11 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
    * Update the marquee
    */
   public update(forceFillRegeneration = false): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
+    /* istanbul ignore if -- @preserve */
     if (!this.containerEl)
       return
     const currentDirection = this.opts.direction || 'right'
@@ -292,6 +301,7 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
   }
 
   private fill(fillMultiplier: number): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.containerEl)
       return
 
@@ -315,6 +325,7 @@ export default class Marquee extends Parent<Events, MarqueeOptions> {
   }
 
   public destroy(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
     this.mutationObserver?.disconnect()

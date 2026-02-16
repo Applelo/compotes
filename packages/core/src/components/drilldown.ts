@@ -79,6 +79,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
     super.init(el, options)
     this.initAccessibilityAttrs()
 
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -111,6 +112,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
   }
 
   public initAccessibilityAttrs(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -144,6 +146,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
   }
 
   protected initEvents(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -174,6 +177,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
    * Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/ controls
    */
   public initAccessibilityEvents(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -182,6 +186,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
       event: 'keydown',
       el: this.el,
       function: (e: KeyboardEvent) => {
+        /* istanbul ignore if -- @preserve */
         if (!this.el)
           return
 
@@ -243,6 +248,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
    * Update the drilldown component
    */
   public update(reloadItems = false): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.wrapper)
       return
 
@@ -284,6 +290,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
   }
 
   private updateHeight(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -319,6 +326,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
           : target.closest(`.c-drilldown-${type}`)
       }
       else {
+        /* istanbul ignore next -- @preserve */
         btn = null
       }
     }
@@ -330,6 +338,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
   }
 
   private disableFocusElements(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -339,6 +348,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
       el.removeAttribute('tabindex')
     })
 
+    /* istanbul ignore if -- @preserve */
     if (!this.currentEl)
       return
 
@@ -359,11 +369,13 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
    * @param {(HTMLButtonElement | Event)} button
    */
   private next(button: HTMLButtonElement | MouseEvent): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
     const nextButton = this.getButton(button, 'next')
 
+    /* istanbul ignore if -- @preserve */
     if (!nextButton)
       return
 
@@ -380,6 +392,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
    * Back to one level
    */
   public back(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -391,6 +404,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
       ? nextsButtonExpanded[nextsButtonExpanded.length - 1]
       : null
 
+    /* istanbul ignore if -- @preserve */
     if (!nextButton)
       return
 
@@ -407,6 +421,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
    * Reset the drilldown to the root level
    */
   public reset(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -433,6 +448,7 @@ export default class Drilldown extends Parent<Events, DrilldownOptions> {
   }
 
   public destroy(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 

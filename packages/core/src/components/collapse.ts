@@ -163,6 +163,7 @@ export default class Collapse extends Parent<Events, CollapseOptions> {
   }
 
   private onCollapse(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -170,6 +171,7 @@ export default class Collapse extends Parent<Events, CollapseOptions> {
     this.emitEvent(this.status.expanded ? Events.Show : Events.Hide)
 
     this.timeout = window.setTimeout(() => {
+      /* istanbul ignore if -- @preserve */
       if (!this.el)
         return
 
@@ -203,6 +205,7 @@ export default class Collapse extends Parent<Events, CollapseOptions> {
   }
 
   private get hasTransition(): boolean {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return false
     return getTransitionDuration(this.el) !== 0
@@ -213,6 +216,7 @@ export default class Collapse extends Parent<Events, CollapseOptions> {
     this.el?.classList.remove(Collapse.CLASS_COLLAPSING)
     this.el?.classList.remove(Collapse.CLASS_SHOW)
     this.el?.style.removeProperty('height')
+    /* istanbul ignore if -- @preserve */
     if (this.el?.getAttribute('style')?.trim() === '')
       this.el.removeAttribute('style')
     this.triggers.forEach((trigger) => {

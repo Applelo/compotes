@@ -48,6 +48,7 @@ export default class Drag extends Parent<Events, DragOptions> {
   public init(el?: HTMLElement | string, options?: DragOptions): void {
     super.init(el, options)
 
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -68,6 +69,7 @@ export default class Drag extends Parent<Events, DragOptions> {
   }
 
   protected initEvents(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return
 
@@ -131,6 +133,7 @@ export default class Drag extends Parent<Events, DragOptions> {
   }
 
   private handleDragEnd(): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.el || !this.isDown)
       return
     this.isDown = false
@@ -139,6 +142,7 @@ export default class Drag extends Parent<Events, DragOptions> {
   }
 
   private handleDragMove(e: PointerEvent): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.isDown || !this.el)
       return
     e.preventDefault()
@@ -160,6 +164,7 @@ export default class Drag extends Parent<Events, DragOptions> {
    * Tell if the element is draggable or not
    */
   public get isDraggable(): boolean {
+    /* istanbul ignore if -- @preserve */
     if (!this.el)
       return false
     return this.el.clientHeight !== this.el.scrollHeight

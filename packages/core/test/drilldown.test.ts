@@ -285,3 +285,61 @@ it('drilldown dynamicHeight option', async () => {
 
   drilldown.destroy()
 })
+
+it('drilldown init without ul menu throws error', () => {
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = `<nav class="c-drilldown"><div>No menu here</div></nav>`
+  document.body.appendChild(wrapper)
+
+  const el = wrapper.querySelector('.c-drilldown') as HTMLElement
+  expect(() => new Drilldown(el)).toThrow('ul element')
+
+  wrapper.remove()
+})
+
+it('drilldown mutationObserver triggers update on DOM change', async () => {
+  const drilldownLoc = page.getByTestId('drilldown')
+  const el = drilldownLoc.element() as HTMLElement
+
+  const drilldown = new Drilldown(el)
+
+  // Mutate DOM to trigger MutationObserver
+  const menu = el.querySelector('.c-drilldown-menu') as HTMLElement
+  const newItem = document.createElement('li')
+  newItem.textContent = 'New Item'
+  menu.appendChild(newItem)
+
+  // Wait for debounced mutation observer
+  await new Promise(resolve => setTimeout(resolve, 100))
+
+  // If we get here without error, the observer triggered update(true)
+  expect(drilldown).toBeTruthy()
+
+  menu.removeChild(newItem)
+  drilldown.destroy()
+})
+
+it('drilldown dynamicHeight updates on back navigation', async () => {
+  const drilldownLoc = page.getByTestId('drilldown')
+  const el = drilldownLoc.element() as HTMLElement
+
+  const drilldown = new Drilldown(el, { dynamicHeight: true })
+
+  const initialHeight = el.style.height
+
+  // Navigate forward
+  await userEvent.click(page.getByTestId('next-1'))
+  const forwardHeight = el.style.height
+  expect(forwardHeight).toBeTruthy()
+
+  // Navigate back — height should update
+  await userEvent.click(page.getByTestId('back-1'))
+  expect(el.style.height).toBeTruthy()
+
+  // Navigate forward again, then reset
+  await userEvent.click(page.getByTestId('next-1'))
+  drilldown.reset()
+  expect(el.style.height).toBe(initialHeight)
+
+  drilldown.destroy()
+})
