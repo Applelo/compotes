@@ -1,16 +1,16 @@
 {
   "name": "@compotes/vue",
   "type": "module",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
-  "homepage": "https://github.com/Applelo/blottie",
+  "homepage": "https://compotes.dev/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Applelo/blottie"
+    "url": "https://github.com/Applelo/compotes"
   },
-  "bugs": "https://github.com/Applelo/blottie/issues",
+  "bugs": "https://github.com/Applelo/compotes/issues",
   "keywords": [
     "components",
     "accessible",
@@ -19,7 +19,9 @@
     "component",
     "vanilla",
     "typescript",
-    "typings"
+    "typings",
+    "vue",
+    "composables"
   ],
   "exports": {
     ".": {
