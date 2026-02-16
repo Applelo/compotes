@@ -1,6 +1,6 @@
 import { useStableId } from '@src/utils/id'
 import { expect, it } from 'vitest'
-import { defineComponent, h, nextTick } from 'vue'
+import { defineComponent, h } from 'vue'
 import { cleanupComponent, mountComponent } from '../components/helpers'
 
 it('useStableId inside a Vue component returns prefixed id', async () => {
