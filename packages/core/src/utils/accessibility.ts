@@ -1,3 +1,4 @@
+import type { FocusableElement } from 'tabbable'
 import { tabbable } from 'tabbable'
 
 let idIncrement = 0
@@ -5,7 +6,7 @@ let idIncrement = 0
 /**
  * Generate an unique ID
  */
-export function generateId() {
+export function generateId(): string {
   idIncrement++
   return `c-id-${idIncrement}`
 }
@@ -13,7 +14,10 @@ export function generateId() {
 /**
  * Get first or last focusable element inside an element
  */
-export function getFocusElement(container: Element, position: 'first' | 'last') {
+export function getFocusElement(
+  container: Element,
+  position: 'first' | 'last',
+): FocusableElement | null {
   const tabbables = tabbable(container, { displayCheck: 'none' })
   if (tabbables.length === 0)
     return null
@@ -23,7 +27,10 @@ export function getFocusElement(container: Element, position: 'first' | 'last') 
 /**
  * Focus on the first element
  */
-export function focusFirst(container: HTMLElement, rootEl?: HTMLElement) {
+export function focusFirst(
+  container: HTMLElement,
+  rootEl?: HTMLElement,
+): boolean | undefined {
   const firstEl = getFocusElement(container, 'first')
   if (!firstEl)
     return
@@ -36,7 +43,7 @@ export function focusFirst(container: HTMLElement, rootEl?: HTMLElement) {
 /**
  * Focus on the last element
  */
-export function focusLast(container: HTMLElement) {
+export function focusLast(container: HTMLElement): boolean | undefined {
   const lastEl = getFocusElement(container, 'last')
   if (!lastEl)
     return
@@ -47,8 +54,12 @@ export function focusLast(container: HTMLElement) {
 /**
  * Focus on the next or previous sibling
  */
-export function focusSibling(container: HTMLElement, dir: 'next' | 'previous') {
+export function focusSibling(
+  container: HTMLElement,
+  dir: 'next' | 'previous',
+): boolean | undefined {
   const activeElement = document.activeElement as HTMLElement | null
+  /* istanbul ignore if -- @preserve */
   if (!activeElement || !container)
     return focusFirst(container)
 
@@ -75,13 +86,14 @@ export function focusSibling(container: HTMLElement, dir: 'next' | 'previous') {
       return
   }
 
+  /* istanbul ignore next -- @preserve */
   return dir === 'next' ? focusFirst(container) : focusLast(container)
 }
 
 /**
  * Focus on the first char corresponding element
  */
-export function focusChar(container: HTMLElement, char: string) {
+export function focusChar(container: HTMLElement, char: string): void {
   const items = Array.from(container.querySelectorAll(':scope > *'))
   for (let index = 0; index < items.length; index++) {
     const item = items[index]
@@ -90,7 +102,7 @@ export function focusChar(container: HTMLElement, char: string) {
     if (
       focusEl
       && focusEl.textContent
-      && focusEl.textContent.trim().toLowerCase()[0] === char
+      && focusEl.textContent.trim().toLowerCase()[0] === char.toLowerCase()
     ) {
       focusEl.focus()
       return

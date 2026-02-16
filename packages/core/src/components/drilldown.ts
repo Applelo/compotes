@@ -1,20 +1,24 @@
+import type { ParentOptions } from './_parent'
+import { debounceMutationObserver, debounceResizeObserver } from '@src/utils/debounce'
 import { tabbable } from 'tabbable'
 import { focusChar, focusFirst, focusLast, focusSibling, generateId } from '../utils/accessibility'
-import Parent, { type ParentOptions } from './_parent'
 import { getTransitionDuration } from './../utils/animation'
+import Parent from './_parent'
 
-declare global {
-  interface HTMLElementEventMap {
-    'c.drilldown.init': CustomEvent<Drilldown>
-    'c.drilldown.destroy': CustomEvent<Drilldown>
-    'c.drilldown.update': CustomEvent<Drilldown>
-    'c.drilldown.next': CustomEvent<Drilldown>
-    'c.drilldown.back': CustomEvent<Drilldown>
-    'c.drilldown.reset': CustomEvent<Drilldown>
-  }
+export enum Events {
+  Init = 'init',
+  Destroy = 'destroy',
+  Update = 'update',
+  Next = 'next',
+  Back = 'back',
+  Reset = 'reset',
 }
 
-export interface DrilldownOptions extends ParentOptions {
+declare global {
+  interface HTMLElementEventMap extends Record<`c.drilldown.${Events}`, CustomEvent<Drilldown>> {}
+}
+
+export interface DrilldownOptions extends ParentOptions<Events> {
   /**
    * Adjust height dynamically with the current menu height
    * @default false
@@ -27,13 +31,35 @@ export interface DrilldownOptions extends ParentOptions {
   mutationObserver?: boolean
 }
 
+export interface DrilldownState {
+  level: number
+  currentMenuId: string | null
+}
+
 interface DrilldownItem {
   el: HTMLUListElement
   level: number
 }
 
-export default class Drilldown extends Parent {
-  declare public opts: DrilldownOptions
+export default class Drilldown extends Parent<Events, DrilldownOptions> {
+  public readonly name = 'drilldown'
+  declare protected opts: DrilldownOptions
+
+  // Constant
+  private static readonly CLASS_MENU = 'c-drilldown-menu'
+  private static readonly CLASS_BACK = 'c-drilldown-back'
+  private static readonly CLASS_NEXT = 'c-drilldown-next'
+
+  private static readonly DATA_HIDDEN = 'data-c-hidden'
+
+  private static readonly SELECTOR_MENU = `.${Drilldown.CLASS_MENU}`
+  private static readonly SELECTOR_MENU_ITEMS = `.${Drilldown.CLASS_MENU} > li`
+  private static readonly SELECTOR_BACK = `.${Drilldown.CLASS_BACK}`
+  private static readonly SELECTOR_NEXT = `.${Drilldown.CLASS_NEXT}`
+  private static readonly SELECTOR_DATA_HIDDEN = `[${Drilldown.DATA_HIDDEN}]`
+
+  private static readonly CSSVAR_DELAY = '--c-drilldown-delay'
+
   private currentEl: HTMLUListElement | null = null
   private wrapper: HTMLUListElement | null = null
   private items: DrilldownItem[] = []
@@ -42,18 +68,22 @@ export default class Drilldown extends Parent {
   private resizeObserver?: ResizeObserver
   private mutationObserver?: MutationObserver
 
-  private delayCssVar = '--c-drilldown-delay'
-  private hiddenData = 'data-c-hidden'
-
-  constructor(el: HTMLElement | string, options: DrilldownOptions = {}) {
-    super(el, options)
+  constructor(el?: HTMLElement | string, options: DrilldownOptions = {}) {
+    super()
+    this.opts = options
     if (this.isInitializable)
-      this.init()
+      this.init(el, options)
   }
 
-  public init() {
-    this.name = 'drilldown'
-    this.currentEl = this.el.querySelector('.c-drilldown-menu')
+  public init(el?: HTMLElement | string, options?: DrilldownOptions): void {
+    super.init(el, options)
+    this.initAccessibilityAttrs()
+
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
+    this.currentEl = this.el.querySelector<HTMLUListElement>(Drilldown.SELECTOR_MENU) || null
     if (!this.currentEl) {
       throw this.error(
         'The component needs to have an ul element : <nav class="c-drilldown"><ul class="c-drilldown-menu"></ul></nav>',
@@ -65,10 +95,10 @@ export default class Drilldown extends Parent {
 
     this.mutationObserver = this.opts.mutationObserver === false
       ? undefined
-      : new MutationObserver(() => {
-        this.update(true)
-      })
-    this.resizeObserver = new ResizeObserver(() => {
+      : debounceMutationObserver(() => {
+          this.update(true)
+        })
+    this.resizeObserver = debounceResizeObserver(() => {
       this.updateHeight()
     })
 
@@ -78,25 +108,28 @@ export default class Drilldown extends Parent {
       subtree: true,
     })
 
-    super.init()
     this.update(true)
   }
 
-  public initAccessibilityAttrs() {
+  public initAccessibilityAttrs(): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
     this.wrapper?.setAttribute('role', 'menubar')
     this.wrapper?.setAttribute('aria-multiselectable', 'false')
     this.wrapper?.setAttribute('aria-orientation', 'vertical')
-    this.wrapper?.querySelectorAll('.c-drilldown-menu').forEach((menu) => {
+    this.wrapper?.querySelectorAll(Drilldown.SELECTOR_MENU).forEach((menu) => {
       menu.setAttribute('role', 'menu')
     })
 
-    const items = this.el.querySelectorAll('.c-drilldown-menu > li')
+    const items = this.el.querySelectorAll(Drilldown.SELECTOR_MENU_ITEMS)
     items.forEach((item) => {
       item.setAttribute('role', 'none')
     })
 
-    const backs = this.el.querySelectorAll('.c-drilldown-back')
-    const nexts = this.el.querySelectorAll('.c-drilldown-next')
+    const backs = this.el.querySelectorAll(Drilldown.SELECTOR_BACK)
+    const nexts = this.el.querySelectorAll(Drilldown.SELECTOR_NEXT)
     backs.forEach((back) => {
       back.setAttribute('role', 'menuitem')
     })
@@ -104,7 +137,7 @@ export default class Drilldown extends Parent {
       next.setAttribute('role', 'menuitem')
       next.setAttribute('aria-expanded', 'false')
       if (!next.getAttribute('aria-controls')) {
-        const menu = next.parentElement?.querySelector('.c-drilldown-menu')
+        const menu = next.parentElement?.querySelector(Drilldown.SELECTOR_MENU)
         const id = menu?.id || generateId()
         next.setAttribute('aria-controls', id)
         menu?.setAttribute('id', id)
@@ -112,10 +145,13 @@ export default class Drilldown extends Parent {
     })
   }
 
-  public initEvents() {
-    const backs = this.el.querySelectorAll('.c-drilldown-back')
-    const nexts = this.el.querySelectorAll('.c-drilldown-next')
-    this.destroyEvents(['back', 'next'])
+  protected initEvents(): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
+    const backs = this.el.querySelectorAll(Drilldown.SELECTOR_BACK)
+    const nexts = this.el.querySelectorAll(Drilldown.SELECTOR_NEXT)
     backs.forEach((back) => {
       this.registerEvent({
         id: 'back',
@@ -133,21 +169,27 @@ export default class Drilldown extends Parent {
       })
     })
 
-    if (this.accessibilityStatus.events)
-      this.initAccessibilityEvents()
+    this.initAccessibilityEvents()
   }
 
   /**
    * Init accessibility events.
    * Inspired by https://www.w3.org/WAI/ARIA/apg/patterns/menu/ controls
    */
-  public initAccessibilityEvents() {
-    this.destroyEvents(['key'])
+  public initAccessibilityEvents(): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
     this.registerEvent({
       id: 'key',
       event: 'keydown',
       el: this.el,
       function: (e: KeyboardEvent) => {
+        /* istanbul ignore if -- @preserve */
+        if (!this.el)
+          return
+
         switch (e.key) {
           case 'ArrowUp':
           case 'Up':
@@ -174,9 +216,10 @@ export default class Drilldown extends Parent {
             const activeElement = document.activeElement as HTMLButtonElement | null
             if (
               activeElement
-              && activeElement.classList.contains('c-drilldown-next')
-            )
+              && activeElement.classList.contains(Drilldown.CLASS_NEXT)
+            ) {
               this.next(activeElement)
+            }
             break
           }
           case 'Home':
@@ -204,20 +247,20 @@ export default class Drilldown extends Parent {
   /**
    * Update the drilldown component
    */
-  public update(reloadItems = false) {
+  public update(reloadItems = false): void {
+    /* istanbul ignore if -- @preserve */
     if (!this.wrapper)
       return
 
     this.wrapper.style.transform = `translateX(-${this.level * 100}%)`
     const delay = getTransitionDuration(this.wrapper)
-    this.wrapper.style.setProperty(this.delayCssVar, `${delay}ms`)
+    this.wrapper.style.setProperty(Drilldown.CSSVAR_DELAY, `${delay}ms`)
     this.disableFocusElements()
 
     if (reloadItems) {
       this.updateItems(this.wrapper)
       this.updateHeight()
-      if (this.accessibilityStatus.attrs === true)
-        this.initAccessibilityAttrs()
+      this.initAccessibilityAttrs()
 
       return
     }
@@ -225,15 +268,16 @@ export default class Drilldown extends Parent {
     if (this.opts.dynamicHeight === true)
       this.updateHeight()
 
-    this.emitEvent('update')
+    this.emitEvent(Events.Update)
   }
 
-  private updateItems(menu: HTMLUListElement, level = 0) {
+  private updateItems(menu: HTMLUListElement, level = 0): void {
+    this.items = []
     const children = menu.children
 
     for (let index = 0; index < children.length; index++) {
       const child = children[index]
-      const menu = child.querySelector<HTMLUListElement>('.c-drilldown-menu')
+      const menu = child.querySelector<HTMLUListElement>(Drilldown.SELECTOR_MENU)
       if (!menu)
         continue
       this.updateItems(menu, level + 1)
@@ -245,7 +289,11 @@ export default class Drilldown extends Parent {
     })
   }
 
-  private updateHeight() {
+  private updateHeight(): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
     let height = 0
 
     if (this.opts.dynamicHeight === true && this.currentEl) {
@@ -265,7 +313,10 @@ export default class Drilldown extends Parent {
   /**
    * Get Next or Back button with click event
    */
-  private getButton(button: HTMLButtonElement | Event, type: 'back' | 'next') {
+  private getButton(
+    button: HTMLButtonElement | Event,
+    type: 'back' | 'next',
+  ): HTMLButtonElement | null {
     let btn: HTMLButtonElement | null = null
     if ('target' in button) {
       const target = button.target as HTMLButtonElement | null
@@ -275,6 +326,7 @@ export default class Drilldown extends Parent {
           : target.closest(`.c-drilldown-${type}`)
       }
       else {
+        /* istanbul ignore next -- @preserve */
         btn = null
       }
     }
@@ -285,23 +337,28 @@ export default class Drilldown extends Parent {
     return btn
   }
 
-  private disableFocusElements() {
-    const elsBeenDisable = this.el.querySelectorAll('[data-c-hidden]')
+  private disableFocusElements(): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
+    const elsBeenDisable = this.el.querySelectorAll(Drilldown.SELECTOR_DATA_HIDDEN)
     elsBeenDisable.forEach((el) => {
-      el.removeAttribute(this.hiddenData)
+      el.removeAttribute(Drilldown.DATA_HIDDEN)
       el.removeAttribute('tabindex')
     })
 
+    /* istanbul ignore if -- @preserve */
     if (!this.currentEl)
       return
 
     const tabbables = tabbable(this.el)
     tabbables.forEach((item) => {
-      const menu = item.closest('.c-drilldown-menu')
+      const menu = item.closest(Drilldown.SELECTOR_MENU)
       if (menu === this.currentEl)
         return
 
-      item.setAttribute(this.hiddenData, 'true')
+      item.setAttribute(Drilldown.DATA_HIDDEN, 'true')
       item.setAttribute('tabindex', '-1')
     })
   }
@@ -311,25 +368,34 @@ export default class Drilldown extends Parent {
    *
    * @param {(HTMLButtonElement | Event)} button
    */
-  private next(button: HTMLButtonElement | MouseEvent) {
+  private next(button: HTMLButtonElement | MouseEvent): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
     const nextButton = this.getButton(button, 'next')
 
+    /* istanbul ignore if -- @preserve */
     if (!nextButton)
       return
 
     nextButton.setAttribute('aria-expanded', 'true')
     this.level++
-    this.currentEl = nextButton.parentElement?.querySelector('.c-drilldown-menu') as HTMLUListElement | null
+    this.currentEl = nextButton.parentElement?.querySelector<HTMLUListElement>(Drilldown.SELECTOR_MENU) || null
     this.update()
     if (this.currentEl)
       focusFirst(this.currentEl, this.el)
-    this.emitEvent('next')
+    this.emitEvent(Events.Next)
   }
 
   /**
    * Back to one level
    */
-  public back() {
+  public back(): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
     if (!this.wrapper || this.level === 0)
       return
 
@@ -338,22 +404,27 @@ export default class Drilldown extends Parent {
       ? nextsButtonExpanded[nextsButtonExpanded.length - 1]
       : null
 
+    /* istanbul ignore if -- @preserve */
     if (!nextButton)
       return
 
     nextButton.setAttribute('aria-expanded', 'false')
     this.level--
-    this.currentEl = nextButton.closest('.c-drilldown-menu')
+    this.currentEl = nextButton.closest<HTMLUListElement>(Drilldown.SELECTOR_MENU)
     this.update()
     if (this.currentEl)
       focusFirst(this.currentEl, this.el)
-    this.emitEvent('back')
+    this.emitEvent(Events.Back)
   }
 
   /**
    * Reset the drilldown to the root level
    */
-  public reset() {
+  public reset(): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
     if (!this.wrapper || this.level === 0)
       return
 
@@ -366,26 +437,42 @@ export default class Drilldown extends Parent {
     this.update()
     if (this.currentEl)
       focusFirst(this.currentEl, this.el)
-    this.emitEvent('reset')
+    this.emitEvent(Events.Reset)
   }
 
-  public destroy() {
+  protected getState(): DrilldownState {
+    return {
+      level: this.level,
+      currentMenuId: this.currentEl?.id || null,
+    }
+  }
+
+  public destroy(): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
     this.mutationObserver?.disconnect()
     this.resizeObserver?.disconnect()
+
+    this.el.style.removeProperty('height')
+
     this.wrapper?.removeAttribute('role')
     this.wrapper?.removeAttribute('aria-multiselectable')
     this.wrapper?.removeAttribute('aria-orientation')
-    this.wrapper?.querySelectorAll('.c-drilldown-menu').forEach((menu) => {
+    this.wrapper?.querySelectorAll(Drilldown.SELECTOR_MENU).forEach((menu) => {
       menu.removeAttribute('role')
     })
+    this.wrapper?.style.removeProperty('transform')
+    this.wrapper?.style.removeProperty(Drilldown.CSSVAR_DELAY)
 
-    const items = this.el.querySelectorAll('.c-drilldown-menu > li')
+    const items = this.el.querySelectorAll(Drilldown.SELECTOR_MENU_ITEMS)
     items.forEach((item) => {
       item.removeAttribute('role')
     })
 
-    const backs = this.el.querySelectorAll('.c-drilldown-back')
-    const nexts = this.el.querySelectorAll('.c-drilldown-next')
+    const backs = this.el.querySelectorAll(Drilldown.SELECTOR_BACK)
+    const nexts = this.el.querySelectorAll(Drilldown.SELECTOR_NEXT)
     backs.forEach((back) => {
       back.removeAttribute('role')
     })
@@ -393,17 +480,16 @@ export default class Drilldown extends Parent {
       next.removeAttribute('role')
       next.removeAttribute('aria-expanded')
       next.removeAttribute('aria-controls')
-      const menu = next.parentElement?.querySelector('.c-drilldown-menu')
+      const menu = next.parentElement?.querySelector(Drilldown.SELECTOR_MENU)
       if (menu && menu.id.startsWith('c-id-'))
         menu.removeAttribute('id')
     })
-    const elsBeenDisable = this.el.querySelectorAll('[data-c-hidden]')
+    const elsBeenDisable = this.el.querySelectorAll(Drilldown.SELECTOR_DATA_HIDDEN)
     elsBeenDisable.forEach((el) => {
-      el.removeAttribute(this.hiddenData)
+      el.removeAttribute(Drilldown.DATA_HIDDEN)
       el.removeAttribute('tabindex')
     })
 
-    this.wrapper?.style.removeProperty(this.delayCssVar)
     super.destroy()
   }
 }

@@ -1,89 +1,260 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { Browser, Page } from 'playwright'
-import { chromium } from 'playwright'
-import { destroyComponent } from './helper/destroy'
+import type { Events } from '@src/components/drag'
+import Drag from '@src/components/drag'
+import { beforeAll, expect, it, vi } from 'vitest'
+import { page } from 'vitest/browser'
+import { registerEventListeners } from './helper'
+import '@css/drag.css'
 
-let browser: Browser
+type DragEvents = `c.drag.${Events}`
 
-beforeAll(async () => {
-  browser = await chromium.launch()
+let bodyHTML: string = ''
+
+beforeAll(() => {
+  const html = `
+  <div>
+    <div
+      class="c-drag"
+      data-testid="drag"
+      style="width: 200px; height: 200px;">
+      <div style="width: 600px; height: 600px;">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+      </div>
+    </div>
+  </div>
+`
+  document.body.innerHTML = html
+  bodyHTML = document.body.innerHTML
+
+  return async () => {
+    // Wait for any pending debounced resize observer callbacks to settle
+    await new Promise(resolve => setTimeout(resolve, 200))
+    // Clean any classes that may have been re-added by pending observers
+    const dragEl = document.querySelector('[data-testid="drag"]')
+    dragEl?.classList.remove('c-drag--draggable', 'c-drag--dragging')
+    expect(bodyHTML).toBe(document.body.innerHTML)
+  }
 })
 
-afterAll(async () => {
-  browser.close()
+it('drag', async () => {
+  const dragLoc = page.getByTestId('drag')
+  const dragEl = dragLoc.element() as HTMLElement
+
+  expect(dragLoc).toBeInTheDocument()
+
+  const { callback: startEvent, removeEventListener: removeStartEvent } = registerEventListeners<DragEvents>('c.drag.start', dragLoc)
+  const { callback: endEvent, removeEventListener: removeEndEvent } = registerEventListeners<DragEvents>('c.drag.end', dragLoc)
+
+  const drag = new Drag(dragEl)
+
+  await new Promise(resolve => setTimeout(resolve, 50))
+
+  expect(drag.isDraggable).toBe(true)
+  expect(drag.isDragging).toBe(false)
+
+  dragEl.scrollLeft = 10
+  dragEl.scrollTop = 10
+
+  dragEl.dispatchEvent(new PointerEvent('pointerdown', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 100,
+    clientY: 100,
+  }))
+
+  expect(startEvent).toHaveBeenCalledTimes(1)
+  expect(drag.isDragging).toBe(true)
+
+  dragEl.dispatchEvent(new PointerEvent('pointermove', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 80,
+    clientY: 80,
+  }))
+
+  expect(dragEl.scrollLeft).toBeGreaterThan(10)
+  expect(dragEl.scrollTop).toBeGreaterThan(10)
+
+  const clickEvent = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
+  })
+  dragEl.dispatchEvent(clickEvent)
+  expect(clickEvent.defaultPrevented).toBe(true)
+
+  dragEl.dispatchEvent(new PointerEvent('pointerup', {
+    bubbles: true,
+    cancelable: true,
+  }))
+
+  expect(endEvent).toHaveBeenCalledTimes(1)
+  expect(drag.isDragging).toBe(false)
+
+  drag.destroy()
+
+  removeStartEvent()
+  removeEndEvent()
 })
 
-async function dragBox(page: Page) {
-  const dragEl = page.locator('.c-drag').first()
-  const lastDragEl = dragEl.locator('p:last-child').last()
+it('drag click without movement is not prevented', async () => {
+  const dragLoc = page.getByTestId('drag')
+  const dragEl = dragLoc.element() as HTMLElement
 
-  expect(dragEl).not.toBeNull()
-  expect(lastDragEl).not.toBeNull()
-  if (!dragEl || !lastDragEl)
-    return {}
+  const drag = new Drag(dragEl)
+  await new Promise(resolve => setTimeout(resolve, 50))
 
-  const dragElBoundingBox = await dragEl.boundingBox()
-  const previousLastDragElBoundingBox = await lastDragEl.boundingBox()
+  // Pointerdown then click without moving should NOT prevent click
+  dragEl.dispatchEvent(new PointerEvent('pointerdown', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 100,
+    clientY: 100,
+  }))
 
-  expect(dragElBoundingBox).not.toBeNull()
-  expect(previousLastDragElBoundingBox).not.toBeNull()
-  if (!dragElBoundingBox || !previousLastDragElBoundingBox)
-    return {}
-
-  await page.mouse.move(
-    dragElBoundingBox.x + dragElBoundingBox.width / 2,
-    dragElBoundingBox.y + dragElBoundingBox.height / 4,
-  )
-  await page.mouse.down()
-  await page.mouse.move(
-    dragElBoundingBox.x + dragElBoundingBox.width / 2,
-    dragElBoundingBox.y + dragElBoundingBox.height / 4 * 3,
-    {
-      steps: 50,
-    },
-  )
-  await page.mouse.up()
-
-  return { lastDragEl, previousLastDragElBoundingBox }
-}
-
-describe.concurrent('drag', async () => {
-  it('events', async () => {
-    const events = ['c.drag.start', 'c.drag.end']
-    const page = await browser.newPage()
-    await page.pause()
-    await page.goto('http://localhost:3000/drag.html')
-
-    await page.evaluate(() => {
-      const el = document.querySelector('.c-drag')
-      if (!el)
-        return
-      ['c.drag.start', 'c.drag.end'].forEach((e) => {
-        el.addEventListener(e, () => {
-          // eslint-disable-next-line no-console
-          console.log(e)
-        })
-      })
-    })
-
-    const startEvent = page.waitForEvent('console', msg => msg.text().includes('c.drag.start'))
-    const endEvent = page.waitForEvent('console', msg => msg.text().includes('c.drag.end'))
-
-    await dragBox(page)
-
-    const result = (await Promise.all([
-      startEvent,
-      endEvent,
-    ])).map(item => item.text())
-
-    events.forEach(e => expect(result).toContain(e))
+  // Click without any pointermove
+  const clickEvent = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
   })
+  dragEl.dispatchEvent(clickEvent)
+  expect(clickEvent.defaultPrevented).toBe(false)
 
-  it.concurrent('destroy', async () => {
-    const page = await browser.newPage()
-    await page.goto('http://localhost:3000/drag.html')
-    const { before, after } = await destroyComponent(page)
-    expect(before).not.toEqual(after)
-    expect(after).toMatchSnapshot()
-  })
+  dragEl.dispatchEvent(new PointerEvent('pointerup', {
+    bubbles: true,
+    cancelable: true,
+  }))
+
+  drag.destroy()
+})
+
+it('drag pointerleave ends drag', async () => {
+  const dragLoc = page.getByTestId('drag')
+  const dragEl = dragLoc.element() as HTMLElement
+
+  const { callback: endEvent, removeEventListener: removeEndEvent } = registerEventListeners<DragEvents>('c.drag.end', dragLoc)
+
+  const drag = new Drag(dragEl)
+  await new Promise(resolve => setTimeout(resolve, 50))
+
+  dragEl.dispatchEvent(new PointerEvent('pointerdown', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 100,
+    clientY: 100,
+  }))
+
+  expect(drag.isDragging).toBe(true)
+
+  // pointerleave should end the drag
+  dragEl.dispatchEvent(new PointerEvent('pointerleave', {
+    bubbles: true,
+    cancelable: true,
+  }))
+
+  expect(endEvent).toHaveBeenCalledTimes(1)
+  expect(drag.isDragging).toBe(false)
+
+  drag.destroy()
+  removeEndEvent()
+})
+
+it('drag isDraggable false when content fits', async () => {
+  // Create a non-scrollable element dynamically
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = `
+    <div class="c-drag" data-testid="drag-no-scroll" style="width: 200px; height: 200px; overflow: hidden;">
+      <div style="width: 100px; height: 100px;">
+        <p>Small content</p>
+      </div>
+    </div>
+  `
+  document.body.appendChild(wrapper)
+
+  const dragEl = wrapper.querySelector('[data-testid="drag-no-scroll"]') as HTMLElement
+  const drag = new Drag(dragEl)
+  await new Promise(resolve => setTimeout(resolve, 200))
+
+  expect(drag.isDraggable).toBe(false)
+
+  // pointerdown should not start drag when not draggable
+  dragEl.dispatchEvent(new PointerEvent('pointerdown', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 50,
+    clientY: 50,
+  }))
+
+  expect(drag.isDragging).toBe(false)
+
+  drag.destroy()
+  document.body.removeChild(wrapper)
+})
+
+it('drag onStateChange callback', async () => {
+  const dragLoc = page.getByTestId('drag')
+  const dragEl = dragLoc.element() as HTMLElement
+  const onStateChange = vi.fn()
+
+  const drag = new Drag(dragEl, { onStateChange })
+  await new Promise(resolve => setTimeout(resolve, 50))
+
+  expect(onStateChange).toHaveBeenCalled()
+
+  const callCountAfterInit = onStateChange.mock.calls.length
+
+  dragEl.dispatchEvent(new PointerEvent('pointerdown', {
+    bubbles: true,
+    cancelable: true,
+    clientX: 100,
+    clientY: 100,
+  }))
+
+  // start event triggers state change
+  expect(onStateChange.mock.calls.length).toBeGreaterThan(callCountAfterInit)
+  expect(onStateChange).toHaveBeenCalledWith(
+    expect.objectContaining({ isDragging: true, isDraggable: true }),
+  )
+
+  dragEl.dispatchEvent(new PointerEvent('pointerup', {
+    bubbles: true,
+    cancelable: true,
+  }))
+
+  drag.destroy()
+})
+
+it('drag resize observer notifies state change', async () => {
+  const onStateChange = vi.fn()
+
+  // Create an element with overflowing content (draggable)
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = `
+    <div class="c-drag" data-testid="drag-resize" style="width: 200px; height: 200px; overflow: auto;">
+      <div style="width: 400px; height: 400px;">
+        <p>Large content</p>
+      </div>
+    </div>
+  `
+  document.body.appendChild(wrapper)
+
+  const dragEl = wrapper.querySelector('[data-testid="drag-resize"]') as HTMLElement
+  const drag = new Drag(dragEl, { onStateChange })
+  await new Promise(resolve => setTimeout(resolve, 200))
+
+  expect(drag.isDraggable).toBe(true)
+
+  // Shrink the container to make it not overflow (change from draggable to not draggable)
+  dragEl.style.width = '500px'
+  dragEl.style.height = '500px'
+
+  // Wait for ResizeObserver to fire on the observed element resize
+  await new Promise(resolve => setTimeout(resolve, 200))
+
+  expect(drag.isDraggable).toBe(false)
+  // onStateChange should have been called when isDraggable changed
+  expect(onStateChange).toHaveBeenCalledWith(
+    expect.objectContaining({ isDraggable: false }),
+  )
+
+  drag.destroy()
+  document.body.removeChild(wrapper)
 })

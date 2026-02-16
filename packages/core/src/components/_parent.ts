@@ -1,81 +1,99 @@
 import ErrorCompotes from '../utils/error'
 
-export interface ParentOptions {
+export enum Events {
+  Init = 'init',
+  Destroy = 'destroy',
+}
+
+/**
+ * Callback function for state changes
+ */
+export type StateChangeCallback<T = any> = (state: T) => void
+
+export interface ParentOptions<E extends string> {
   /**
    * Init the component on creation.
    * @default true
    */
   init?: boolean
   /**
-   * Init accessibility on the component.
-   * Don't disable it if you don't know what your doing
-   * @default true
+   * An object to instantiate events listeners
+   * @default undefined
    */
-  initAccessibility?: boolean | {
-    attrs?: boolean
-    events?: boolean
-    styles?: boolean
-  }
+  on?: Partial<Record<E, (e: CustomEvent<Parent<E>>) => void | undefined>>
   /**
-   * Init events on the component.
-   * Don't disable it if you don't know what your doing
-   * @default true
+   * Callback function invoked when component state changes
+   * @default undefined
    */
-  initEvents?: boolean
+  onStateChange?: StateChangeCallback
 }
 
-export interface ParentEvent {
+interface ParentEvent {
   id: string
   event: keyof HTMLElementEventMap
   function: any
   el: Element | Window
 }
 
-export default abstract class Parent {
-  protected name = ''
-  public el: HTMLElement
-  public opts: ParentOptions
-  protected events: ParentEvent[] = []
+export default abstract class Parent<
+  E extends string = Events,
+  O extends ParentOptions<E> = ParentOptions<E>,
+> {
+  protected abstract readonly name: string
 
-  constructor(el: HTMLElement | string, options: ParentOptions = {}) {
-    const checkEl = typeof el === 'string'
-      ? document.querySelector<HTMLElement>(el)
-      : el
+  public el: HTMLElement | null = null
+  protected opts: O = {} as O
+  private eventsController: AbortController | null = null
+  private stateChangeCallback: StateChangeCallback | null = null
 
-    if (!checkEl)
-      throw this.error('The element/selector provided cannot be found.')
+  /**
+   * Init the component
+   */
+  public init(el?: HTMLElement | string, options?: O): void {
+    if (!el && !this.el)
+      return
 
-    this.el = checkEl
+    if (!this.el) {
+      const checkEl = typeof el === 'string'
+        ? document.querySelector<HTMLElement>(el)
+        : el
 
-    this.opts = options
-  }
+      if (!checkEl)
+        throw this.error('The element/selector provided cannot be found.')
 
-  protected get isInitializable() {
-    return typeof this.opts.init === 'undefined' || this.opts.init === true
-  }
+      this.el = checkEl
+    }
 
-  protected get accessibilityStatus() {
-    if (typeof this.opts.initAccessibility === 'object') {
-      return {
-        attrs: typeof this.opts.initAccessibility.attrs === 'undefined' || this.opts.initAccessibility.attrs === true,
-        events: typeof this.opts.initAccessibility.events === 'undefined' || this.opts.initAccessibility.events === true,
-        styles: typeof this.opts.initAccessibility.styles === 'undefined' || this.opts.initAccessibility.styles === true,
+    this.opts = options ?? this.opts ?? ({} as O)
+
+    this.stateChangeCallback = this.opts.onStateChange ?? null
+
+    this.eventsController = new AbortController()
+
+    if (this.opts.on) {
+      for (const key in this.opts.on) {
+        if (Object.prototype.hasOwnProperty.call(this.opts.on, key)) {
+          const element = this.opts.on[key]
+          if (!element)
+            continue
+          this.el?.addEventListener(
+            `c.${this.name}.${key}`,
+            e => element(e as CustomEvent<Parent<E>>),
+            { signal: this.eventsController.signal },
+          )
+        }
       }
     }
-    else {
-      const status = typeof this.opts.initAccessibility === 'undefined' || this.opts.initAccessibility === true
-      return {
-        attrs: status,
-        events: status,
-        styles: status,
-      }
-    }
+    this.emitEvent(Events.Init)
+    if (this.initElements)
+      this.initElements()
+    this.initEvents()
   }
 
   /**
    * Emit an event
    */
-  protected emitEvent(name: string, cancelable = false) {
+  protected emitEvent(name: string, cancelable = false): boolean | undefined {
     const event = new CustomEvent<this>(
       `c.${this.name}.${name}`,
       {
@@ -83,28 +101,29 @@ export default abstract class Parent {
         cancelable,
       },
     )
-    return this.el.dispatchEvent(event)
+    const result = this.el?.dispatchEvent(event)
+    this.notifyStateChange()
+    return result
   }
 
   /**
-   * Init the component
+   * Get the current state of the component
    */
-  public init() {
-    this.emitEvent('init')
-    if (this.accessibilityStatus.styles)
-      this.el.classList.add(`c-${this.name}--a11y`)
+  protected abstract getState(): any
 
-    if (this.accessibilityStatus.attrs)
-      this.initAccessibilityAttrs()
-
-    if (typeof this.opts.initEvents === 'undefined' || this.opts.initEvents)
-      this.initEvents()
+  /**
+   * Notify state change callback if registered
+   */
+  protected notifyStateChange(): void {
+    if (this.stateChangeCallback) {
+      this.stateChangeCallback(this.getState())
+    }
   }
 
   /**
-   * Init the accessibility on the component
+   * Init elements on the component
    */
-  protected abstract initAccessibilityAttrs(): void
+  protected initElements?(): void
 
   /**
    * Init events on the component
@@ -114,35 +133,33 @@ export default abstract class Parent {
   /**
    * Register an event
    */
-  protected registerEvent(e: ParentEvent) {
-    e.el.addEventListener(e.event, e.function)
-    this.events.push(e)
-  }
+  protected registerEvent(e: ParentEvent): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.eventsController)
+      return
 
-  /**
-   * Destroy the events on the component
-   */
-  public destroyEvents(filters: string[] = []) {
-    const events = filters.length ? this.events.filter(e => filters.includes(e.id)) : this.events
-    events.forEach((e) => {
-      e.el.removeEventListener(e.event, e.function)
-    })
-    this.events = this.events.filter(e => !events.includes(e))
+    e.el.addEventListener(
+      e.event,
+      e.function,
+      {
+        signal: this.eventsController.signal,
+      },
+    )
   }
 
   /**
    * Destroy the component
    */
-  public destroy() {
-    this.emitEvent('destroy')
-    this.el.classList.remove(`c-${this.name}--a11y`)
-    this.destroyEvents()
+  public destroy(): void {
+    this.emitEvent(Events.Destroy)
+    this.stateChangeCallback = null
+    this.eventsController?.abort()
   }
 
   /**
    * Options of the component
    */
-  public get options(): ParentOptions {
+  public get options(): O {
     return this.opts
   }
 
@@ -150,7 +167,11 @@ export default abstract class Parent {
    * Generate an error message
    * Can be use with `throw` or directly inside `console.error(`)`
    */
-  protected error(msg: string, params?: ErrorOptions) {
+  protected error(msg: string, params?: ErrorOptions): ErrorCompotes {
     return new ErrorCompotes(msg, params, this.name)
+  }
+
+  protected get isInitializable(): boolean {
+    return typeof this.opts.init === 'undefined' || this.opts.init === true
   }
 }

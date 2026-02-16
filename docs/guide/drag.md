@@ -1,6 +1,6 @@
 # Drag
 
-The drag component allows to create a draggable zone you can control with your mouse.
+The drag component allows you to create a draggable zone you can scroll by clicking and dragging.
 
 ```scss
 @import 'compotes/css/drag';
@@ -12,7 +12,7 @@ import { Drag } from 'compotes'
 const drag = new Drag('.c-drag')
 ```
 
-You need to have elements overflowing inside the component because it uses the css property `overflow: auto;`.
+The element must have overflowing content, as the component relies on `overflow: auto` to enable scrolling.
 
 ```html
 
@@ -20,6 +20,10 @@ You need to have elements overflowing inside the component because it uses the c
   <!-- Your overflowing content -->
 </div>
 ```
+
+## Accessibility
+
+This component does not add specific accessibility features. It provides a mouse-driven scrolling experience for overflowing content.
 
 ## Options
 
@@ -29,13 +33,13 @@ You can change some options from the component.
 import { Drag } from 'compotes'
 
 const drag = new Drag('.c-drag', {
-  init: true, // [!code focus:2]
-  initEvents: true
+  init: true, // [!code focus:3]
+  on: undefined,
 })
 ```
 
 - `init` (boolean): Init the component on creation
-- `initEvents` (boolean): Init events on the component
+- `on` (object): events to listen to
 
 ## Methods
 
@@ -51,8 +55,6 @@ drag.init()// [!code focus]
 ```
 
 - `init()`: Init the component
-- `initEvents()`: Init component events
-- `destroyEvents()`: Destroy the component events
 - `destroy()`: Destroy the component
 
 ## Data
@@ -67,14 +69,19 @@ console.log(drag.isDraggable)// [!code focus]
 ```
 
 - `options` (options object): Get options used to init the component
-- `isDraggable` (boolean): Tell if the component is draggable or not
-- `isDragging` (boolean): Tell if the component is currently dragging or not
+- `isDraggable` (boolean): Indicates if the component is draggable or not
+- `isDragging` (boolean): Indicates if the component is currently dragging or not
 
 ## Events
 
 You can listen to emitted events directly on the drag element like this:
 
 ```js
+import { Drag } from 'compotes'
+
+const dragEl = document.querySelector('.c-drag')
+const drag = new Drag(dragEl)
+
 dragEl.addEventListener('c.drag.init', (e) => { // [!code focus:3]
   console.log(e.detail)// drag object
 })

@@ -28,10 +28,13 @@
   padding: 0;
   margin: 0;
   flex-shrink: 0;
+}
+
+.c-marquee-container {
   animation: c-anim-marquee-x var(--c-marquee-duration) infinite linear;
 }
 
-.c-marquee--direction-top .c-marquee-container,
+.c-marquee--direction-up .c-marquee-container,
 .c-marquee--direction-down .c-marquee-container {
   animation-name: c-anim-marquee-y;
   flex-direction: column;
@@ -41,12 +44,12 @@
   animation-direction: alternate;
 }
 
-.c-marquee--direction-top:not(.c-marquee--fill) .c-marquee-container,
+.c-marquee--direction-up:not(.c-marquee--fill) .c-marquee-container,
 .c-marquee--direction-left:not(.c-marquee--fill) .c-marquee-container {
   animation-direction: reverse;
 }
 
-.c-marquee--fill.c-marquee--direction-bottom .c-marquee-container,
+.c-marquee--fill.c-marquee--direction-down .c-marquee-container,
 .c-marquee--fill.c-marquee--direction-right .c-marquee-container {
   animation-direction: reverse;
 }
@@ -59,12 +62,12 @@
   flex-shrink: 0;
 }
 
-.c-marquee--a11y.c-marquee--keyboard:focus-within .c-marquee-container {
+.c-marquee--keyboard:focus-within .c-marquee-container {
   animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .c-marquee--a11y .c-marquee-container {
+  .c-marquee-container {
     animation: none;
   }
 }

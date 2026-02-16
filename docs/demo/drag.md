@@ -2,13 +2,7 @@
 
 <script setup>
   import './../../packages/core/dist/css/drag.css'
-  import { Drag } from './../../packages/core'
-  import { onMounted } from 'vue'
-
-  onMounted(() => {
-    const dragBasic = new Drag('#drag-basic')
-    const dragBreadcrumb = new Drag('#drag-breadcrumb')
-  })
+  import { CDrag } from './../../packages/vue'
 </script>
 <style>
 /* basic */
@@ -39,7 +33,7 @@
 }
 </style>
 <div style="margin-top: 2rem;">
-  <div class="c-drag" id="drag-basic">
+  <CDrag id="drag-basic">
     <div>
       <p>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia facere possimus impedit facilis culpa illo earum deserunt consequuntur minus. Ad et qui labore reprehenderit magnam exercitationem placeat magni nesciunt suscipit.
@@ -48,14 +42,14 @@
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia facere possimus impedit facilis culpa illo earum deserunt consequuntur minus. Ad et qui labore reprehenderit magnam exercitationem placeat magni nesciunt suscipit.
       </p>
     </div>
-  </div>
+  </CDrag>
 
-  <div class="c-drag" id="drag-breadcrumb">
+  <CDrag id="drag-breadcrumb">
     <ul>
       <li><a target="_blank" href="https://www.alexandregaliay.com/">Lorem ipsum Alexgolia</a></li>
       <li><a href="#2">Mollitia facere</a></li>
       <li><a target="_blank" href="https://camilles-travels.com/">Camille san et qui labore reprehenderit</a></li>
       <li><a href="#4">Mollitia facere</a></li>
     </ul>
-  </div>
+  </CDrag>
 </div>

@@ -1,5 +1,6 @@
 <a href="https://npmjs.com/package/compotes"><img src="https://img.shields.io/npm/v/compotes.svg" alt="npm package"></a>
 <a href="https://github.com/Applelo/compotes/actions/workflows/ci.yml"><img src="https://github.com/Applelo/compotes/actions/workflows/ci.yml/badge.svg?branch=main" alt="build status"></a>
+[![Coverage Status](https://coveralls.io/repos/github/Applelo/compotes/badge.svg?branch=master)](https://coveralls.io/github/Applelo/compotes?branch=master)
 
 # Compotes
 
@@ -12,12 +13,15 @@ To learn more, check the *[documentation](https://compotes.dev)*.
 - 👨‍🎨 Minimal CSS to do your customization
 - 🦾 Accessibility in mind
 - 📠 Fully typed
+- 🧩 Framework agnostic
+- 📦 Simple components ready to use
+- 🪶 Lightweight
 
 ## 🍏 Compotes
 
-- Collapse/Accordion ([demo](https://compotes.dev/demo/drilldown.html))
+- Collapse/Accordion ([demo](https://compotes.dev/demo/collapse.html))
 - Drag ([demo](https://compotes.dev/demo/drag.html))
-- Drilldown ([demo](https://compotes.dev/demo/collapse.html))
+- Drilldown ([demo](https://compotes.dev/demo/drilldown.html))
 - Dropdown ([demo](https://compotes.dev/demo/dropdown.html))
 - Marquee ([demo](https://compotes.dev/demo/marquee.html))
 <!--
@@ -39,11 +43,14 @@ yarn add -D compotes
 
 # pnpm
 pnpm add -D compotes
+
+#bun
+bun add -D compotes
 ```
 
 <br></details>
 
-<!--<details>
+<details>
 <summary>Vue 3</summary><br>
 
 ```bash
@@ -54,11 +61,14 @@ yarn add -D @compotes/vue
 
 # pnpm
 pnpm add -D @compotes/vue
+
+#bun
+bun add -D @compotes/vue
 ```
 
 <br></details>
 
-<details>
+<!-- <details>
 <summary>Nuxt 3</summary><br>
 
 ```bash
@@ -71,17 +81,19 @@ yarn add -D @compotes/nuxt
 pnpm add -D @compotes/nuxt
 ```
 
-<br></details>-->
-
-> Vue 3/Nuxt 3 packages will arrive soon stay tuned!
+<br></details> -->
 
 ## 🙋‍♂️ Why ?
 
-A lot of components library are already shipped with styles but as a Front End developer, I always wants to override a lot. Futhermore, there are not always accessible or they are shipped with jQuery.
+A lot of component libraries are already shipped with styles but as a Front End developer, I always want to override a lot. Furthermore, they are not always accessible or they are shipped with jQuery.
 
-There are some good library like [React Aria](https://react-spectrum.adobe.com/react-aria/react-aria-components.html) but it's made to work on one framework and I work on different tech like Wordpress, Symfony or VueJS.
+There are some good libraries like [React Aria](https://react-spectrum.adobe.com/react-aria/react-aria-components.html) but it's made to work on one framework and I work on different tech like Wordpress, Symfony or VueJS.
 
-> This library provides only the compotes and it's you to make a tart.
+> This library provides only the compotes and it's up to you to make a tart.
+
+## AI Usage
+
+This project uses AI to improve and keep the documentation up to date. It also helps me writing the connection between core components to VueJS.
 
 ## 👨‍💼 License
 

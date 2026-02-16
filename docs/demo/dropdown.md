@@ -2,16 +2,7 @@
 
 <script setup>
   import './../../packages/core/dist/css/dropdown.css'
-  import { Dropdown } from './../../packages/core'
-  import { onMounted } from 'vue'
-
-  onMounted(() => {
-    const dropdown = new Dropdown('#dropdown', {
-      openOn: 'hover',
-      equalizeWidth: true
-    })
-    const dropdownMenu = new Dropdown('#dropdown-menu')
-  })
+  import { CDropdown, CDropdownTrigger, CDropdownMenu } from './../../packages/vue'
 </script>
 <style>
 .c-dropdown.c-dropdown, .c-dropdown.c-dropdown ul {
@@ -24,18 +15,18 @@
   margin: 0;
 }
 </style>
-<div class="c-dropdown" id="dropdown" style="margin-top: 2rem;">
-  <button class="c-dropdown-trigger" aria-controls="dropdown-container">Basic Dropdown</button>
-  <div class="c-dropdown-container" id="dropdown-container">
-    lorem ipseum int
-  </div>
-</div>
+<CDropdown id="dropdown" :options="{ openOn: 'hover', equalizeWidth: true }" style="margin-top: 2rem;">
+  <CDropdownTrigger>Basic Dropdown</CDropdownTrigger>
+  <CDropdownMenu>
+    Lorem ipsum dolor sit amet
+  </CDropdownMenu>
+</CDropdown>
 
-<div class="c-dropdown" id="dropdown-menu" style="margin-top: 2rem;">
-  <button class="c-dropdown-trigger" aria-controls="dropdown-menu-container">Item 1 - Dropdown Menu</button>
-  <ul class="c-dropdown-container" id="dropdown-menu-container">
+<CDropdown id="dropdown-menu" style="margin-top: 2rem;">
+  <CDropdownTrigger>Item 1 - Dropdown Menu</CDropdownTrigger>
+  <CDropdownMenu as="ul">
     <li><a href="#">Item 1</a></li>
     <li><a href="#">Item 2</a></li>
     <li><a href="#">Item 3</a></li>
-  </ul>
-</div>
+  </CDropdownMenu>
+</CDropdown>

@@ -1,6 +1,6 @@
 # Dropdown
 
-The dropdown component allows to create a popup menu with links or whatever you want, open by a button.
+The dropdown component allows you to create a popup menu opened by a button.
 
 ```scss
 @import 'compotes/css/dropdown';
@@ -9,12 +9,12 @@ The dropdown component allows to create a popup menu with links or whatever you 
 ```js
 import { Dropdown } from 'compotes'
 
-const dropdown = new Drag('.c-dropdown')
+const dropdown = new Dropdown('.c-dropdown')
 ```
 
-You can use any kind of element to trigger the dropdown, just add the `c-dropdown-trigger` class.
+You can use any element as the dropdown trigger, just add the `c-dropdown-trigger` class.
 
-It is recommended to put an `id` to the dropdown container. On your trigger element, add an `aria-controls` attribute refering to the `id` of the dropdown.
+It is recommended to put an `id` to the dropdown container. On your trigger element, add an `aria-controls` attribute referring to the `id` of the dropdown.
 
 ```html
 <!-- Default dropdown -->
@@ -26,7 +26,7 @@ It is recommended to put an `id` to the dropdown container. On your trigger elem
 </div>
 ```
 
-If you are using a `ul` as a dropdown, it will use, by default, the `menu` mode adding accessibility features. You can change this by enforce the type of dropdown you want.
+If you are using a `ul` as a dropdown, it will use, by default, the `menu` mode adding accessibility features. You can change this by enforcing the type of dropdown you want.
 
 ```html
 <!-- Menu dropdown -->
@@ -42,7 +42,7 @@ If you are using a `ul` as a dropdown, it will use, by default, the `menu` mode 
 
 ## Accessibility
 
-To ensure accessibility feature, the component will inject `aria-expanded` to the trigger element. This allow the user to know if the collapse is expanded or not. The user also knows what element it refer thanks to the `aria-controls` attribute.
+To ensure accessibility features, the component will inject `aria-expanded` to the trigger element. This allows the user to know if the dropdown is expanded or not. The user also knows what element it refers to thanks to the `aria-controls` attribute.
 
 If you are using the `menu` type, it will inject `role` attributes on the `<ul>`, `<li>` and `<a>` elements.
 
@@ -53,42 +53,39 @@ You can change some options from the component.
 ```js
 import { Dropdown } from 'compotes'
 
-const drag = new Drag('.c-drag', {
+const dropdown = new Dropdown('.c-dropdown', {
   init: true, // [!code focus:6]
-  initEvents: true,
   enforceType: undefined,
   openOn: 'click',
   equalizeWidth: undefined,
   mutationObserver: true,
+  on: undefined,
 })
 ```
 
 - `init` (boolean): Init the component on creation
-- `initEvents` (boolean): Init events on the component
 - `enforceType` ('default' or 'menu'): The type of the dropdown
 - `openOn` ('click' or 'hover'): Open the dropdown on click/hover from the trigger element
-- `equalizeWidth` (boolean): Equalize width on the trigger and the container. It will refresh on mutation observer (if enable)
+- `equalizeWidth` (boolean): Equalize width on the trigger and the container. It will refresh on mutation observer (if enabled)
 - `mutationObserver` (boolean): Use MutationObserver to update component on changes
+- `on` (object): events to listen to
 
 ## Methods
 
-The dropdown component provides several methods to init and destroy the component and also open/toggle/close event.
+The dropdown component provides several methods allowing you to control the component programmatically.
 
 ```js
 import { Dropdown } from 'compotes'
 
-const dropdown = new Drag('.c-dropdown', {
+const dropdown = new Dropdown('.c-dropdown', {
   init: false
 })
-dropdown.init()// [!code focus]
+dropdown.init() // [!code focus]
 ```
 
 - `init()`: Init the component
-- `initAccessibilityAttrs()`: Init accessibility attributes
-- `initEvents()`: Init component events
-- `initAccessibilityEvents()`: Init component accessibility events
-- `destroyEvents()`: Destroy the component events
 - `destroy()`: Destroy the component
+- `update()`: Update the component
 - `open()`: Open the dropdown
 - `toggle()`: Toggle the dropdown
 - `close()`: Close the dropdown
@@ -101,13 +98,13 @@ You can access data from the component like this:
 ```js
 import { Dropdown } from 'compotes'
 
-const dropdown = new Drag('.c-dropdown')
+const dropdown = new Dropdown('.c-dropdown')
 console.log(dropdown.isOpen)// [!code focus]
 ```
 
 - `options` (options object): Get options used to init the component
-- `isOpen` (boolean): Tell if the dropdown is open or not
-- `type` ('default' or 'menu'): Tell the current type of dropdown
+- `isOpen` (boolean): Indicates if the dropdown is open or not
+- `type` ('default' or 'menu'): Indicates the current type of dropdown
 
 ## Events
 
@@ -117,10 +114,10 @@ You can listen to emitted events directly on the dropdown element like this:
 import { Dropdown } from 'compotes'
 
 const dropdownEl = document.querySelector('.c-dropdown')
-const dropdown = new Drag(dropdownEl)
+const dropdown = new Dropdown(dropdownEl)
 
 dropdownEl.addEventListener('c.dropdown.init', (e) => { // [!code focus:3]
-  console.log(e.detail)// drag object
+  console.log(e.detail)// dropdown object
 })
 ```
 

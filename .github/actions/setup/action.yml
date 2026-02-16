@@ -1,0 +1,17 @@
+name: Setup
+description: Install pnpm, Node.js and dependencies
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v4
+
+    - name: Use Node.js 24
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24
+        cache: pnpm
+
+    - name: Install
+      shell: bash
+      run: pnpm install

@@ -1,9 +1,9 @@
 {
   "name": "@compotes/root",
   "type": "module",
-  "version": "0.9.2",
+  "version": "0.10.0",
   "private": "true",
-  "packageManager": "pnpm@8.15.2",
+  "packageManager": "pnpm@10.29.1",
   "description": "Components library focused on accessibility/customization",
   "author": "Applelo",
   "license": "MIT",
@@ -27,30 +27,38 @@
     "typings"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20 <25"
   },
   "scripts": {
     "build": "pnpm run -r build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "pnpm run test:types && pnpm run test:vitest",
-    "test:vitest": "pnpm run -r test:vitest",
+    "test:vitest": "pnpm run -r test:vitest --run",
+    "test:coverage": "pnpm run -r test:coverage",
     "test:types": "pnpm run -r test:types",
     "prepublishOnly": "pnpm build",
-    "docs": "vitepress dev docs",
+    "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
+    "docs:sync": "node scripts/doc-sync.js",
     "publish": "pnpm run -r publish"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "2.6.4",
-    "eslint": "^8.56.0",
-    "playwright": "^1.41.2",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.2",
-    "vitepress": "1.0.0-rc.42",
-    "vitest": "^1.2.2",
-    "vue": "^3.4.19",
-    "vue-tsc": "^1.8.27"
+    "@antfu/eslint-config": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
+    "@vitest/coverage-istanbul": "catalog:",
+    "@vitest/ui": "catalog:",
+    "eslint": "catalog:",
+    "playwright": "catalog:",
+    "rollup": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-vue": "catalog:",
+    "vite": "catalog:",
+    "vitepress": "catalog:",
+    "vitest": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }

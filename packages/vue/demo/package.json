@@ -1,0 +1,21 @@
+{
+  "name": "demo",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev-demo": "vite",
+    "build-demo": "vue-tsc && vite build",
+    "preview-demo": "vite preview"
+  },
+  "dependencies": {
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@compotes/vue": "workspace:*",
+    "@vitejs/plugin-vue": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

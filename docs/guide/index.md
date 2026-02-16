@@ -2,22 +2,31 @@
 
 ## Browser support
 
-**Compotes** uses modern API to work like `ResizableObserver`, `MutationObserver`, css variables or `:scope` selector: so IE11 is not supported.
+**Compotes** uses modern browser APIs (`ResizeObserver`, `MutationObserver`, CSS variables, `:scope` selector) and does not support legacy browsers.
 
 ## Installation
 
 1. Install the library with your favorite package manager
 
-```shell
-# pnpm
-pnpm add -D compotes
+::: code-group
 
-#npm
-npm i -D compotes
-
-# yarn
-yarn add -D compotes
+```sh [npm]
+$ npm add -D compotes
 ```
+
+```sh [pnpm]
+$ pnpm add -D compotes
+```
+
+```sh [yarn]
+$ yarn add -D compotes
+```
+
+```sh [bun]
+$ bun add -D compotes
+```
+
+:::
 
 2. Import the component(s) you want
 
@@ -28,7 +37,7 @@ const collapse = new Collapse('#my-collapse')
 ```
 
 ::: info
-If you need to init several element, you need to do a loop.
+If you need to initialize multiple elements, you need to use a loop.
 
 ```js
 Array.from(document.getElementsByClassName('c-collapse'))
@@ -38,20 +47,27 @@ Array.from(document.getElementsByClassName('c-collapse'))
 
 3. Import the CSS related to the component.
 
-```scss
-// All components
-@import 'compotes/css/style.css';
+```css
+/* All components */
+@import 'compotes/css/style';
 
-// One component
-@import 'compotes/css/drilldown.css';
+/* One component */
+@import 'compotes/css/collapse';
 ```
 
 ::: info
 The above import will work on modern building tools, like ViteJS and Webpack 5, which support package imports. If not, you can use the direct CSS location:
 
-```scss
+```css
 @import 'compotes/style.css';
 @import 'compotes/css/collapse.css';
+```
+
+If you use Sass, you can also import using `.scss` syntax:
+
+```scss
+@import 'compotes/css/style';
+@import 'compotes/css/collapse';
 ```
 :::
 

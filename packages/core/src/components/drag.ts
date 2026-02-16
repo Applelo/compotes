@@ -1,72 +1,100 @@
-import Parent, { type ParentOptions } from './_parent'
+import type { ParentOptions } from './_parent'
+import { debounceResizeObserver } from '@src/utils/debounce'
+import Parent from './_parent'
 
-declare global {
-  interface HTMLElementEventMap {
-    'c.drag.init': CustomEvent<Drag>
-    'c.drag.start': CustomEvent<Drag>
-    'c.drag.end': CustomEvent<Drag>
-    'c.drag.destroy': CustomEvent<Drag>
-  }
+export enum Events {
+  Init = 'init',
+  Start = 'start',
+  End = 'end',
+  Destroy = 'destroy',
 }
 
-export interface DragOptions extends ParentOptions {}
+declare global {
+  interface HTMLElementEventMap extends Record<`c.drag.${Events}`, CustomEvent<Drag>> {}
+}
 
-export default class Drag extends Parent {
-  declare public opts: DragOptions
+export interface DragOptions extends ParentOptions<Events> {}
+
+export interface DragState {
+  isDragging: boolean
+  isDraggable: boolean
+}
+
+export default class Drag extends Parent<Events, DragOptions> {
+  public readonly name = 'drag'
+  declare protected opts: DragOptions
+
+  // Constant
+  private static readonly CLASS_DRAGGABLE = 'c-drag--draggable'
+  private static readonly CLASS_DRAGGING = 'c-drag--dragging'
+
   private isDown = false
-  private draggableClass = 'c-drag--draggable'
-  private draggingClass = 'c-drag--dragging'
   private startX = 0
   private startY = 0
   private scrollLeft = 0
   private scrollTop = 0
   private hasMoved = false
+  private previousIsDraggable = false
 
   private resizeObserver?: ResizeObserver
 
-  constructor(el: HTMLElement | string, options: DragOptions = {}) {
-    super(el, options)
+  constructor(el?: HTMLElement | string, options: DragOptions = {}) {
+    super()
+    this.opts = options
     if (this.isInitializable)
-      this.init()
+      this.init(el, options)
   }
 
-  public init() {
-    this.name = 'drag'
-    super.init()
+  public init(el?: HTMLElement | string, options?: DragOptions): void {
+    super.init(el, options)
 
-    this.resizeObserver = new ResizeObserver(() => {
-      this.el.classList.toggle(this.draggableClass, this.isDraggable)
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
+
+    this.previousIsDraggable = this.isDraggable
+
+    this.resizeObserver = debounceResizeObserver(() => {
+      const isDraggable = this.isDraggable
+      this.el?.classList.toggle(Drag.CLASS_DRAGGABLE, isDraggable)
+
+      if (this.previousIsDraggable !== isDraggable) {
+        this.notifyStateChange()
+      }
+
+      this.previousIsDraggable = isDraggable
     })
 
     this.resizeObserver.observe(this.el)
   }
 
-  public initAccessibilityAttrs() {}
+  protected initEvents(): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return
 
-  public initEvents() {
-    this.destroyEvents()
-
-    const mouseEvents: (keyof HTMLElementEventMap)[] = ['mouseleave', 'mouseup']
-    mouseEvents.forEach((event) => {
+    const pointerEvents: (keyof HTMLElementEventMap)[] = ['pointerleave', 'pointerup']
+    for (let index = 0; index < pointerEvents.length; index++) {
+      const event = pointerEvents[index]
       this.registerEvent({
         id: 'handleDragEnd',
         function: this.handleDragEnd.bind(this),
         event,
         el: this.el,
       })
-    })
+    }
 
     this.registerEvent({
       id: 'handleDragMove',
       function: this.handleDragMove.bind(this),
-      event: 'mousemove',
+      event: 'pointermove',
       el: this.el,
     })
 
     this.registerEvent({
       id: 'handleDragStart',
       function: this.handleDragStart.bind(this),
-      event: 'mousedown',
+      event: 'pointerdown',
       el: this.el,
     })
 
@@ -78,7 +106,7 @@ export default class Drag extends Parent {
     })
   }
 
-  private blockClick(e: MouseEvent) {
+  private blockClick(e: MouseEvent): void {
     if (!this.hasMoved)
       return
 
@@ -86,11 +114,17 @@ export default class Drag extends Parent {
     this.hasMoved = false
   }
 
-  private handleDragStart(e: MouseEvent) {
-    if (!this.isDraggable)
+  private handleDragStart(e: PointerEvent): void {
+    if (!this.isDraggable || !this.el)
       return
     this.isDown = true
-    this.el.classList.add(this.draggingClass)
+    this.el.classList.add(Drag.CLASS_DRAGGING)
+    try {
+      this.el.setPointerCapture(e.pointerId)
+    }
+    catch {
+      // setPointerCapture may fail with synthetic events
+    }
     this.startX = e.pageX - this.el.offsetLeft
     this.startY = e.pageY - this.el.offsetTop
     this.scrollLeft = this.el.scrollLeft
@@ -98,14 +132,18 @@ export default class Drag extends Parent {
     this.emitEvent('start')
   }
 
-  private handleDragEnd() {
+  private handleDragEnd(): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el || !this.isDown)
+      return
     this.isDown = false
-    this.el.classList.remove(this.draggingClass)
+    this.el.classList.remove(Drag.CLASS_DRAGGING)
     this.emitEvent('end')
   }
 
-  private handleDragMove(e: MouseEvent) {
-    if (!this.isDown)
+  private handleDragMove(e: PointerEvent): void {
+    /* istanbul ignore if -- @preserve */
+    if (!this.isDown || !this.el)
       return
     e.preventDefault()
 
@@ -125,7 +163,10 @@ export default class Drag extends Parent {
   /**
    * Tell if the element is draggable or not
    */
-  public get isDraggable() {
+  public get isDraggable(): boolean {
+    /* istanbul ignore if -- @preserve */
+    if (!this.el)
+      return false
     return this.el.clientHeight !== this.el.scrollHeight
       || this.el.clientWidth !== this.el.scrollWidth
   }
@@ -133,14 +174,21 @@ export default class Drag extends Parent {
   /**
    * Tell if the element is dragging
    */
-  public get isDragging() {
+  public get isDragging(): boolean {
     return this.isDown
   }
 
-  public destroy() {
+  protected getState(): DragState {
+    return {
+      isDragging: this.isDown,
+      isDraggable: this.isDraggable,
+    }
+  }
+
+  public destroy(): void {
     this.resizeObserver?.disconnect()
-    this.el.classList.remove(this.draggingClass)
-    this.el.classList.remove(this.draggableClass)
+    this.el?.classList.remove(Drag.CLASS_DRAGGING)
+    this.el?.classList.remove(Drag.CLASS_DRAGGABLE)
     super.destroy()
   }
 }
