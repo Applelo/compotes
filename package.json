@@ -37,11 +37,12 @@
     "test:vitest": "pnpm run -r test:vitest --run",
     "test:coverage": "pnpm run -r test:coverage",
     "test:types": "pnpm run -r test:types",
-    "prepublishOnly": "pnpm build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
     "docs:sync": "node scripts/doc-sync.js",
+    "prepublish:sync": "node scripts/prepublish-sync.js",
+    "prepublishOnly": "pnpm prepublish:sync && pnpm build",
     "publish:all": "pnpm -r publish"
   },
   "devDependencies": {

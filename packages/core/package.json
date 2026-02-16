@@ -47,7 +47,7 @@
   },
   "main": "./dist/compotes.umd.js",
   "module": "./dist/compotes.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/compotes.d.ts",
   "files": [
     "dist"
   ],
