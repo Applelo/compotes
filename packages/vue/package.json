@@ -8,7 +8,7 @@
   "homepage": "https://compotes.dev/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Applelo/compotes"
+    "url": "git+https://github.com/Applelo/compotes.git"
   },
   "bugs": "https://github.com/Applelo/compotes/issues",
   "keywords": [
@@ -26,18 +26,18 @@
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/compotes.d.ts",
-        "default": "./dist/compotes.js"
+        "types": "./dist/compotes.d.mts",
+        "default": "./dist/compotes.mjs"
       },
       "require": {
-        "types": "./dist/compotes.d.ts",
-        "default": "./dist/compotes.umd.js"
+        "types": "./dist/compotes.d.cts",
+        "default": "./dist/compotes.umd.cjs"
       }
     }
   },
-  "main": "./dist/compotes.umd.js",
-  "module": "./dist/compotes.js",
-  "types": "./dist/compotes.d.ts",
+  "main": "./dist/compotes.umd.cjs",
+  "module": "./dist/compotes.mjs",
+  "types": "./dist/compotes.d.mts",
   "files": [
     "dist"
   ],
@@ -48,6 +48,7 @@
     "dev": "tsdown --watch",
     "build": "tsdown",
     "test:attw": "attw --pack . --ignore-rules cjs-resolves-to-esm unexpected-module-syntax",
+    "test:publint": "pnpm build && publint",
     "test:vitest": "vitest",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint .",
