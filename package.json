@@ -42,7 +42,7 @@
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs",
     "docs:sync": "node scripts/doc-sync.js",
-    "publish": "pnpm run -r publish"
+    "publish:all": "pnpm -r publish"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
