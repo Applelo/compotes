@@ -1,6 +1,9 @@
+import { copyFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'tsdown'
 import Vue from 'unplugin-vue/rolldown'
+
+const root = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
   entry: {
@@ -9,6 +12,11 @@ export default defineConfig({
   format: ['esm', 'umd'],
   platform: 'neutral',
   globalName: 'compotes',
+  fixedExtension: true,
+  outExtensions: ({ format }) => {
+    if (format === 'umd')
+      return { js: '.cjs', dts: '.d.cts' }
+  },
   hash: false,
   alias: {
     '@src': fileURLToPath(new URL('./src', import.meta.url)),
@@ -26,6 +34,9 @@ export default defineConfig({
   },
   dts: {
     vue: true,
+  },
+  onSuccess: async () => {
+    await copyFile(`${root}dist/compotes.d.mts`, `${root}dist/compotes.d.cts`)
   },
   plugins: [
     Vue({
