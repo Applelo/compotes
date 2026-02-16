@@ -24,11 +24,11 @@
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/compotes.d.ts",
         "default": "./dist/compotes.js"
       },
       "require": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/compotes.d.ts",
         "default": "./dist/compotes.umd.js"
       }
     },
@@ -59,6 +59,7 @@
     "build": "tsdown",
     "test:vitest": "vitest",
     "test:coverage": "vitest --run --coverage",
+    "test:attw": "attw --pack . --entrypoints . --ignore-rules cjs-resolves-to-esm unexpected-module-syntax",
     "test:types": "tsc --noEmit && vue-tsc --noEmit",
     "prepublishOnly": "pnpm build"
   },
