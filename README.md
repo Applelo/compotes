@@ -1,6 +1,6 @@
 <a href="https://npmjs.com/package/compotes"><img src="https://img.shields.io/npm/v/compotes.svg" alt="npm package"></a>
 <a href="https://github.com/Applelo/compotes/actions/workflows/ci.yml"><img src="https://github.com/Applelo/compotes/actions/workflows/ci.yml/badge.svg?branch=main" alt="build status"></a>
-[![Coverage Status](https://coveralls.io/repos/github/Applelo/compotes/badge.svg?branch=master)](https://coveralls.io/github/Applelo/compotes?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Applelo/compotes/badge.svg?branch=main)](https://coveralls.io/github/Applelo/compotes?branch=main)
 
 # Compotes
 
